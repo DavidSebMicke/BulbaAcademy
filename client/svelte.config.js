@@ -10,11 +10,7 @@ const config = {
 	kit: {
 		adapter: adapter({
 			//fallback: 'home.html'
-		}),
-		prerender: {
-			enabled: false
-		},
-		ssr: false
+		})
 	},
 	preprocess: sveltePreprocess({
 		// Import global less file later
