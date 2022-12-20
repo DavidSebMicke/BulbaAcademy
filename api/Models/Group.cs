@@ -7,7 +7,7 @@
         public string Name { get; set; }
 
 
-        public List<Person> Members { get; set; }
+        public List<Person>? Members { get; set; }
 
 
     }

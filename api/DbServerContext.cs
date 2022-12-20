@@ -34,9 +34,10 @@ namespace BulbasaurAPI
         
         public virtual DbSet<Logging> Loggs { get; set; }
         public virtual DbSet<LogInInformation> LogInInformations { get; set; }
-        
-        
-        
+        public virtual DbSet<TOTP> TOTPs { get; set; }
+
+
+
 
         public virtual DbSet<User> Users { get; set; }
 
@@ -44,7 +45,7 @@ namespace BulbasaurAPI
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            
 
             if (!optionsBuilder.IsConfigured)
             {
@@ -67,7 +68,7 @@ namespace BulbasaurAPI
             modelBuilder.Entity<ChatItem>().ToTable("ChatItems");
             modelBuilder.Entity<User>().ToTable("Users"); ;
             modelBuilder.Entity<Document>().ToTable("Documents");
-
+            modelBuilder.Entity<TOTP>().ToTable("TOTPs");
             modelBuilder.Entity<Logging>().ToTable("Loggings");
             modelBuilder.Entity<LogInInformation>().ToTable("LogInInformations");
 
