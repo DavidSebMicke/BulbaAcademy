@@ -1,4 +1,5 @@
 ﻿using BulbasaurAPI.Models;
+using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
@@ -45,11 +46,11 @@ namespace BulbasaurAPI
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
 
+            var connString = DotEnv.Read()["_connString"];
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("_connString"));
+                optionsBuilder.UseSqlServer(connString);
                                
             }
         }

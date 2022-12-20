@@ -60,6 +60,18 @@ namespace BulbasaurAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TOTPs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TOTPs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Persons",
                 columns: table => new
                 {
@@ -71,8 +83,7 @@ namespace BulbasaurAPI.Migrations
                     PhoneNumber = table.Column<int>(type: "int", nullable: false),
                     EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    DocumentId = table.Column<int>(type: "int", nullable: true),
-                    GroupId = table.Column<int>(type: "int", nullable: true)
+                    DocumentId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -81,11 +92,6 @@ namespace BulbasaurAPI.Migrations
                         name: "FK_Persons_Documents_DocumentId",
                         column: x => x.DocumentId,
                         principalTable: "Documents",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Persons_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Persons_Roles_RoleId",
@@ -125,6 +131,30 @@ namespace BulbasaurAPI.Migrations
                         column: x => x.Id,
                         principalTable: "Persons",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupPerson",
+                columns: table => new
+                {
+                    GroupsId = table.Column<int>(type: "int", nullable: false),
+                    MembersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupPerson", x => new { x.GroupsId, x.MembersId });
+                    table.ForeignKey(
+                        name: "FK_GroupPerson_Groups_GroupsId",
+                        column: x => x.GroupsId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupPerson_Persons_MembersId",
+                        column: x => x.MembersId,
+                        principalTable: "Persons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -284,6 +314,11 @@ namespace BulbasaurAPI.Migrations
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GroupPerson_MembersId",
+                table: "GroupPerson",
+                column: "MembersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Loggings_UserId",
                 table: "Loggings",
                 column: "UserId");
@@ -297,11 +332,6 @@ namespace BulbasaurAPI.Migrations
                 name: "IX_Persons_DocumentId",
                 table: "Persons",
                 column: "DocumentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Persons_GroupId",
-                table: "Persons",
-                column: "GroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Persons_RoleId",
@@ -328,6 +358,9 @@ namespace BulbasaurAPI.Migrations
                 name: "ChatItems");
 
             migrationBuilder.DropTable(
+                name: "GroupPerson");
+
+            migrationBuilder.DropTable(
                 name: "Loggings");
 
             migrationBuilder.DropTable(
@@ -337,10 +370,16 @@ namespace BulbasaurAPI.Migrations
                 name: "Personells");
 
             migrationBuilder.DropTable(
+                name: "TOTPs");
+
+            migrationBuilder.DropTable(
                 name: "Caregivers");
 
             migrationBuilder.DropTable(
                 name: "Children");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -353,9 +392,6 @@ namespace BulbasaurAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Documents");
-
-            migrationBuilder.DropTable(
-                name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Roles");
