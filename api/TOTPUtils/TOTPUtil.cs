@@ -1,6 +1,7 @@
 ﻿using OtpNet;
+using BulbasaurAPI.Models;
 
-namespace BulbasaurAPI.TOTP
+namespace BulbasaurAPI.TOTPUtils
 {
     internal class TOTPUtil
     {
@@ -12,10 +13,16 @@ namespace BulbasaurAPI.TOTP
             return secret;
         }
 
-        internal static bool VerifyTOTP(byte[] TOTPSecret, string totpCode)
+        internal static bool VerifyTOTP(TOTP userTotp, string totpCode)
         {
-            var totp = new Totp(TOTPSecret);
+            var totp = new Totp(userTotp.Secret);
             bool result = totp.VerifyTotp(totpCode, out long timeWindowUsed);
+
+            if (result)
+            {
+                return timeWindowUsed != userTotp.TimeWindowUsed;
+            }
+
             return result;
         }
     }
