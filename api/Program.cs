@@ -1,5 +1,7 @@
 namespace BulbasaurAPI
 {
+
+   
     public class Program
     {
         public static void Main(string[] args)
@@ -10,11 +12,11 @@ namespace BulbasaurAPI
 
             builder.Services.AddControllers();
 
-
+          
 
             var app = builder.Build();
 
-
+            
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
