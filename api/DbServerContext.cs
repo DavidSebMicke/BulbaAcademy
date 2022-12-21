@@ -10,10 +10,9 @@ namespace BulbasaurAPI
     {
         public readonly IConfiguration Configuration;
 
-        public DbServerContext( IConfiguration configuration)
+        public DbServerContext(IConfiguration configuration)
         {
-            Configuration = configuration;
-            
+            Configuration = configuration;           
         }
 
         
@@ -31,23 +30,20 @@ namespace BulbasaurAPI
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<ChatItem> ChatItems { get; set; }
-        
-        public virtual DbSet<Document> Documents { get; set; }
-        
+        public virtual DbSet<Document> Documents { get; set; } 
         public virtual DbSet<Logging> Loggs { get; set; }
         public virtual DbSet<LogInInformation> LogInInformations { get; set; }
         public virtual DbSet<TOTP> TOTPs { get; set; }
-
-
-
-
         public virtual DbSet<User> Users { get; set; }
 
 
-
+        //public void ConfigureServices(IServiceCollection services)
+        //{
+        //    services.AddControllers();
+        //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            
             var connString = DotEnv.Read()["_connString"];
             if (!optionsBuilder.IsConfigured)
             {
@@ -73,13 +69,6 @@ namespace BulbasaurAPI
             modelBuilder.Entity<TOTP>().ToTable("TOTPs");
             modelBuilder.Entity<Logging>().ToTable("Loggings");
             modelBuilder.Entity<LogInInformation>().ToTable("LogInInformations");
-
-
-
-
-
-
-
         }
 
         
