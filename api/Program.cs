@@ -1,6 +1,10 @@
+
+using BulbasaurAPI.Repository;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
+
 
 namespace BulbasaurAPI
 {
@@ -18,12 +22,14 @@ namespace BulbasaurAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             // Adding DbContext to Services
             builder.Services.AddDbContext<DbServerContext>();
+
             
 
             var app = builder.Build();
@@ -33,7 +39,7 @@ namespace BulbasaurAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
- 
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
