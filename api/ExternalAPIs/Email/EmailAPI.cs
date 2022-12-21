@@ -17,16 +17,14 @@ namespace BulbasaurAPI.ExternalAPIs
 
             client.DefaultRequestHeaders.Add("api-key", apiKey);
 
-            EmailContent emailContent = new(senderEmail, userEmail, "Login verification", "code");
+            EmailInfo sender = new EmailInfo { email = senderEmail, name = "Bulbasaur School" };
+            EmailInfo receiver = new EmailInfo { email = userEmail, name = "ReceiverName" };
+
+            EmailContent emailContent = new(sender, receiver, "Login verification", "code");
 
             StringContent content = new(JsonSerializer.Serialize(emailContent).ToString(), Encoding.UTF8, "application/json");
 
-            Console.WriteLine("STRING CONTENT \n " + content);
-            Console.WriteLine();
-            Console.WriteLine();
             var response = await client.PostAsync(uri, content);
-
-            Console.WriteLine(response);
 
             return true;
         }
