@@ -1,10 +1,8 @@
-
+using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Repository;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
-
 
 namespace BulbasaurAPI
 {
