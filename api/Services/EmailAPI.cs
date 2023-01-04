@@ -22,9 +22,7 @@ namespace BulbasaurAPI.ExternalAPIs
 
             EmailContent emailContent = new(sender, receiver, "Login verification", "code");
 
-            StringContent content = new(JsonSerializer.Serialize(emailContent).ToString(), Encoding.UTF8, "application/json");
-
-            var response = await client.PostAsync(uri, content);
+            var response = await client.PostAsJsonAsync(uri, emailContent);
 
             return true;
         }

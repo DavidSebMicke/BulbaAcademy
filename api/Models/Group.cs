@@ -7,7 +7,10 @@
         public string Name { get; set; }
 
 
-        public List<Person>? Members { get; set; }
+        
+
+        public ICollection<GroupPerson>  GroupPersons { get; set; }
+
 
 
     }

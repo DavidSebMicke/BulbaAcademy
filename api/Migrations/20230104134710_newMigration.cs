@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BulbasaurAPI.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class newMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,19 +31,6 @@ namespace BulbasaurAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Documents", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -134,27 +121,22 @@ namespace BulbasaurAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupPerson",
+                name: "Groups",
                 columns: table => new
                 {
-                    GroupsId = table.Column<int>(type: "int", nullable: false),
-                    MembersId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupPerson", x => new { x.GroupsId, x.MembersId });
+                    table.PrimaryKey("PK_Groups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GroupPerson_Groups_GroupsId",
-                        column: x => x.GroupsId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GroupPerson_Persons_MembersId",
-                        column: x => x.MembersId,
+                        name: "FK_Groups_Persons_PersonId",
+                        column: x => x.PersonId,
                         principalTable: "Persons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -204,25 +186,49 @@ namespace BulbasaurAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CaregiverChild",
+                name: "CaregiverChildren",
                 columns: table => new
                 {
                     CaregiverId = table.Column<int>(type: "int", nullable: false),
-                    ChildrenId = table.Column<int>(type: "int", nullable: false)
+                    ChildId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CaregiverChild", x => new { x.CaregiverId, x.ChildrenId });
+                    table.PrimaryKey("PK_CaregiverChildren", x => new { x.CaregiverId, x.ChildId });
                     table.ForeignKey(
-                        name: "FK_CaregiverChild_Caregivers_CaregiverId",
+                        name: "FK_CaregiverChildren_Caregivers_CaregiverId",
                         column: x => x.CaregiverId,
                         principalTable: "Caregivers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CaregiverChild_Children_ChildrenId",
-                        column: x => x.ChildrenId,
+                        name: "FK_CaregiverChildren_Children_ChildId",
+                        column: x => x.ChildId,
                         principalTable: "Children",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupPersons",
+                columns: table => new
+                {
+                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupPersons", x => new { x.GroupId, x.PersonId });
+                    table.ForeignKey(
+                        name: "FK_GroupPersons_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GroupPersons_Persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -299,9 +305,9 @@ namespace BulbasaurAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CaregiverChild_ChildrenId",
-                table: "CaregiverChild",
-                column: "ChildrenId");
+                name: "IX_CaregiverChildren_ChildId",
+                table: "CaregiverChildren",
+                column: "ChildId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatItems_AuthorId",
@@ -314,9 +320,14 @@ namespace BulbasaurAPI.Migrations
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupPerson_MembersId",
-                table: "GroupPerson",
-                column: "MembersId");
+                name: "IX_GroupPersons_PersonId",
+                table: "GroupPersons",
+                column: "PersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Groups_PersonId",
+                table: "Groups",
+                column: "PersonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Loggings_UserId",
@@ -352,13 +363,13 @@ namespace BulbasaurAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CaregiverChild");
+                name: "CaregiverChildren");
 
             migrationBuilder.DropTable(
                 name: "ChatItems");
 
             migrationBuilder.DropTable(
-                name: "GroupPerson");
+                name: "GroupPersons");
 
             migrationBuilder.DropTable(
                 name: "Loggings");
