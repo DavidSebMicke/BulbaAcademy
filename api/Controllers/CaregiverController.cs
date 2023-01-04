@@ -9,12 +9,11 @@ namespace BulbasaurAPI.Controllers
     [ApiController]
     public class CaregiverController : ControllerBase
     {
-        
-        private readonly ICaregiverRepository _context;
+        private readonly CaregiverRepository _context;
 
-        public CaregiverController(CaregiverRepository context)
+        public CaregiverController(DbServerContext context)
         {
-            _context = context;
+            _context = new CaregiverRepository(context);
         }
 
         // GET: api/GetAll
@@ -25,17 +24,13 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-               var  all =_context.GetAllCaregivers();
+                var all = _context.GetAllCaregivers();
                 return all;
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
-
-
     }
 }

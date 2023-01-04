@@ -5,8 +5,6 @@ namespace BulbasaurAPI.Repository
 {
     public class CaregiverRepository : ICaregiverRepository
     {
-
-
         private readonly DbServerContext _context;
 
         public CaregiverRepository(DbServerContext context)
@@ -16,12 +14,11 @@ namespace BulbasaurAPI.Repository
 
         public ICollection<Caregiver> GetAllCaregivers()
         {
-            using(var context = _context)
+            using (var context = _context)
             {
                 var all = context.Caregivers.ToList();
                 return all;
             }
-           
         }
 
         public Caregiver GetCaregiverById()
@@ -35,4 +32,3 @@ namespace BulbasaurAPI.Repository
         }
     }
 }
-
