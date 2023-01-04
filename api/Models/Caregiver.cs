@@ -2,7 +2,10 @@
 {
     public class Caregiver : Person
     {
-        public List<Child>? Children { get; set; } = new List<Child>();
+        public ICollection<CaregiverChild>? CaregiverChildren { get; set; }
+        
+
+
 
     }
 }

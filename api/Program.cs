@@ -1,5 +1,4 @@
 
-
 using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +24,9 @@ namespace BulbasaurAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<DbServerContext>();
+            builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();    
 
-
+            
 
 
             var app = builder.Build();
@@ -36,7 +36,7 @@ namespace BulbasaurAPI
                 app.UseSwaggerUI();
             }
 
-            
+          
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

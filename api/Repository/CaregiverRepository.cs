@@ -1,4 +1,5 @@
 ﻿using BulbasaurAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Repository
@@ -14,24 +15,48 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        public ICollection<Caregiver> GetAllCaregivers()
+        public async Task<bool> CreateCaregiver(Caregiver caregiver)
         {
-            using(var context = _context)
+           var create = await _context.Caregivers.AddAsync(caregiver);
+            
+            return await Save();
+            
+
+        }
+
+        public async Task<Caregiver> CreateCaregiverAsync(Caregiver caregiver)
+        {
+            _context.Caregivers.Add(caregiver);
+            await _context.SaveChangesAsync();
+            return caregiver;
+        }
+
+        public async Task<List<Caregiver>> GetAllCaregiversAsync()
+        {
+            return await _context.Caregivers.ToListAsync();
+        }
+
+        public async Task<Caregiver> GetCaregiverByIdAsync(int id)
+        {
+            try
             {
-                var all = context.Caregivers.ToList();
-                return all;
+                return await _context.Caregivers.FirstOrDefaultAsync(x => x.Id == id);
             }
-           
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public Caregiver GetCaregiverById()
-        {
-            throw new NotImplementedException();
-        }
+     
 
-        public Caregiver GetCaregiverForChild()
+      
+
+        public async Task<bool> Save()
         {
-            throw new NotImplementedException();
+           var saved= await _context.SaveChangesAsync();
+            return saved > 0? true: false;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace BulbasaurAPI.Controllers
 {
@@ -9,24 +9,22 @@ namespace BulbasaurAPI.Controllers
     [ApiController]
     public class CaregiverController : ControllerBase
     {
-        
-        private readonly ICaregiverRepository _context;
 
-        public CaregiverController(CaregiverRepository context)
+        private readonly ICaregiverRepository _caregiver;
+
+        public CaregiverController(ICaregiverRepository context)
         {
-            _context = context;
+            _caregiver = context;
         }
 
         // GET: api/GetAll
         [HttpGet]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        public IEnumerable<Caregiver> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-               var  all =_context.GetAllCaregivers();
-                return all;
+
+                return Ok(await _caregiver.GetAllCaregiversAsync());
             }
             catch (Exception)
             {
@@ -35,7 +33,27 @@ namespace BulbasaurAPI.Controllers
             }
 
         }
+        // GET: api/1
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetCareGiverById(int id)
+        {
+            try
+            {
+                return Ok(await _caregiver.GetCaregiverByIdAsync(id));
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+        }
+        [HttpPost]
+        public  async Task<IActionResult> CreateCargegiver([FromBody] Caregiver caregiverCreate)
+        {
+            return Ok(await _caregiver.CreateCaregiverAsync(caregiverCreate));
+                
+           }
 
     }
 }
