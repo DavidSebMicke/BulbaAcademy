@@ -1,4 +1,10 @@
+
+using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Configuration;
+
 
 namespace BulbasaurAPI
 {
@@ -24,12 +30,13 @@ namespace BulbasaurAPI
 
 
             var app = builder.Build();
-
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+          
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
