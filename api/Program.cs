@@ -1,3 +1,5 @@
+using BulbasaurAPI.Repository;
+
 namespace BulbasaurAPI
 {
 
@@ -16,13 +18,18 @@ namespace BulbasaurAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<DbServerContext>();
+            builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();    
 
-
+            
 
 
             var app = builder.Build();
 
-            
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

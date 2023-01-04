@@ -14,8 +14,11 @@
 
         public Role Role { get; set; }
 
+        //KOLLA DENNA VID FEL
+        public ICollection<Group>? Groups { get; set; }
 
-        public List<Group>? Groups { get; set; }
+        public ICollection<GroupPerson> GroupPersons { get; set; }
+
 
     }
 }
