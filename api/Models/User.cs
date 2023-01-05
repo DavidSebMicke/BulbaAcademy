@@ -4,10 +4,9 @@
     {
         public int Id { get; set; }
 
-        public Guid GUID { get; set; }
+        public Guid GUID { get; set; } = Guid.NewGuid();
 
         public string Username { get; set; }
-
 
         public string Password { get; set; }
 

@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using BulbasaurAPI.Authentication;
+using BulbasaurAPI.Models;
+using System.Net;
 
 namespace BulbasaurAPI.Middlewares
 {
@@ -24,8 +26,9 @@ namespace BulbasaurAPI.Middlewares
             try
             {
                 var authorizationHeader = context.Request.Headers.Authorization;
+                var ipAddress = GetIpAddress(context);
 
-                if (string.IsNullOrEmpty(authorizationHeader))
+                if (string.IsNullOrEmpty(authorizationHeader) || string.IsNullOrEmpty(ipAddress))
                 {
                     await ReturnErrorResponse(context);
                     return;
@@ -33,13 +36,18 @@ namespace BulbasaurAPI.Middlewares
 
                 string accessToken = authorizationHeader[0].Split(' ')[1];
 
-                if (await CheckAccessToken(accessToken))
+                User? user = await TokenUtils.AuthenticateToken(accessToken, ipAddress);
+
+                if (user != null)
                 {
+                    // Attaches user to the request-context, making it possible to use it for authorization later on
+                    context.Items["User"] = user;
                     await _next.Invoke(context);
                 }
                 else
                 {
                     await ReturnErrorResponse(context);
+                    return;
                 }
             }
             catch (Exception ex)
@@ -50,11 +58,16 @@ namespace BulbasaurAPI.Middlewares
             }
         }
 
-        private async Task<bool> CheckAccessToken(string token)
+        // Get IP address
+        private string GetIpAddress(HttpContext context)
         {
-            return true;
+            if (context.Request.Headers.ContainsKey("X-Forwarded-For"))
+                return context.Request.Headers["X-Forwarded-For"];
+            else
+                return context.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
 
+        //Returns errormessage for invalid access token
         private async Task ReturnErrorResponse(HttpContext context)
         {
             context.Response.ContentType = "application/json";

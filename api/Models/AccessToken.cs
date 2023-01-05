@@ -7,6 +7,7 @@ namespace BulbasaurAPI.Models
     {
         public int Id { get; set; }
 
+        // Hashed token
         [MaxLength(64)]
         public string Token { get; set; }
 
@@ -18,9 +19,9 @@ namespace BulbasaurAPI.Models
         public DateTime LastUsedDateTime { get; set; }
 
         [NotMapped]
-        public int MaximumIdleMinutes { get; set; } = 60;
+        public static int MaximumIdleMinutes { get; set; } = 60;
 
         [NotMapped]
-        public int MaximumSessionMinutes { get; set; } = 180;
+        public static int MaximumSessionMinutes { get; set; } = 120;
     }
 }
