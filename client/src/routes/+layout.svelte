@@ -1,18 +1,12 @@
-<nav>
-    <a href="/" class="MpLink">Main page</a>
+<script>
+	import Dashboard from '../components/dashboard/dashboard.svelte';
+</script>
 
-    <a href="/layout">about</a>
-    
-    <a href="/loginPage">loginPage</a>
-</nav>
+<Dashboard />
+<slot />
 
 <style lang="less">
-
-    .MpLink{
-        
-        color: red;
-    }
-    
+	.MpLink {
+		color: red;
+	}
 </style>
-
-<slot/>
