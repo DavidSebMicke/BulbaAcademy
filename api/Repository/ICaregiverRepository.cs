@@ -4,16 +4,16 @@ namespace BulbasaurAPI.Repository
 {
     public interface ICaregiverRepository
     {
-        Task<List<Caregiver>> GetAllCaregiversAsync();
+        ICollection<Caregiver> GetAllCaregivers();
 
-        Task<Caregiver> GetCaregiverByIdAsync(int id);
-       
-        
+        Caregiver GetCaregiverById(int id);
 
-        Task<bool> Save();
 
-        Task<Caregiver> CreateCaregiverAsync(Caregiver caregiver);
 
-      
+        bool Save();
+
+        bool CreateCaregiver(int childId, Caregiver caregiver);
+
+
     }
 }
