@@ -50,7 +50,7 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCargegiver([FromBody] Caregiver caregiverCreate, [FromQuery] int childId)
+        public async Task<IActionResult> CreateCaregiver([FromBody] Caregiver caregiverCreate, [FromQuery] int childId)
         {
             if (caregiverCreate == null) return BadRequest(ModelState);
 
@@ -73,9 +73,5 @@ namespace BulbasaurAPI.Controllers
             return Ok("Successfully created");
 
         }
-
-
-
-
     }
 }
