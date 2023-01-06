@@ -1,6 +1,4 @@
 ﻿using BulbasaurAPI.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Repository
 {
@@ -13,48 +11,47 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        public async Task<bool> CreateCaregiver(Caregiver caregiver)
+        public bool CreateCaregiver(int childId, Caregiver caregiver)
         {
-           var create = await _context.Caregivers.AddAsync(caregiver);
-            
-            return await Save();
-            
+            var ChildEntity = _context.Children.Where(a => a.Id == childId).FirstOrDefault();
 
-        }
 
-        public async Task<Caregiver> CreateCaregiverAsync(Caregiver caregiver)
-        {
-            _context.Caregivers.Add(caregiver);
-            await _context.SaveChangesAsync();
-            return caregiver;
-        }
 
-        public async Task<List<Caregiver>> GetAllCaregiversAsync()
-        {
-            return await _context.Caregivers.ToListAsync();
-        }
-
-        public async Task<Caregiver> GetCaregiverByIdAsync(int id)
-        {
-            try
+            var caregiverChild = new CaregiverChild()
             {
-                return await _context.Caregivers.FirstOrDefaultAsync(x => x.Id == id);
-            }
-            catch (Exception)
-            {
+                Caregiver = caregiver,
+                Child = ChildEntity,
+            };
 
-                throw;
-            }
+            _context.Add(caregiverChild);
+            _context.Add(caregiver);
+
+            return Save();
+
         }
 
-     
 
-      
-
-        public async Task<bool> Save()
+        public ICollection<Caregiver> GetAllCaregivers()
         {
-           var saved= await _context.SaveChangesAsync();
-            return saved > 0? true: false;
+            return _context.Caregivers.ToList();
         }
+
+        public Caregiver GetCaregiverById(int id)
+        {
+
+            return _context.Caregivers.FirstOrDefault(x => x.Id == id);
+        }
+
+
+
+
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+
     }
 }
