@@ -12,7 +12,7 @@
 
         public string? EmailAddress { get; set; }
 
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
 
       
         public ICollection<Group>? Groups { get; set; }
