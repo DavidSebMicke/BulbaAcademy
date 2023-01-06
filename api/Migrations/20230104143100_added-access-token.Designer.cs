@@ -4,6 +4,7 @@ using BulbasaurAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    partial class DbServerContextModelSnapshot : ModelSnapshot
+    [Migration("20230104143100_added-access-token")]
+    partial class addedaccesstoken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,40 +23,6 @@ namespace BulbasaurAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("BulbasaurAPI.Models.AccessToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<DateTime>("IssuedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("LastUsedDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AccessTokens", (string)null);
-                });
 
             modelBuilder.Entity("BulbasaurAPI.Models.CaregiverChild", b =>
                 {
@@ -353,17 +321,6 @@ namespace BulbasaurAPI.Migrations
                         .HasColumnType("bit");
 
                     b.ToTable("Personells", (string)null);
-                });
-
-            modelBuilder.Entity("BulbasaurAPI.Models.AccessToken", b =>
-                {
-                    b.HasOne("BulbasaurAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BulbasaurAPI.Models.CaregiverChild", b =>

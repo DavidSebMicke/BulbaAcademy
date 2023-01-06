@@ -13,7 +13,8 @@ namespace BulbasaurAPI
             Configuration = configuration;
         }
 
-
+        public DbServerContext()
+        { }
 
         //public DbServerContext(IConfiguration configuration)
         //{
@@ -39,7 +40,7 @@ namespace BulbasaurAPI
         public virtual DbSet<LogInInformation> LogInInformations { get; set; }
         public virtual DbSet<TOTP> TOTPs { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
+        public virtual DbSet<AccessToken> AccessTokens { get; set; }
 
         //public void ConfigureServices(IServiceCollection services)
         //{
@@ -47,12 +48,10 @@ namespace BulbasaurAPI
         //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
             var connString = DotEnv.Read()["_connString"];
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(connString);
-
             }
         }
 
@@ -71,7 +70,7 @@ namespace BulbasaurAPI
             modelBuilder.Entity<TOTP>().ToTable("TOTPs");
             modelBuilder.Entity<Logging>().ToTable("Loggings");
             modelBuilder.Entity<LogInInformation>().ToTable("LogInInformations");
-
+            modelBuilder.Entity<AccessToken>().ToTable("AccessTokens");
 
             modelBuilder.Entity<CaregiverChild>()
                 .HasKey(cg => new { cg.CaregiverId, cg.ChildId });
@@ -94,16 +93,6 @@ namespace BulbasaurAPI
                 .HasOne(c => c.Person)
                 .WithMany(c => c.GroupPersons)
                 .HasForeignKey(c => c.PersonId);
-
-
-
-
-
-
-
-            
         }
-
-
     }
 }

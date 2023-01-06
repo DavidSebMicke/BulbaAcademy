@@ -6,8 +6,6 @@ namespace BulbasaurAPI.Repository
 {
     public class CaregiverRepository : ICaregiverRepository
     {
-
-
         private readonly DbServerContext _context;
 
         public CaregiverRepository(DbServerContext context)
@@ -60,4 +58,3 @@ namespace BulbasaurAPI.Repository
         }
     }
 }
-
