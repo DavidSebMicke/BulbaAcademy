@@ -24,7 +24,7 @@ namespace BulbasaurAPI.Controllers
             try
             {
 
-                return Ok(_caregiver.GetAllCaregivers());
+                return Ok(await _caregiver.GetAllCaregiversAsync());
             }
             catch (Exception)
             {
@@ -40,7 +40,7 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-                return Ok(_caregiver.GetCaregiverById(id));
+                return Ok(await _caregiver.GetCaregiverByIdAsync(id));
             }
             catch (Exception)
             {
@@ -48,34 +48,12 @@ namespace BulbasaurAPI.Controllers
                 throw;
             }
         }
-
         [HttpPost]
-        public async Task<IActionResult> CreateCargegiver([FromBody] Caregiver caregiverCreate, [FromQuery] int childId )
+        public  async Task<IActionResult> CreateCargegiver([FromBody] Caregiver caregiverCreate)
         {
-            if (caregiverCreate == null) return BadRequest(ModelState);
-
-            var caregivers = _caregiver.GetAllCaregivers().Where(c => c.Id == caregiverCreate.Id).FirstOrDefault();
-
-            if(caregivers != null)
-            {
-                ModelState.AddModelError("", "Caregiver already exists");
-                return StatusCode(422, ModelState);
-            }
-
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            if (!_caregiver.CreateCaregiver(childId, caregiverCreate))
-            {
-                ModelState.AddModelError("", "Something went wrong wihle saving");
-                    return StatusCode(500, ModelState);
-            }
-            
-            return Ok("Successfully created");
-            
-        }
-
-
-
+            return Ok(await _caregiver.CreateCaregiverAsync(caregiverCreate));
+                
+           }
 
     }
 }
