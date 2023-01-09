@@ -32,12 +32,7 @@ namespace BulbasaurAPI
             app.UseHttpsRedirection();
 
             // Add custom authentication and authorization middlewares here     UNCOMMENT THIS PART ONCE LOGIN IS IMPLEMENTED
-            //app.Use(async (context, next) =>
-            //    {
-            //        AuthenticationMiddleware tokenMiddleware = new(next);
-            //        await tokenMiddleware.InvokeAsync(context);
-            //    }
-            //);
+            //app.UseMiddleware<AuthenticationMiddleware>();
 
             app.MapControllers();
 
