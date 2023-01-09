@@ -14,7 +14,7 @@ export const setAccessToken = (token) => {
 	axios.AxiosHeaders.common['Authorization'] = `Bearer ${token}`;
 };
 
-export const configureDefaultRequestHeaders = () => {
+const configureDefaultRequestHeaders = () => {
 	axios.defaults.headers.post({
 		'Content-Type': 'application/json'
 	});
