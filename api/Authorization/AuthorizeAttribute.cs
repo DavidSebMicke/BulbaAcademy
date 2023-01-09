@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace BulbasaurAPI.Authorization
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class AuthorizeAttribute : Attribute, IAuthorizationFilter
+    public class Authorize : Attribute, IAuthorizationFilter
     {
         // Lowest access level
         public string AccessLevel { get; set; }
@@ -14,6 +14,7 @@ namespace BulbasaurAPI.Authorization
         {
             // If there is no lowest access level then everyone can access it
             if (string.IsNullOrEmpty(AccessLevel)) return;
+            AccessLevel = AccessLevel.ToUpper();
 
             bool validAccessLevel = Enum.TryParse(AccessLevel, out UserAccessLevel accessLevel);
 

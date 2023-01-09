@@ -1,4 +1,5 @@
 ﻿using BulbasaurAPI.Authentication;
+using BulbasaurAPI.Authorization;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace BulbasaurAPI.Controllers
         }
 
         // GET: api/GetAll
+        [Authorize(AccessLevel = "ADMIN")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
