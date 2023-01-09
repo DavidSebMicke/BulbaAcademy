@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    [Migration("20230106155856_AddedSSN")]
+    [Migration("20230106162007_AddedSSN")]
     partial class AddedSSN
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,7 +253,7 @@ namespace BulbasaurAPI.Migrations
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<int>("SSN")
@@ -461,9 +461,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.HasOne("BulbasaurAPI.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Role");
                 });
