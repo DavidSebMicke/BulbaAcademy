@@ -19,17 +19,13 @@ namespace BulbasaurAPI.Repository
             //var groups = _context.Groups.ToListAsync();
             //return groups;
             throw new NotImplementedException();
-
         }
-
         
         public async Task<bool> DeleteGroupAsync(int id)
         {
            var delete = await _context.Groups.Where(x=> x.Id == id).FirstOrDefaultAsync();
              _context.Remove(delete);
-            return await SaveAsync();
-           
-           
+            return await SaveAsync();  
         }
 
         public async Task<IEnumerable<Group>> GetAllGroupsAsync()
@@ -40,7 +36,6 @@ namespace BulbasaurAPI.Repository
         public async Task<Group> GetGroupByIdAsync(int id)
         {
             return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
-
         }
 
         public async Task<bool> SaveAsync()
@@ -53,7 +48,5 @@ namespace BulbasaurAPI.Repository
         {
             throw new NotImplementedException();
         }
-
-
     }
 }
