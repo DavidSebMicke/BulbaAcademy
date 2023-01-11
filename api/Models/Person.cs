@@ -17,10 +17,7 @@
         public Role? Role { get; set; }
 
       
-        public ICollection<Group>? Groups { get; set; }
-
-        public ICollection<GroupPerson>? GroupPersons { get; set; }
-
-
+        public List<Group> Groups { get; set; } = new List<Group>();
+        
     }
 }
