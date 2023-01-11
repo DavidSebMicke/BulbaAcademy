@@ -29,7 +29,7 @@ namespace BulbasaurAPI
 
         public virtual DbSet<CaregiverChild> CaregiverChildren { get; set; }
 
-        public virtual DbSet<GroupPerson> GroupPersons { get; set; }
+        //public virtual DbSet<GroupPerson> GroupPersons { get; set; }
 
         public virtual DbSet<Personell> Personells { get; set; }
 
@@ -58,11 +58,14 @@ namespace BulbasaurAPI
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>().ToTable("Roles");
-            modelBuilder.Entity<Person>().ToTable("Persons");
+            modelBuilder.Entity<Person>().ToTable("Persons")
+                .HasOne<Role>(c => c.Role); 
             modelBuilder.Entity<Caregiver>().ToTable("Caregivers");
             modelBuilder.Entity<Child>().ToTable("Children");
+                
             modelBuilder.Entity<Personell>().ToTable("Personells");
             modelBuilder.Entity<Group>().ToTable("Groups");
+
             modelBuilder.Entity<Chat>().ToTable("Chats");
             modelBuilder.Entity<ChatItem>().ToTable("ChatItems");
             modelBuilder.Entity<User>().ToTable("Users"); ;
@@ -71,6 +74,8 @@ namespace BulbasaurAPI
             modelBuilder.Entity<Logging>().ToTable("Loggings");
             modelBuilder.Entity<LogInInformation>().ToTable("LogInInformations");
             modelBuilder.Entity<AccessToken>().ToTable("AccessTokens");
+
+            
 
             modelBuilder.Entity<CaregiverChild>()
                 .HasKey(cg => new { cg.CaregiverId, cg.ChildId });
@@ -83,16 +88,16 @@ namespace BulbasaurAPI
                 .WithMany(c => c.CaregiverChildren)
                 .HasForeignKey(c => c.ChildId);
 
-            modelBuilder.Entity<GroupPerson>()
-                .HasKey(cg => new { cg.GroupId, cg.PersonId });
-            modelBuilder.Entity<GroupPerson>()
-                .HasOne(c => c.Group)
-                .WithMany(c => c.GroupPersons)
-                .HasForeignKey(c => c.GroupId);
-            modelBuilder.Entity<GroupPerson>()
-                .HasOne(c => c.Person)
-                .WithMany(c => c.GroupPersons)
-                .HasForeignKey(c => c.PersonId);
+            //modelBuilder.Entity<GroupPerson>()
+            //    .HasKey(cg => new { cg.GroupId, cg.PersonId });
+            //modelBuilder.Entity<GroupPerson>()
+            //    .HasOne(c => c.Group)
+            //    .WithMany(c => c.GroupPersons)
+            //    .HasForeignKey(c => c.GroupId);
+            //modelBuilder.Entity<GroupPerson>()
+            //    .HasOne(c => c.Person)
+            //    .WithMany(c => c.GroupPersons)
+            //    .HasForeignKey(c => c.PersonId);
         }
     }
 }

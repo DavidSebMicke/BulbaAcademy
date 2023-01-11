@@ -22,7 +22,9 @@ namespace BulbasaurAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _context.Children.ToListAsync();
+            var result = await _context.Caregivers
+                
+                .ToListAsync();
             return Ok(result);
         }
 
