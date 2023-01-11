@@ -4,6 +4,6 @@ namespace BulbasaurAPI.Models
 {
     public class Child : Person
     {
-        public ICollection<CaregiverChild>? CaregiverChildren { get; set; }
+        public List<Caregiver>? Caregivers { get; set; } = new List<Caregiver>();
     }
 }

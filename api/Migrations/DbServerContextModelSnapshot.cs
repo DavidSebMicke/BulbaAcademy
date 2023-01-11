@@ -56,21 +56,6 @@ namespace BulbasaurAPI.Migrations
                     b.ToTable("AccessTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BulbasaurAPI.Models.CaregiverChild", b =>
-                {
-                    b.Property<int>("CaregiverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChildId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CaregiverId", "ChildId");
-
-                    b.HasIndex("ChildId");
-
-                    b.ToTable("CaregiverChildren");
-                });
-
             modelBuilder.Entity("BulbasaurAPI.Models.Chat", b =>
                 {
                     b.Property<int>("Id")
@@ -297,7 +282,7 @@ namespace BulbasaurAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int?>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
@@ -311,6 +296,21 @@ namespace BulbasaurAPI.Migrations
                     b.HasIndex("PersonId");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("CaregiverChild", b =>
+                {
+                    b.Property<int>("CaregiversId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChildrenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CaregiversId", "ChildrenId");
+
+                    b.HasIndex("ChildrenId");
+
+                    b.ToTable("CaregiverChild");
                 });
 
             modelBuilder.Entity("GroupPerson", b =>
@@ -365,25 +365,6 @@ namespace BulbasaurAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BulbasaurAPI.Models.CaregiverChild", b =>
-                {
-                    b.HasOne("BulbasaurAPI.Models.Caregiver", "Caregiver")
-                        .WithMany("CaregiverChildren")
-                        .HasForeignKey("CaregiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BulbasaurAPI.Models.Child", "Child")
-                        .WithMany("CaregiverChildren")
-                        .HasForeignKey("ChildId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Caregiver");
-
-                    b.Navigation("Child");
                 });
 
             modelBuilder.Entity("BulbasaurAPI.Models.ChatItem", b =>
@@ -444,11 +425,24 @@ namespace BulbasaurAPI.Migrations
 
                     b.HasOne("BulbasaurAPI.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId")
+                        .HasForeignKey("PersonId");
+
+                    b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("CaregiverChild", b =>
+                {
+                    b.HasOne("BulbasaurAPI.Models.Caregiver", null)
+                        .WithMany()
+                        .HasForeignKey("CaregiversId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Person");
+                    b.HasOne("BulbasaurAPI.Models.Child", null)
+                        .WithMany()
+                        .HasForeignKey("ChildrenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GroupPerson", b =>
@@ -503,16 +497,6 @@ namespace BulbasaurAPI.Migrations
             modelBuilder.Entity("BulbasaurAPI.Models.Document", b =>
                 {
                     b.Navigation("EligableList");
-                });
-
-            modelBuilder.Entity("BulbasaurAPI.Models.Caregiver", b =>
-                {
-                    b.Navigation("CaregiverChildren");
-                });
-
-            modelBuilder.Entity("BulbasaurAPI.Models.Child", b =>
-                {
-                    b.Navigation("CaregiverChildren");
                 });
 #pragma warning restore 612, 618
         }

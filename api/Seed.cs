@@ -38,6 +38,7 @@ namespace BulbasaurAPI
                 };
                 _context.AddRange(roles);
                 _context.SaveChanges();
+
                 var children = new List<Child>()
                 {
                     new Child()
@@ -52,12 +53,13 @@ namespace BulbasaurAPI
 
                         Groups = new List<Models.Group>(),
                         
-                        CaregiverChildren = new List<CaregiverChild>()
+                        Caregivers = new List<Caregiver>()
                         {
-                            new CaregiverChild()
-                            {
-                                Caregiver = new Caregiver() { FirstName = "Mike", LastName = "Gullmarsson", HomeAddress = "Larsgatan 1", PhoneNumber = 070234412, EmailAddress = "Pappasemial@gmail.com", SSN = 840910 }
-                            }
+                           new Caregiver() { FirstName = "Mike", LastName = "Gullmarsson", HomeAddress = "Larsgatan 1", PhoneNumber = 070234412, EmailAddress = "Pappasemial@gmail.com", SSN = 840910,
+
+                                            Role = _context.Roles.Where(x => x.Name == "parent")
+                                                .FirstOrDefault()
+                                           ,}
                         }
                     },
                     new Child()
@@ -68,19 +70,13 @@ namespace BulbasaurAPI
                         PhoneNumber = 07312314,
                         EmailAddress = "kalleanka@gmail.com",
                         SSN = 21104204,
-                        
-                        
+                        Role = _context.Roles.Where(x => x.Name == "child").FirstOrDefault(),
 
-                        CaregiverChildren = new List<CaregiverChild>()
+                        Caregivers = new List<Caregiver>()
                         {
-                            new CaregiverChild()
-                            {
-                                Caregiver = new Caregiver() { FirstName = "Kalle", LastName = "Anka", HomeAddress = "Ankeborg 19", PhoneNumber = 07312314, EmailAddress = "mimmianka@gmail.com", SSN = 790711 }
-                            },
-                            new CaregiverChild()
-                            {
-                                Caregiver = new Caregiver() { FirstName = "Mimmi", LastName = "Anka", HomeAddress = "Ankeborg 19", PhoneNumber = 07321311, EmailAddress = "mimmianka@gmail.com", SSN = 780811}
-                            }
+                               new Caregiver() { FirstName = "Kalle", LastName = "Anka", HomeAddress = "Ankeborg 19", PhoneNumber = 07312314, EmailAddress = "mimmianka@gmail.com", SSN = 790711 },
+                            
+                               new Caregiver() { FirstName = "Mimmi", LastName = "Anka", HomeAddress = "Ankeborg 19", PhoneNumber = 07321311, EmailAddress = "mimmianka@gmail.com", SSN = 780811 }   
                         }  
                     }
                     
@@ -106,8 +102,8 @@ namespace BulbasaurAPI
                         HomeAddress = "Knapegatan 11",
                         Employment = "Teacher",
                         FullTimeEmployment = true,
-
-                        
+                        Role = _context.Roles.Where(x => x.Name == "teacher")
+                                                .FirstOrDefault()
                     },
                     new Personell()
                     {

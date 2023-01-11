@@ -12,7 +12,7 @@ namespace BulbasaurAPI.Models
 
         public string Password { get; set; }
 
-        public Person Person { get; set; }
+        public Person? Person { get; set; }
 
         public UserAccessLevel AccessLevel { get; set; }
     }

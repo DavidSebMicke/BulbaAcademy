@@ -23,7 +23,10 @@ namespace BulbasaurAPI.Controllers
         public async Task<IActionResult> Get()
         {
             var result = await _context.Caregivers
-                
+                .Include(x => x.Children).ThenInclude(z => z.Role)
+                .Include(x => x.Children).ThenInclude(z => z.Groups)
+                .Include(x => x.Role)
+                .Include(x => x.Groups)
                 .ToListAsync();
             return Ok(result);
         }

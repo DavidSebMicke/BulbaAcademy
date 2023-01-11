@@ -27,8 +27,6 @@ namespace BulbasaurAPI
         public virtual DbSet<Child> Children { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
 
-        public virtual DbSet<CaregiverChild> CaregiverChildren { get; set; }
-
         //public virtual DbSet<GroupPerson> GroupPersons { get; set; }
 
         public virtual DbSet<Personell> Personells { get; set; }
@@ -77,16 +75,16 @@ namespace BulbasaurAPI
 
             
 
-            modelBuilder.Entity<CaregiverChild>()
-                .HasKey(cg => new { cg.CaregiverId, cg.ChildId });
-            modelBuilder.Entity<CaregiverChild>()
-                .HasOne(c => c.Caregiver)
-                .WithMany(c => c.CaregiverChildren)
-                .HasForeignKey(c => c.CaregiverId);
-            modelBuilder.Entity<CaregiverChild>()
-                .HasOne(c => c.Child)
-                .WithMany(c => c.CaregiverChildren)
-                .HasForeignKey(c => c.ChildId);
+            //modelBuilder.Entity<CaregiverChild>()
+            //    .HasKey(cg => new { cg.CaregiverId, cg.ChildId });
+            //modelBuilder.Entity<CaregiverChild>()
+            //    .HasOne(c => c.Caregiver)
+            //    .WithMany(c => c.CaregiverChildren)
+            //    .HasForeignKey(c => c.CaregiverId);
+            //modelBuilder.Entity<CaregiverChild>()
+            //    .HasOne(c => c.Child)
+            //    .WithMany(c => c.CaregiverChildren)
+            //    .HasForeignKey(c => c.ChildId);
 
             //modelBuilder.Entity<GroupPerson>()
             //    .HasKey(cg => new { cg.GroupId, cg.PersonId });

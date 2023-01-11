@@ -184,7 +184,7 @@ namespace BulbasaurAPI.Migrations
                     GUID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PersonId = table.Column<int>(type: "int", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: true),
                     AccessLevel = table.Column<int>(type: "int", nullable: false),
                     ChatId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -200,29 +200,28 @@ namespace BulbasaurAPI.Migrations
                         name: "FK_Users_Persons_PersonId",
                         column: x => x.PersonId,
                         principalTable: "Persons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "CaregiverChildren",
+                name: "CaregiverChild",
                 columns: table => new
                 {
-                    CaregiverId = table.Column<int>(type: "int", nullable: false),
-                    ChildId = table.Column<int>(type: "int", nullable: false)
+                    CaregiversId = table.Column<int>(type: "int", nullable: false),
+                    ChildrenId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CaregiverChildren", x => new { x.CaregiverId, x.ChildId });
+                    table.PrimaryKey("PK_CaregiverChild", x => new { x.CaregiversId, x.ChildrenId });
                     table.ForeignKey(
-                        name: "FK_CaregiverChildren_Caregivers_CaregiverId",
-                        column: x => x.CaregiverId,
+                        name: "FK_CaregiverChild_Caregivers_CaregiversId",
+                        column: x => x.CaregiversId,
                         principalTable: "Caregivers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CaregiverChildren_Children_ChildId",
-                        column: x => x.ChildId,
+                        name: "FK_CaregiverChild_Children_ChildrenId",
+                        column: x => x.ChildrenId,
                         principalTable: "Children",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -328,9 +327,9 @@ namespace BulbasaurAPI.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CaregiverChildren_ChildId",
-                table: "CaregiverChildren",
-                column: "ChildId");
+                name: "IX_CaregiverChild_ChildrenId",
+                table: "CaregiverChild",
+                column: "ChildrenId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatItems_AuthorId",
@@ -384,7 +383,7 @@ namespace BulbasaurAPI.Migrations
                 name: "AccessTokens");
 
             migrationBuilder.DropTable(
-                name: "CaregiverChildren");
+                name: "CaregiverChild");
 
             migrationBuilder.DropTable(
                 name: "ChatItems");
