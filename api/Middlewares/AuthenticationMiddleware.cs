@@ -18,7 +18,7 @@ namespace BulbasaurAPI.Middlewares
         {
             var path = context.Request.Path;
 
-            if (context.Request.Path == "/api/login" || context.Request.Path == "/api/createUser")
+            if (context.Request.Path == "/api/Authentication/login" || context.Request.Path == "/api/Authentication/createUser")
             {
                 await _next(context);
                 return;

@@ -6,13 +6,10 @@ namespace BulbasaurAPI.Models
     public class TwoFToken : Token
     {
 
-        public TwoFToken(int maximumIdleMinutes = 2, int maximumSessionMinutes = 2)
-        {
-            MaximumIdleMinutes = maximumIdleMinutes;
+        [NotMapped]
+        public static int MaximumIdleMinutes { get; set; } = 2;
 
-            MaximumSessionMinutes = maximumSessionMinutes;
-        }
-
-
+        [NotMapped]
+        public static int MaximumSessionMinutes { get; set; } = 2;
     }
 }

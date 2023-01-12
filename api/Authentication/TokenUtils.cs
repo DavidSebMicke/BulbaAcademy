@@ -39,6 +39,8 @@ namespace BulbasaurAPI.Authentication
                     IssuedDateTime = DateTime.Now,
                     LastUsedDateTime = DateTime.Now,
                 });
+
+                await db.SaveChangesAsync();
             }
             catch
             {

@@ -6,14 +6,10 @@ namespace BulbasaurAPI.Models
     public class AccessToken : Token
     {
 
+        [NotMapped]
+        public static int MaximumIdleMinutes { get; set; } = 60;
 
-        public AccessToken()
-        {
-            MaximumIdleMinutes = 60;
-
-            MaximumSessionMinutes = 120;
-        }
-
-
+        [NotMapped]
+        public static int MaximumSessionMinutes { get; set; } = 120;
     }
 }

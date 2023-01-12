@@ -20,10 +20,6 @@ namespace BulbasaurAPI.Models
 
 
 
-        [NotMapped]
-        public static int MaximumIdleMinutes { get; set; }
 
-        [NotMapped]
-        public static int MaximumSessionMinutes { get; set; }
     }
 }

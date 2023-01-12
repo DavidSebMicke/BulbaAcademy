@@ -1,9 +1,12 @@
 ﻿using BulbasaurAPI.Authentication;
+using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -32,9 +35,10 @@ namespace BulbasaurAPI.Controllers
 
 
                 if (Hasher.Verify(givenPassword, user.Password))
-                {
+                { 
+                    return await TokenUtils.GenerateToken(user, HttpHelper.GetIpAddress(HttpContext));
 
-                    return "hej";//TokenUtils.GenerateToken(user, )
+
                 }
                 else return BadRequest("Wrong password");
             }
