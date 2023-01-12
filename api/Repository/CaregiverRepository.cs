@@ -19,14 +19,14 @@ namespace BulbasaurAPI.Repository
 
 
 
-            var caregiverChild = new CaregiverChild()
-            {
-                Caregiver = caregiver,
-                Child = ChildEntity,
-            };
+            //var caregiverChild = new CaregiverChild()
+            //{
+            //    Caregiver = caregiver,
+            //    Child = ChildEntity,
+            //};
 
-            _context.Add(caregiverChild);
-            _context.Add(caregiver);
+            //_context.Add(caregiverChild);
+            //_context.Add(caregiver);
 
             return Save();
 
