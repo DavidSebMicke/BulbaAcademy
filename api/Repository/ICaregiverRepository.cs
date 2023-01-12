@@ -6,10 +6,14 @@ namespace BulbasaurAPI.Repository
     {
         ICollection<Caregiver> GetAllCaregivers();
 
-        Caregiver GetCaregiverForChild();
+        Caregiver GetCaregiverById(int id);
 
-        Caregiver GetCaregiverById();
 
-       
+
+        bool Save();
+
+        bool CreateCaregiver(int childId, Caregiver caregiver);
+
+
     }
 }

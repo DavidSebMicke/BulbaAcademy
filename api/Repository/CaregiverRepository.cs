@@ -1,5 +1,4 @@
 ﻿using BulbasaurAPI.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Repository
 {
@@ -14,25 +13,47 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
+        public bool CreateCaregiver(int childId, Caregiver caregiver)
+        {
+            var ChildEntity = _context.Children.Where(a => a.Id == childId).FirstOrDefault();
+
+
+
+            var caregiverChild = new CaregiverChild()
+            {
+                Caregiver = caregiver,
+                Child = ChildEntity,
+            };
+
+            _context.Add(caregiverChild);
+            _context.Add(caregiver);
+
+            return Save();
+
+        }
+
+
         public ICollection<Caregiver> GetAllCaregivers()
         {
-            using(var context = _context)
-            {
-                var all = context.Caregivers.ToList();
-                return all;
-            }
-           
+            return _context.Caregivers.ToList();
         }
 
-        public Caregiver GetCaregiverById()
+        public Caregiver GetCaregiverById(int id)
         {
-            throw new NotImplementedException();
+
+            return _context.Caregivers.FirstOrDefault(x => x.Id == id);
         }
 
-        public Caregiver GetCaregiverForChild()
+
+
+
+
+        public bool Save()
         {
-            throw new NotImplementedException();
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
+
+
     }
 }
-

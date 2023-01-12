@@ -1,8 +1,6 @@
 ﻿using BulbasaurAPI.Models;
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
 
 namespace BulbasaurAPI
 {
@@ -12,10 +10,11 @@ namespace BulbasaurAPI
 
         public DbServerContext(IConfiguration configuration)
         {
-            Configuration = configuration;           
+            Configuration = configuration;
         }
 
-        
+        public DbServerContext()
+        { }
 
         //public DbServerContext(IConfiguration configuration)
         //{
@@ -26,16 +25,22 @@ namespace BulbasaurAPI
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<Caregiver> Caregivers { get; set; }
         public virtual DbSet<Child> Children { get; set; }
-        public virtual DbSet<Personell> Personells { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
+
+        public virtual DbSet<CaregiverChild> CaregiverChildren { get; set; }
+
+        public virtual DbSet<GroupPerson> GroupPersons { get; set; }
+
+        public virtual DbSet<Personell> Personells { get; set; }
+
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<ChatItem> ChatItems { get; set; }
-        public virtual DbSet<Document> Documents { get; set; } 
+        public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<Logging> Loggs { get; set; }
         public virtual DbSet<LogInInformation> LogInInformations { get; set; }
         public virtual DbSet<TOTP> TOTPs { get; set; }
         public virtual DbSet<User> Users { get; set; }
-
+        public virtual DbSet<AccessToken> AccessTokens { get; set; }
 
         //public void ConfigureServices(IServiceCollection services)
         //{
@@ -43,19 +48,15 @@ namespace BulbasaurAPI
         //}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
             var connString = DotEnv.Read()["_connString"];
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(connString);
-                               
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
-
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<Person>().ToTable("Persons");
             modelBuilder.Entity<Caregiver>().ToTable("Caregivers");
@@ -69,8 +70,29 @@ namespace BulbasaurAPI
             modelBuilder.Entity<TOTP>().ToTable("TOTPs");
             modelBuilder.Entity<Logging>().ToTable("Loggings");
             modelBuilder.Entity<LogInInformation>().ToTable("LogInInformations");
-        }
+            modelBuilder.Entity<AccessToken>().ToTable("AccessTokens");
 
-        
+            modelBuilder.Entity<CaregiverChild>()
+                .HasKey(cg => new { cg.CaregiverId, cg.ChildId });
+            modelBuilder.Entity<CaregiverChild>()
+                .HasOne(c => c.Caregiver)
+                .WithMany(c => c.CaregiverChildren)
+                .HasForeignKey(c => c.CaregiverId);
+            modelBuilder.Entity<CaregiverChild>()
+                .HasOne(c => c.Child)
+                .WithMany(c => c.CaregiverChildren)
+                .HasForeignKey(c => c.ChildId);
+
+            modelBuilder.Entity<GroupPerson>()
+                .HasKey(cg => new { cg.GroupId, cg.PersonId });
+            modelBuilder.Entity<GroupPerson>()
+                .HasOne(c => c.Group)
+                .WithMany(c => c.GroupPersons)
+                .HasForeignKey(c => c.GroupId);
+            modelBuilder.Entity<GroupPerson>()
+                .HasOne(c => c.Person)
+                .WithMany(c => c.GroupPersons)
+                .HasForeignKey(c => c.PersonId);
+        }
     }
 }
