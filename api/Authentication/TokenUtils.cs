@@ -31,9 +31,9 @@ namespace BulbasaurAPI.Authentication
             using var db = new DbServerContext();
             try
             {
-                await db.AccessTokens.AddAsync(new AccessToken
+                await db.AccessTokens.AddAsync(new AccessToken()
                 {
-                    Token = accessToken,
+                    TokenStr = accessToken,
                     IpAddress = ipAddress,
                     User = user,
                     IssuedDateTime = DateTime.Now,
@@ -80,7 +80,7 @@ namespace BulbasaurAPI.Authentication
                 var userGUID = Guid.Parse(jwtToken.Claims.First(c => c.Type == "guid").Value);
 
                 // Access token authentication through backend
-                dbToken = await db.AccessTokens.Include(a => a.User).FirstAsync(t => t.Token == Hasher.Hash(accessToken));
+                dbToken = await db.AccessTokens.Include(a => a.User).FirstAsync(t => t.TokenStr == Hasher.Hash(accessToken));
             }
             catch
             {

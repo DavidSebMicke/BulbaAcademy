@@ -1,4 +1,5 @@
 ﻿using BulbasaurAPI.Authentication;
+using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
 using System.Net;
 
@@ -17,16 +18,17 @@ namespace BulbasaurAPI.Middlewares
         {
             var path = context.Request.Path;
 
-            if (context.Request.Path == "/api/login")
+            if (context.Request.Path == "/api/login" || context.Request.Path == "/api/createUser")
             {
                 await _next(context);
                 return;
             }
 
+
             try
             {
                 var authorizationHeader = context.Request.Headers.Authorization;
-                var ipAddress = GetIpAddress(context);
+                var ipAddress = HttpHelper.GetIpAddress(context);
 
                 if (string.IsNullOrEmpty(authorizationHeader) || string.IsNullOrEmpty(ipAddress))
                 {
@@ -58,14 +60,6 @@ namespace BulbasaurAPI.Middlewares
             }
         }
 
-        // Get IP address
-        private string GetIpAddress(HttpContext context)
-        {
-            if (context.Request.Headers.ContainsKey("X-Forwarded-For"))
-                return context.Request.Headers["X-Forwarded-For"];
-            else
-                return context.Connection.RemoteIpAddress.MapToIPv4().ToString();
-        }
 
         //Returns errormessage for invalid access token
         private async Task ReturnErrorResponse(HttpContext context)
