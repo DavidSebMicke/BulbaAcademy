@@ -39,6 +39,7 @@ namespace BulbasaurAPI
         public virtual DbSet<TOTP> TOTPs { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<AccessToken> AccessTokens { get; set; }
+        public virtual DbSet<TwoFToken> TwoFTokens { get; set; }
 
         //public void ConfigureServices(IServiceCollection services)
         //{
@@ -72,8 +73,8 @@ namespace BulbasaurAPI
             modelBuilder.Entity<Logging>().ToTable("Loggings");
             modelBuilder.Entity<LogInInformation>().ToTable("LogInInformations");
             modelBuilder.Entity<AccessToken>().ToTable("AccessTokens");
+            modelBuilder.Entity<TwoFToken>().ToTable("TwoFToken");
 
-            
 
             //modelBuilder.Entity<CaregiverChild>()
             //    .HasKey(cg => new { cg.CaregiverId, cg.ChildId });

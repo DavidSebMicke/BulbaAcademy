@@ -12,7 +12,7 @@ namespace BulbasaurAPI.Authentication
     public class TokenUtils
     {
         // Generate an access token, unique for each user and for each time it is issued
-        public static async Task<string> GenerateToken(User user, string ipAddress)
+        public static async Task<string> GenerateAccessToken(User user, string ipAddress)
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -31,14 +31,15 @@ namespace BulbasaurAPI.Authentication
             using var db = new DbServerContext();
             try
             {
-                await db.AccessTokens.AddAsync(new AccessToken
+                await db.AccessTokens.AddAsync(new AccessToken()
                 {
-                    Token = accessToken,
+                    TokenStr = accessToken,
                     IpAddress = ipAddress,
                     User = user,
                     IssuedDateTime = DateTime.Now,
                     LastUsedDateTime = DateTime.Now,
                 });
+
             }
             catch
             {
@@ -47,6 +48,49 @@ namespace BulbasaurAPI.Authentication
 
             return accessToken;
         }
+
+        // Generate an Two F token, unique for each user and for each time it is issued
+        public static async Task<string> GenerateTwoFToken(User user, string ipAddress)
+        {
+            // Generate token through JwtSecurityTokenHandler
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("guid", user.GUID.ToString()), new Claim("identifier", GetRandomIdentifier()) }),
+                Expires = DateTime.UtcNow.AddMinutes(TwoFToken.MaximumSessionMinutes),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            string twoFToken = tokenHandler.WriteToken(token);
+
+            using var db = new DbServerContext();
+            try
+            {
+                await db.TwoFTokens.AddAsync(new TwoFToken()
+                {
+                    TokenStr = twoFToken,
+                    IpAddress = ipAddress,
+                    User = user,
+                    IssuedDateTime = DateTime.Now,
+                    LastUsedDateTime = DateTime.Now,
+                });
+
+                
+            }
+            catch
+            {
+                return "";
+            }
+
+            return twoFToken;
+        }
+
+
+
+
 
         // Gets a random token identifier
         private static string GetRandomIdentifier()
@@ -80,7 +124,7 @@ namespace BulbasaurAPI.Authentication
                 var userGUID = Guid.Parse(jwtToken.Claims.First(c => c.Type == "guid").Value);
 
                 // Access token authentication through backend
-                dbToken = await db.AccessTokens.Include(a => a.User).FirstAsync(t => t.Token == Hasher.Hash(accessToken));
+                dbToken = await db.AccessTokens.Include(a => a.User).FirstAsync(t => t.TokenStr == Hasher.Hash(accessToken));
             }
             catch
             {
