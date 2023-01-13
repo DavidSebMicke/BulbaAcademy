@@ -12,7 +12,7 @@ export function containsNumbers (str){
 };
 
 export function containsSpecialChars (str){    
-    return /([\!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])/.test(str);
+    return /([!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])/.test(str);
 };
 
 export function lengthAtLeast (str, min){    
