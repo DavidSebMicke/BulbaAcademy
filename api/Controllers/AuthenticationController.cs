@@ -36,7 +36,7 @@ namespace BulbasaurAPI.Controllers
 
                 if (Hasher.Verify(givenPassword, user.Password))
                 { 
-                    return await TokenUtils.GenerateToken(user, HttpHelper.GetIpAddress(HttpContext));
+                    return await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext));
 
 
                 }
