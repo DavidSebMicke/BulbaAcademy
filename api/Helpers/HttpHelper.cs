@@ -2,7 +2,6 @@
 {
     public class HttpHelper
     {
-
         // Get IP address
         public static string GetIpAddress(HttpContext context)
         {
@@ -11,6 +10,5 @@
             else
                 return context.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
-
     }
 }

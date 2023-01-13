@@ -1,12 +1,8 @@
 ﻿using BulbasaurAPI.Authentication;
 using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
-using BulbasaurAPI.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Text.Json.Serialization;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -14,7 +10,6 @@ namespace BulbasaurAPI.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-
         private readonly DbServerContext _context;
 
         public AuthenticationController(DbServerContext context)
@@ -25,31 +20,22 @@ namespace BulbasaurAPI.Controllers
         [HttpGet("login")]
         public async Task<ActionResult<string>> Login(string givenEmail, string givenPassword)
         {
-
             var user = await _context.Users.Where(x => x.Username == givenEmail).FirstOrDefaultAsync();
 
             if (user == null) return BadRequest("User not found.");
-
             else
             {
-
-
                 if (Hasher.Verify(givenPassword, user.Password))
-                { 
+                {
                     return await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext));
-
-
                 }
                 else return BadRequest("Wrong password");
             }
-
         }
-
 
         [HttpPost("createUser")]
         public async Task<ActionResult<User>> CreateUser(string email, string password)
         {
-
             User newUser = new User()
             {
                 Username = email,
@@ -57,8 +43,8 @@ namespace BulbasaurAPI.Controllers
                 AccessLevel = Authorization.UserAccessLevel.ADMIN
             };
 
-            if(await _context.Users.AnyAsync(u => u.Username == email)){
-
+            if (await _context.Users.AnyAsync(u => u.Username == email))
+            {
                 return BadRequest("User already axists");
             }
             else
@@ -67,7 +53,6 @@ namespace BulbasaurAPI.Controllers
                 await _context.SaveChangesAsync();
                 return newUser;
             }
-
         }
     }
 }

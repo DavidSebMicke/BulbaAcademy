@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BulbasaurAPI.Models
 {
@@ -17,9 +16,5 @@ namespace BulbasaurAPI.Models
         public User User { get; set; }
         public DateTime IssuedDateTime { get; set; }
         public DateTime LastUsedDateTime { get; set; }
-
-
-
-
     }
 }
