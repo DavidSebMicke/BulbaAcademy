@@ -1,6 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { svelte } from '@sveltejs/vite-plugin-svelte'
-import path from 'path'
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import path from 'path';
 
 /** @type {import('vite').UserConfig} */
 const config = {
