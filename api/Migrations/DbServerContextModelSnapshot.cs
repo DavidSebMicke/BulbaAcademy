@@ -295,7 +295,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TwoFToken", (string)null);
+                    b.ToTable("TwoFTokens", (string)null);
                 });
 
             modelBuilder.Entity("BulbasaurAPI.Models.User", b =>

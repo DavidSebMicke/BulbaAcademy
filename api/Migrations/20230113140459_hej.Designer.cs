@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    [Migration("20230112224524_twoftokens")]
-    partial class twoftokens
+    [Migration("20230113140459_hej")]
+    partial class hej
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -297,7 +297,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TwoFToken", (string)null);
+                    b.ToTable("TwoFTokens", (string)null);
                 });
 
             modelBuilder.Entity("BulbasaurAPI.Models.User", b =>
