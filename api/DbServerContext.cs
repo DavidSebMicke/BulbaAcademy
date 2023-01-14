@@ -73,7 +73,7 @@ namespace BulbasaurAPI
             modelBuilder.Entity<Logging>().ToTable("Loggings");
             modelBuilder.Entity<LogInInformation>().ToTable("LogInInformations");
             modelBuilder.Entity<AccessToken>().ToTable("AccessTokens");
-            modelBuilder.Entity<TwoFToken>().ToTable("TwoFToken");
+            modelBuilder.Entity<TwoFToken>().ToTable("TwoFTokens");
 
 
             //modelBuilder.Entity<CaregiverChild>()
