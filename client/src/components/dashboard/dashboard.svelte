@@ -24,19 +24,19 @@
 		</button>
 		<ul>
 			<!-- <li>Bulba Academy</li> -->
-			<!-- <li>
+			<li>
 				<a href="/mainPage"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/mainPage">Startsida</a
+						href="/loginPage">Login sidan</a
 					>{/if}
-			</li> -->
+			</li>
 			<li>
 				<a href="/"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/">Startsida</a
+						href="/mainPage">Startsida</a
 					>{/if}
 			</li>
 			<li>
