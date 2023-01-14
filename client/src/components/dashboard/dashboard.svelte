@@ -28,7 +28,7 @@
 				<a href="/mainPage"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/loginPage">Login sidan</a
+						href="/mainPage">Startsida</a
 					>{/if}
 			</li>
 			<li>
@@ -36,7 +36,7 @@
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/mainPage">Startsida</a
+						href="/profile">Profil</a
 					>{/if}
 			</li>
 			<li>
@@ -77,7 +77,6 @@
 	.text {
 		margin-right: 2px;
 		margin-left: 2px;
-		color: aqua;
 	}
 
 	a {
