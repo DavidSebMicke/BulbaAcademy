@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    [Migration("20230113140459_hej")]
-    partial class hej
+    [Migration("20230116081248_no-limit-token-length")]
+    partial class nolimittokenlength
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,8 +45,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("TokenStr")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -287,8 +286,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("TokenStr")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
