@@ -1,36 +1,101 @@
 <script>
-	export const prerender = false;
+	let teachers = [
+		{ id: 'https://thispersondoesnotexist.com/image', name: ' Hasse' },
+		{ id: 'https://thispersondoesnotexist.com/image', name: ' Lasse' },
+		{ id: 'https://thispersondoesnotexist.com/image', name: ' Karen' },
+		{ id: 'https://thispersondoesnotexist.com/image', name: ' Brollan' },
+		{ id: 'https://thispersondoesnotexist.com/image', name: ' Birgit' },
+		{ id: 'https://thispersondoesnotexist.com/image', name: ' Bosse' }
+	];
 </script>
 
-<p>
-	Aesthetic tacos jean shorts waistcoat. Sartorial photo booth messenger bag +1, adaptogen craft
-	beer hella YOLO beard PBR&B tumblr. Humblebrag art party cliche venmo wolf raclette pug. Taiyaki
-	dreamcatcher letterpress, asymmetrical af chartreuse cray flexitarian ennui prism XOXO. IPhone
-	pickled asymmetrical venmo bitters. Taiyaki ennui vibecession, yuccie offal slow-carb
-	thundercats big mood organic activated charcoal single-origin coffee kombucha praxis. La croix
-	drinking vinegar copper mug ugh offal aesthetic small batch, iPhone chicharrones taxidermy.
-	Tilde farm-to-table normcore shabby chic hella paleo gastropub glossier shaman try-hard flannel
-	art party marfa. Semiotics tacos tote bag, offal vexillologist occupy mlkshk everyday carry
-	praxis franzen typewriter celiac cliche. Vinyl same brunch, humblebrag williamsburg bicycle
-	rights gastropub vegan pabst prism offal. Kombucha shabby chic intelligentsia twee unicorn, next
-	level thundercats health goth. Cred next level migas cornhole chillwave gatekeep. Gentrify
-	selvage semiotics wolf cred, chicharrones 8-bit edison bulb taxidermy banjo craft beer
-	succulents asymmetrical. Poke knausgaard squid sriracha, beard selfies Brooklyn sus +1 hoodie
-	mixtape. Hashtag chartreuse stumptown woke. Godard polaroid fashion axe scenester organic 3 wolf
-	moon, vinyl wayfarers vexillologist retro. Craft beer keytar crucifix normcore pinterest before
-	they sold out narwhal. XOXO live-edge marfa pop-up keytar. Tacos chartreuse wayfarers
-	williamsburg cray, chia chicharrones bicycle rights scenester cliche YOLO salvia keytar cred.
-	Lo-fi iceland pabst master cleanse. Hell of viral twee snackwave street art blog retro palo
-	santo scenester enamel pin master cleanse pop-up. Artisan gentrify meh lyft kale chips franzen
-	disrupt normcore tonx big mood subway tile man bun. Woke bushwick williamsburg, knausgaard
-	literally +1 chartreuse palo santo jean shorts. +1 pork belly cliche kinfolk man bun blog pop-up
-	aesthetic praxis. Try-hard trust fund ascot truffaut wolf lo-fi. Small batch fanny pack crucifix
-	mlkshk DIY 90's tbh salvia chia irony fixie organic polaroid cred messenger bag. Hashtag master
-	cleanse tilde, farm-to-table mukbang pop-up plaid. Cardigan austin offal, kickstarter lo-fi XOXO
-	direct trade truffaut PBR&B. Offal ennui big mood hot chicken. Tacos narwhal photo booth vice,
-	migas literally health goth. Actually meggings cronut whatever pinterest, blue bottle kinfolk
-	disrupt. Dummy text? More like dummy thicc text, amirite?
-</p>
+<div class="profileCardContainer">
+	<div class="profileCard">
+		{#each teachers as { id, name }}
+			<li>
+				<img src={id} alt="Could not load" />
+				<div class="overlay">
+					<span class="teacherName">{name} </span>
+					<div class="teacherInfo">
+						I'm the best teacher and the teachers are the best, so i'm the very best of
+						the best teachersdsadsadsadsadsadasdsa
+					</div>
+				</div>
+			</li>
+		{/each}
+	</div>
+</div>
 
 <style lang="less">
+	.profileCardContainer {
+		margin: 2rem;
+	}
+	.profileCard {
+		padding: 0.2em;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 2em;
+		box-shadow: 10px 5px 3px #12343b;
+	}
+	.profileCard > li {
+		padding: 0.2em;
+		list-style: none;
+		flex-basis: 350px;
+		border: 2px solid black;
+		outline: 2px solid white;
+		outline-offset: -0.3em;
+		position: relative;
+		box-shadow: 10px 12px 10px #12343b;
+		cursor: pointer;
+	} //#e4decd
+	.profileCard > li img {
+		box-sizing: border-box;
+		padding: 0.2em;
+		object-fit: cover;
+		max-width: 100%;
+		height: auto;
+		vertical-align: middle;
+		border-radius: none;
+	}
+	.profileCard::after {
+		content: '';
+		flex-basis: 350px;
+	}
+	.overlay {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background: rgba(20, 20, 20, 0.502);
+		top: 0;
+		left: 0;
+		box-sizing: border-box;
+		padding: 1rem;
+		transform: scale(0);
+		transition: all 0.5s 0.1s ease-in-out;
+		color: #fff;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.profileCard li:hover .overlay {
+		transform: scale(1);
+	}
+	.teacherName {
+		font-weight: 600;
+		position: absolute;
+		top: 2em;
+		text-transform: uppercase;
+	}
+	.teacherInfo {
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		display: flex;
+		overflow: hidden;
+		color: black;
+		background-color: white;
+		width: fit-content;
+		height: fit-content;
+	}
 </style>

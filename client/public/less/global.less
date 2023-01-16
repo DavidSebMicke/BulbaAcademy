@@ -1,10 +1,4 @@
-// .test {
-// 	color: black;
-// 	background-color: green;
-// 	font-weight: 300;
-// 	font-size: larger;
-// 	border: 2px solid black;
-// }
+@import '/public/less/variables.less';
 
 * {
 	box-sizing: border-box;
@@ -15,25 +9,23 @@ a {
 	text-decoration: none;
 	text-align: left;
 	font-size: 20px;
-	justify-content: space-around;	
+	justify-content: space-around;
 	gap: 24px;
 }
 
-:root{
+:root {
 	@light-mode-text: hsl(100, 40%, 10%);
 	@light-mode-background: hsl(75, 40%, 70%);
 	@light-mode-flavour1: hsl(50, 40%, 65%);
 	@light-mode-flavour2: hsl(25, 40%, 60%);
 }
 
-div{
+div {
 	background-color: @dark-mode-background;
 	color: @dark-mode-text;
 }
 
-
-
-body{
+body {
 	background-color: @dark-mode-background;
 	color: @dark-mode-text;
 }
