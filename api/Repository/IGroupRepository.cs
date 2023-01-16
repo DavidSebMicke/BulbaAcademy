@@ -8,6 +8,9 @@ namespace BulbasaurAPI.Repository
 
         Task<Group> GetGroupByIdAsync(int id);
 
+        Task<IEnumerable<Group>> GetGroupsByPersonId(int id);
+
+
         Task<IEnumerable<Group>> GetAllGroupsAsync();   
 
         Task<Group> CreateGroupAsync();
