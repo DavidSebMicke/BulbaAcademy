@@ -29,6 +29,8 @@
 	"type": "module",
 	"dependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.50",
-		"axios": "^1.2.1"
+		"axios": "^1.2.1",
+		"dayjs": "^1.11.7",
+		"iconify-icon": "^1.0.2"
 	}
 }
