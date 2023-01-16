@@ -16,7 +16,7 @@ namespace BulbasaurAPI.Controllers
         {
             _context = context;
         }
-
+        
         [HttpGet("login")]
         public async Task<ActionResult<string>> Login(string givenEmail, string givenPassword)
         {
@@ -25,6 +25,7 @@ namespace BulbasaurAPI.Controllers
             if (user == null) return BadRequest("User not found.");
             else
             {
+
                 if (Hasher.Verify(givenPassword, user.Password))
                 {
                     return await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext), _context);
@@ -36,6 +37,9 @@ namespace BulbasaurAPI.Controllers
         [HttpPost("createUser")]
         public async Task<ActionResult<User>> CreateUser(string email, string password)
         {
+            if(!InputValidator.ValidateEmailFormat(email)) return BadRequest("Not a valid email");
+            if (!InputValidator.ValidatePasswordFormat(password)) return BadRequest("Not a valid password");
+
             User newUser = new User()
             {
                 Username = email,
@@ -45,7 +49,7 @@ namespace BulbasaurAPI.Controllers
 
             if (await _context.Users.AnyAsync(u => u.Username == email))
             {
-                return BadRequest("User already axists");
+                return BadRequest("User already exists");
             }
             else
             {
