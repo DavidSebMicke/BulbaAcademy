@@ -1,8 +1,9 @@
-<nav class="tempnav">
-	<a href="/loginPage">Login sidan</a>
-	<a href="/about">about</a>
-	<a href="/mainPage">Startsida</a>
-	<a href="/profile">profile</a>
-</nav>
+<script>
+	import Dashboard from '../components/dashboard/dashboard.svelte';
+	import 'iconify-icon';
+	import Dropdown from '../components/dropdown/dropdown.svelte';
+</script>
 
+<Dropdown />
+<Dashboard />
 <slot />
