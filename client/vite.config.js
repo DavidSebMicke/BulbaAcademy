@@ -8,6 +8,7 @@ const config = {
     resolve: {
         alias: {
           $root: path.resolve('./src'),
+          $components: path.resolve("./src/components")
         },
     },
     server: {
@@ -17,7 +18,7 @@ const config = {
 
 
         },
-      },
+      },      
     }
 
 export default config;
