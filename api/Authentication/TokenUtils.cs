@@ -28,7 +28,7 @@ namespace BulbasaurAPI.Authentication
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string accessToken = tokenHandler.WriteToken(token);
 
-            using var db = new DbServerContext();
+            
             try
             {
                 await db.AccessTokens.AddAsync(new AccessToken()
@@ -39,7 +39,7 @@ namespace BulbasaurAPI.Authentication
                     IssuedDateTime = DateTime.Now,
                     LastUsedDateTime = DateTime.Now,
                 });
-
+                await db.SaveChangesAsync();
             }
             catch
             {
