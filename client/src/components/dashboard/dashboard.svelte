@@ -93,7 +93,7 @@
 		justify-content: left;
 		height: 100em;
 		color: currentColor;
-		background-color: purple;
+		background-color: #e1b382;
 		text-decoration: none;
 		float: left;
 		padding: 10px;
