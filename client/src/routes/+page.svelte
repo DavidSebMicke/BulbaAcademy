@@ -1,8 +1,9 @@
 <script>
 	import Calendar from '$components/calendar/calendar.svelte';
+	import 'iconify-icon';
 </script>
 
-<Calendar />
+<!-- <Calendar /> -->
 
 <body>
 	<div>

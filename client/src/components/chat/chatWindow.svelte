@@ -1,6 +1,6 @@
 <script>
 	import { scale } from 'svelte/transition';
-	import { clickOutside } from '../../Utils/ClickOutside';
+	import ClickOutside from '../../Utils/ClickOutside';
 	import ChatList from './windowContent/chatList.svelte';
 	import Chat from './windowContent/chat.svelte';
 
@@ -11,24 +11,26 @@
 	let scaleOptions = {
 		duration: 100
 	};
+
+	// Open new chat clears the active chat
+	const openNewChat = () => {
+		activeChat = {
+			chatId: undefined,
+			users: [],
+			messages: []
+		};
+	};
 </script>
 
-<div
-	class="chatWindow"
-	in:scale={scaleOptions}
-	out:scale={scaleOptions}
-	use:clickOutside
-	on:click_outside={closeChat}
->
+<div class="chatWindow" in:scale={scaleOptions} use:ClickOutside on:click_outside={closeChat}>
 	<div class="chatHeader">
 		<h2>Active Chats</h2>
 		<button on:click={closeChat} class="exitButton">
-			<!-- ICON DOESNT WORK HERE FOR SOME REASON -->
-			<iconify-icon icon="material-symbols:close" width="1.5rem" />
+			<iconify-icon icon="material-symbols:close" width="24" />
 		</button>
 	</div>
 	<div class="mainContainer">
-		<ChatList bind:activeChat />
+		<ChatList bind:activeChat {openNewChat} />
 		<Chat bind:activeChat />
 	</div>
 </div>
@@ -45,12 +47,14 @@
 		height: 25rem;
 
 		border-radius: 1rem;
-		transition: all 0.5s ease;
+		transition: all 0.5s ease-out;
 
 		display: flex;
 		align-items: flex-start;
 		flex-direction: column;
 		overflow: hidden;
+
+		box-shadow: 0 0 3px 1px @light-mode-flavour1;
 	}
 
 	.mainContainer {

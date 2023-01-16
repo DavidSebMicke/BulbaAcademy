@@ -20,25 +20,28 @@
 	@import '../../../public/less/global.less';
 
 	.container {
-		position: absolute;
+		position: fixed;
 		width: fit-content;
 		height: fit-content;
 		max-height: 25rem;
 		bottom: 1.5rem;
 		right: 1.5rem;
-		transition: all 0.5s ease;
+		// Always on top
+		z-index: 999;
+		transition: all 0.5s ease-out;
+		background-color: transparent;
 	}
 
 	.chatBubble {
 		position: relative;
-		background: @secondary-color;
+		background-color: gray;
 		opacity: 0.2;
 		width: 4rem;
 		height: 4rem;
 		border-radius: 50%;
 		border: none;
 		cursor: pointer;
-		transition: all 0.3s ease;
+		transition: all 0.3s ease-out;
 
 		&:hover {
 			opacity: 1;

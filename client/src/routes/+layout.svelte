@@ -1,6 +1,7 @@
 <script>
 	import Dashboard from '../components/dashboard/dashboard.svelte';
 	import ChatBubble from '../components/chat/chatBubble.svelte';
+	import 'iconify-icon';
 </script>
 
 <nav class="tempnav">
@@ -12,6 +13,7 @@
 
 <slot />
 <ChatBubble />
+<button on:click={() => console.log('test')}>Test</button>
 
 <style lang="less">
 	.MpLink {

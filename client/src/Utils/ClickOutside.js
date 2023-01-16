@@ -4,10 +4,10 @@
  *
  * HOW TO USE:
  * add this to your html-tag where you want to catch clicks outside of it:
- * 	use:clickOutside
+ * 	use:ClickOutside
  *	on:click_outside={your callback function goes here}
  */
-export function clickOutside(node) {
+function ClickOutside(node) {
 	const handleClick = (event) => {
 		if (node && !node.contains(event.target) && !event.defaultPrevented) {
 			node.dispatchEvent(new CustomEvent('click_outside', node));
@@ -22,3 +22,5 @@ export function clickOutside(node) {
 		}
 	};
 }
+
+export default ClickOutside;

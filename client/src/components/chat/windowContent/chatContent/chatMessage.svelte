@@ -39,11 +39,11 @@
 		margin: 0.1rem;
 		padding: 0.4rem;
 		border-radius: 1rem;
-		background-color: rgb(58, 255, 189);
+		background-color: rgb(14, 165, 114);
 		max-width: 60%;
 	}
 
 	.userColor {
-		background-color: rgb(80, 200, 255);
+		background-color: rgb(25, 102, 138);
 	}
 </style>
