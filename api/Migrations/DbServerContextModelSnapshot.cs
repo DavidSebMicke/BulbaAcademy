@@ -43,8 +43,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("TokenStr")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -285,8 +284,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("TokenStr")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
