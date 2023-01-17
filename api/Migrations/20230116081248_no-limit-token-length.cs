@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BulbasaurAPI.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class nolimittokenlength : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -233,7 +233,7 @@ namespace BulbasaurAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Token = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    TokenStr = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IpAddress = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     IssuedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -308,6 +308,7 @@ namespace BulbasaurAPI.Migrations
                     LogInCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LoggedInDevice = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -315,6 +316,29 @@ namespace BulbasaurAPI.Migrations
                     table.PrimaryKey("PK_LogInInformations", x => x.Id);
                     table.ForeignKey(
                         name: "FK_LogInInformations_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TwoFTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TokenStr = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IpAddress = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    IssuedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUsedDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TwoFTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TwoFTokens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -367,6 +391,11 @@ namespace BulbasaurAPI.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TwoFTokens_UserId",
+                table: "TwoFTokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_ChatId",
                 table: "Users",
                 column: "ChatId");
@@ -402,6 +431,9 @@ namespace BulbasaurAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "TOTPs");
+
+            migrationBuilder.DropTable(
+                name: "TwoFTokens");
 
             migrationBuilder.DropTable(
                 name: "Caregivers");

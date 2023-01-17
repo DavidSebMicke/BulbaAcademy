@@ -1,12 +1,10 @@
-<script>
-	import Dashboard from '../components/dashboard/dashboard.svelte';
-	import 'iconify-icon';
+<nav class="tempnav">
+	<a href="/loginPage">Login sidan</a>
+	<a href="/about">about</a>
+	<a href="/mainPage">Startsida</a>
+	<a href="/profile">profile</a>
 	import Dropdown from '../components/dropdown/dropdown.svelte';
-</script>
+</nav>
 
 <Dropdown />
-<Dashboard />
 <slot />
-
-<style lang="less">
-</style>

@@ -24,19 +24,19 @@
 		</button>
 		<ul>
 			<!-- <li>Bulba Academy</li> -->
-			<!-- <li>
+			<li>
 				<a href="/mainPage"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						in:fade={fadeIn}
 						out:fade={fadeOut}
 						href="/mainPage">Startsida</a
 					>{/if}
-			</li> -->
+			</li>
 			<li>
 				<a href="/"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/">Startsida</a
+						href="/profile">Profil</a
 					>{/if}
 			</li>
 			<li>
@@ -77,7 +77,6 @@
 	.text {
 		margin-right: 2px;
 		margin-left: 2px;
-		color: aqua;
 	}
 
 	a {
@@ -94,7 +93,7 @@
 		justify-content: left;
 		height: 100em;
 		color: currentColor;
-		background-color: purple;
+		background-color: #e1b382;
 		text-decoration: none;
 		float: left;
 		padding: 10px;

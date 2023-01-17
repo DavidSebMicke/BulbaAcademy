@@ -1,5 +1,5 @@
 <script>
-	import Calendar from '../components/calendar/calendar.svelte';
+	import Calendar from '$components/calendar/calendar.svelte';
 </script>
 
 <Calendar />

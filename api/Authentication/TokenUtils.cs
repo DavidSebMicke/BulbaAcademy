@@ -12,7 +12,7 @@ namespace BulbasaurAPI.Authentication
     public class TokenUtils
     {
         // Generate an access token, unique for each user and for each time it is issued
-        public static async Task<string> GenerateAccessToken(User user, string ipAddress)
+        public static async Task<string> GenerateAccessToken(User user, string ipAddress, DbServerContext db)
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -28,7 +28,7 @@ namespace BulbasaurAPI.Authentication
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string accessToken = tokenHandler.WriteToken(token);
 
-            using var db = new DbServerContext();
+            
             try
             {
                 await db.AccessTokens.AddAsync(new AccessToken()
@@ -39,7 +39,7 @@ namespace BulbasaurAPI.Authentication
                     IssuedDateTime = DateTime.Now,
                     LastUsedDateTime = DateTime.Now,
                 });
-
+                await db.SaveChangesAsync();
             }
             catch
             {
@@ -50,7 +50,7 @@ namespace BulbasaurAPI.Authentication
         }
 
         // Generate an Two F token, unique for each user and for each time it is issued
-        public static async Task<string> GenerateTwoFToken(User user, string ipAddress)
+        public static async Task<string> GenerateTwoFToken(User user, string ipAddress, DbServerContext db)
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -66,7 +66,7 @@ namespace BulbasaurAPI.Authentication
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string twoFToken = tokenHandler.WriteToken(token);
 
-            using var db = new DbServerContext();
+            
             try
             {
                 await db.TwoFTokens.AddAsync(new TwoFToken()
@@ -78,7 +78,7 @@ namespace BulbasaurAPI.Authentication
                     LastUsedDateTime = DateTime.Now,
                 });
 
-                
+                await db.SaveChangesAsync();
             }
             catch
             {

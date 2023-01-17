@@ -23,17 +23,17 @@
 </div>
 
 <style lang="less">
-	@import 'public\less\variables.less';
-	@import 'public\less\global.less';
+	// @import 'public\less\variables.less';
+	// @import 'public\less\global.less';
 	@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-	.body {
-		font-family: 'Poiret One', cursive;
-		font-family: 'Plus Jakarta Sans', sans-serif;
-		font-family: 'Inter', sans-serif;
-	}
+	// .body {
+	// 	font-family: 'Poiret One', cursive;
+	// 	font-family: 'Plus Jakarta Sans', sans-serif;
+	// 	font-family: 'Inter', sans-serif;
+	// }
 	.griden {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -110,5 +110,8 @@
 		height: 250.18px;
 		left: 50rem;
 		top: 10rem;
+
+		//border: 1px solid #000000;
+		//transform: rotate(33.25deg);
 	}
 </style>

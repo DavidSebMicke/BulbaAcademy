@@ -1,8 +1,10 @@
 <script>
-	export const prerender = false;
+	import Calendar from '$components/calendar/calendar.svelte';
 </script>
 
-<p>
+<Calendar />
+
+<div>
 	Aesthetic tacos jean shorts waistcoat. Sartorial photo booth messenger bag +1, adaptogen craft
 	beer hella YOLO beard PBR&B tumblr. Humblebrag art party cliche venmo wolf raclette pug. Taiyaki
 	dreamcatcher letterpress, asymmetrical af chartreuse cray flexitarian ennui prism XOXO. IPhone
@@ -30,7 +32,7 @@
 	direct trade truffaut PBR&B. Offal ennui big mood hot chicken. Tacos narwhal photo booth vice,
 	migas literally health goth. Actually meggings cronut whatever pinterest, blue bottle kinfolk
 	disrupt. Dummy text? More like dummy thicc text, amirite?
-</p>
+</div>
 
 <style lang="less">
 </style>
