@@ -202,3 +202,11 @@ export const getChat = (chatId) => {
 		]
 	};
 };
+
+export const sendMessage = (chatId, message) => {
+	// Send the message here
+};
+
+export const newChat = (userIds, message) => {
+	// Send new chat data to backend
+};
