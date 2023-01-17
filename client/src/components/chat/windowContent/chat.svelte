@@ -46,8 +46,6 @@
 		chatContainer.scrollTop = chatContainer.scrollHeight;
 	});
 
-	$: console.log(selectedUsers);
-
 	const sendMessage = () => {
 		if (activeChat.messages.length > 0) {
 			activeChat = sendMessage(activeChat.chatId, messageText);
@@ -61,6 +59,7 @@
 </script>
 
 <div class="container">
+	<!-- Chat header -->
 	<!-- No chatId = new chat -->
 	{#if !activeChat.chatId}
 		<div class="chatHeader">
@@ -77,6 +76,8 @@
 	{:else}
 		<div class="chatHeader">{chatParticipants}</div>
 	{/if}
+
+	<!-- Chat -->
 	<div class="chatContainer">
 		{#if activeChat.messages}
 			{#each activeChat.messages as message}
@@ -84,6 +85,8 @@
 			{/each}
 		{/if}
 	</div>
+
+	<!-- Chat input -->
 	<div class="chatInputContainer">
 		<textarea
 			class="chatInput"
@@ -123,7 +126,6 @@
 			--item-padding: 0;
 			--margin: 0;
 			--padding: 0;
-			// --item-line-height: 1rem;
 			--height: 1.5rem;
 			--list-max-height: 10rem;
 			--item-color: @dark-mode-text;

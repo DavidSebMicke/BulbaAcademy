@@ -13,7 +13,6 @@
 
 <slot />
 <ChatBubble />
-<button on:click={() => console.log('test')}>Test</button>
 
 <style lang="less">
 	.MpLink {
