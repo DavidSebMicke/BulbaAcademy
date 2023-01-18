@@ -36,19 +36,28 @@ namespace BulbasaurAPI.Controllers
         [HttpPost("createUser")]
         public async Task<ActionResult<User>> CreateUser(string email, string password)
         {
-            User newUser = new User()
-            {
-                Username = email,
-                Password = Hasher.Hash(password),
-                AccessLevel = Authorization.UserAccessLevel.ADMIN
-            };
+            //checks if email format is valid
+            if(!InputValidator.ValidateEmailFormat(email)) return BadRequest("Not a valid email");
+            //checks if password format is valid
+            if (!InputValidator.ValidatePasswordFormat(password)) return BadRequest("Not a valid password");
 
+
+            //checks if user already exists
             if (await _context.Users.AnyAsync(u => u.Username == email))
             {
-                return BadRequest("User already axists");
+
+                return BadRequest("User already exists");
             }
             else
             {
+
+                User newUser = new User()
+                {
+                    Username = email,
+                    Password = Hasher.Hash(password),
+                    AccessLevel = Authorization.UserAccessLevel.ADMIN
+                };
+
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
                 return newUser;
