@@ -8,16 +8,8 @@ namespace BulbasaurAPI.Models
 
         public DateTime DateTime { get; set; } = DateTime.UtcNow;
 
-        
         public User Author { get; set; }
 
         public string Message { get; set; }
-
-
-
-
-
-
-
     }
 }
