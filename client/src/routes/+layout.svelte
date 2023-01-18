@@ -1,8 +1,10 @@
 <script>
+	import Themetoggle from '../components/themetoggle/themetoggle.svelte';
 	import ChatBubble from '../components/chat/chatBubble.svelte';
 	import 'iconify-icon';
 </script>
 
+<Themetoggle />
 <nav class="tempnav">
 	<a href="/loginPage">Login sidan</a>
 	<a href="/staff">Personal</a>
@@ -12,9 +14,3 @@
 
 <slot />
 <ChatBubble />
-
-<style lang="less">
-	.MpLink {
-		color: red;
-	}
-</style>

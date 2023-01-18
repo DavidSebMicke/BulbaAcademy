@@ -1,5 +1,39 @@
 @import '/public/less/variables.less';
 
+
+[data-theme="light"] {
+	--primary-color: @light-mode-flavour1;
+	--secondary-color: @light-mode-flavour2
+	--bg-color: @light-mode-background;
+	--color: @light-mode-text;
+  }
+  
+  [data-theme="dark"] {
+	--primary-color: @dark-mode-flavour1;
+	--secondary-color: @dark-mode-flavour2;
+	--bg-color: @dark-mode-background;
+	--color: @dark-mode-text;
+  }
+  
+  body, div, span, p, a, button, input, textarea {
+	margin: 0;
+	background-color: var(--bg-color);
+	color: var(--color);
+	//background-color: transparent;
+  }
+
+  img{
+	background: none;
+  }
+
+  
+
+  .container {
+	max-width: 960px;
+	margin: 0 auto;
+  }  
+
+
 * {
 	box-sizing: border-box;
 }
@@ -42,3 +76,43 @@ body {
 	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
 	transition: all 0.2s ease-in-out;
 }
+@light-mode-text: hsl(100, 40%, 10%);
+@light-mode-background: hsl(75, 40%, 70%);
+@light-mode-flavour1: hsl(50, 40%, 65%);
+@light-mode-flavour2: hsl(25, 40%, 60%);
+
+
+
+[data-theme="light"] {
+	--primary-color: @light-mode-flavour1;
+	--secondary-color: @light-mode-flavour2
+	--bg-color: @light-mode-background;
+	--color: @light-mode-text;
+  }
+  
+  [data-theme="dark"] {
+	--primary-color: @dark-mode-flavour1;
+	--secondary-color: @dark-mode-flavour2;
+	--bg-color: @dark-mode-background;
+	--color: @dark-mode-text;
+  }
+  
+  body, div, span, p, a, button, input, textarea {
+	margin: 0;
+	background-color: var(--bg-color);
+	color: var(--color);
+	//background-color: transparent;
+  }
+
+  img{
+	background: none;
+  }
+
+  
+
+  .container {
+	max-width: 960px;
+	margin: 0 auto;
+  }  
+
+
