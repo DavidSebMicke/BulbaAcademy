@@ -1,31 +1,42 @@
 @import '/public/less/variables.less';
 
-* {
-	box-sizing: border-box;
-}
+@light-mode-text: hsl(100, 40%, 10%);
+@light-mode-background: hsl(75, 40%, 70%);
+@light-mode-flavour1: hsl(50, 40%, 65%);
+@light-mode-flavour2: hsl(25, 40%, 60%);
 
-a {
-	color: currentColor;
-	text-decoration: none;
-	text-align: left;
-	font-size: 20px;
-	justify-content: space-around;
-	gap: 24px;
-}
 
-:root {
-	@light-mode-text: hsl(100, 40%, 10%);
-	@light-mode-background: hsl(75, 40%, 70%);
-	@light-mode-flavour1: hsl(50, 40%, 65%);
-	@light-mode-flavour2: hsl(25, 40%, 60%);
-}
 
-div {
-	background-color: @dark-mode-background;
-	color: @dark-mode-text;
-}
+[data-theme="light"] {
+	--primary-color: @light-mode-flavour1;
+	--secondary-color: @light-mode-flavour2
+	--bg-color: @light-mode-background;
+	--color: @light-mode-text;
+  }
+  
+  [data-theme="dark"] {
+	--primary-color: @dark-mode-flavour1;
+	--secondary-color: @dark-mode-flavour2;
+	--bg-color: @dark-mode-background;
+	--color: @dark-mode-text;
+  }
+  
+  body, div, span, p, a, button, input, textarea {
+	margin: 0;
+	background-color: var(--bg-color);
+	color: var(--color);
+	//background-color: transparent;
+  }
 
-body {
-	background-color: @dark-mode-background;
-	color: @dark-mode-text;
-}
+  img{
+	background: none;
+  }
+
+  
+
+  .container {
+	max-width: 960px;
+	margin: 0 auto;
+  }  
+
+
