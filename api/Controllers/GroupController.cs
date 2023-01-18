@@ -1,4 +1,5 @@
 ﻿using BulbasaurAPI.Models;
+using BulbasaurAPI.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,22 +10,23 @@ namespace BulbasaurAPI.Controllers
     [ApiController]
     public class GroupController : ControllerBase
     {
-        private readonly DbServerContext _context;
+        private readonly IGroupRepository _groups;
+        //private readonly IPersonRepository _persons;
 
-        public GroupController(DbServerContext context)
+        public GroupController(IGroupRepository groups/*, IPersonRepository persons*/)
         {
-            _context = context;
+            _groups = groups;
+            //_persons = persons;
         }
 
         [HttpGet]
         [Route("GetGroupByPersonID")]
         public async Task<IActionResult> GetGroupsByPersonId(int id)
         {
-            var person = await _context.Persons.Where(x => x.Id == id).FirstOrDefaultAsync();
-            var result = await _context.Groups
-                .Where<Group>(x => x.Persons.Contains(person))
-                .Include(x => x.Persons).ThenInclude(z => z.Role)
-                .ToListAsync();
+
+            
+            var result = await _groups.GetGroupsByPersonId(id);
+           
             return Ok(result);
         }
     }

@@ -6,7 +6,6 @@ namespace BulbasaurAPI.Repository
 {
     public class GroupRepository : IGroupRepository
     {
-
         private readonly DbServerContext _context;
 
         public GroupRepository(DbServerContext context)
@@ -14,18 +13,17 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        public Task<Group> CreateGroupAsync()
+        public async Task<Group> CreateGroupAsync(Group group)
         {
-            //var groups = _context.Groups.ToListAsync();
-            //return groups;
-            throw new NotImplementedException();
+            await _context.Groups.AddAsync(group);
+            return group;
         }
-        
+
         public async Task<bool> DeleteGroupAsync(int id)
         {
-           var delete = await _context.Groups.Where(x=> x.Id == id).FirstOrDefaultAsync();
-             _context.Remove(delete);
-            return await SaveAsync();  
+            var delete = await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
+            _context.Remove(delete);
+            return await SaveAsync();
         }
 
         public async Task<IEnumerable<Group>> GetAllGroupsAsync()
@@ -36,6 +34,16 @@ namespace BulbasaurAPI.Repository
         public async Task<Group> GetGroupByIdAsync(int id)
         {
             return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
+        {
+            var person = await _context.Persons.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var result = await _context.Groups
+                .Where<Group>(x => x.Persons.Contains(person))
+                .Include(x => x.Persons).ThenInclude(z => z.Role)
+                .ToListAsync();
+            return result;
         }
 
         public async Task<bool> SaveAsync()

@@ -5,18 +5,18 @@ namespace BulbasaurAPI.Repository
 {
     public interface IGroupRepository
     {
-
         Task<Group> GetGroupByIdAsync(int id);
 
-        Task<IEnumerable<Group>> GetAllGroupsAsync();   
+        Task<IEnumerable<Group>> GetGroupsByPersonId(int id);
 
-        Task<Group> CreateGroupAsync();
+        Task<IEnumerable<Group>> GetAllGroupsAsync();
 
-        Task<bool> DeleteGroupAsync(int id);   
+        Task<Group> CreateGroupAsync(Group group);
+
+        Task<bool> DeleteGroupAsync(int id);
 
         Task UpdateGroupAsync(Group group);
 
         Task<bool> SaveAsync();
-
     }
 }
