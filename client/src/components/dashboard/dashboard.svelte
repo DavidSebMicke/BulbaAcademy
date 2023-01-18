@@ -40,11 +40,11 @@
 					>{/if}
 			</li>
 			<li>
-				<a href="/about"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
+				<a href="/staff"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/about">Personal</a
+						href="/staff">Personal</a
 					>{/if}
 			</li>
 			<!-- <li>Bulba Academy</li>
@@ -93,7 +93,7 @@
 		justify-content: left;
 		height: 100em;
 		color: currentColor;
-		background-color: purple;
+		background-color: #e1b382;
 		text-decoration: none;
 		float: left;
 		padding: 10px;

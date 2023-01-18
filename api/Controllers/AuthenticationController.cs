@@ -16,7 +16,7 @@ namespace BulbasaurAPI.Controllers
         {
             _context = context;
         }
-
+        
         [HttpGet("login")]
         public async Task<ActionResult<string>> Login(string givenEmail, string givenPassword)
         {
@@ -25,6 +25,7 @@ namespace BulbasaurAPI.Controllers
             if (user == null) return BadRequest("User not found.");
             else
             {
+
                 if (Hasher.Verify(givenPassword, user.Password))
                 {
                     return await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext), _context);

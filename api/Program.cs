@@ -28,6 +28,9 @@ namespace BulbasaurAPI
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<DbServerContext>();
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
+            builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+            builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+
 
             var app = builder.Build();
             if (app.Environment.IsDevelopment())

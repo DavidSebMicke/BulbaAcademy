@@ -1,10 +1,4 @@
-// .test {
-// 	color: black;
-// 	background-color: green;
-// 	font-weight: 300;
-// 	font-size: larger;
-// 	border: 2px solid black;
-// }
+@import '/public/less/variables.less';
 
 * {
 	box-sizing: border-box;
@@ -15,25 +9,36 @@ a {
 	text-decoration: none;
 	text-align: left;
 	font-size: 20px;
-	justify-content: space-around;	
+	justify-content: space-around;
 	gap: 24px;
 }
 
-:root{
+:root {
 	@light-mode-text: hsl(100, 40%, 10%);
 	@light-mode-background: hsl(75, 40%, 70%);
 	@light-mode-flavour1: hsl(50, 40%, 65%);
 	@light-mode-flavour2: hsl(25, 40%, 60%);
 }
 
-div{
+div {
 	background-color: @dark-mode-background;
 	color: @dark-mode-text;
 }
 
-
-
-body{
+body {
 	background-color: @dark-mode-background;
 	color: @dark-mode-text;
+}
+.classic-button {
+	padding: 10px 20px;
+	background-color: rgb(1, 1, 46);
+	&:hover {
+		background-color: rgb(0, 123, 139);
+	}
+	color: white;
+	font-size: 10px;
+	border: none;
+	border-radius: 5px;
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+	transition: all 0.2s ease-in-out;
 }
