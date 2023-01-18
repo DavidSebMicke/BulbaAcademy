@@ -1,5 +1,4 @@
 <script>
-	import Dashboard from '../components/dashboard/dashboard.svelte';
 	import ChatBubble from '../components/chat/chatBubble.svelte';
 	import 'iconify-icon';
 </script>
