@@ -4,6 +4,7 @@
 	import 'iconify-icon';
 </script>
 
+<Themetoggle />
 <nav class="tempnav">
 	<a href="/loginPage">Login sidan</a>
 	<a href="/staff">Personal</a>
@@ -13,4 +14,3 @@
 
 <slot />
 <ChatBubble />
-<Themetoggle />
