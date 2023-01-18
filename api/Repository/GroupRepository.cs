@@ -6,7 +6,6 @@ namespace BulbasaurAPI.Repository
 {
     public class GroupRepository : IGroupRepository
     {
-
         private readonly DbServerContext _context;
 
         public GroupRepository(DbServerContext context)
@@ -16,15 +15,15 @@ namespace BulbasaurAPI.Repository
 
         public async Task<Group> CreateGroupAsync(Group group)
         {
-             
-            //return await _context.Groups.AddAsync(group);
+            await _context.Groups.AddAsync(group);
+            return group;
         }
-        
+
         public async Task<bool> DeleteGroupAsync(int id)
         {
-           var delete = await _context.Groups.Where(x=> x.Id == id).FirstOrDefaultAsync();
-             _context.Remove(delete);
-            return await SaveAsync();  
+            var delete = await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
+            _context.Remove(delete);
+            return await SaveAsync();
         }
 
         public async Task<IEnumerable<Group>> GetAllGroupsAsync()

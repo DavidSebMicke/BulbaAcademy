@@ -22,7 +22,6 @@ namespace BulbasaurAPI
 
             builder.Services.AddTransient<Seed>();
 
-            
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -30,7 +29,6 @@ namespace BulbasaurAPI
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
-
 
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
@@ -45,15 +43,22 @@ namespace BulbasaurAPI
             void SeedData(IHost app)
             {
                 var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
-                
+
                 using (var scope = scopedFactory.CreateScope())
                 {
-                    var service = scope.ServiceProvider.GetService<Seed>(); 
+                    var service = scope.ServiceProvider.GetService<Seed>();
                     service.SeedDataContext();
                 }
             }
 
             app.UseHttpsRedirection();
+
+            // Logging middleware
+            //app.Use(async (context, next) =>
+            //{
+            //    var loggingMiddleware = new LoggingMiddleware(new DbServerContext(builder.Configuration));
+            //    await loggingMiddleware.InvokeAsync(context, next);
+            //});
 
             // Add custom authentication and authorization middlewares here     UNCOMMENT THIS PART ONCE LOGIN IS IMPLEMENTED
             //app.UseMiddleware<AuthenticationMiddleware>();
