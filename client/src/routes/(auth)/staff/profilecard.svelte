@@ -18,7 +18,7 @@
 					<span class="teacherName">{name} </span>
 					<div class="teacherInfo">
 						I'm the best teacher and the teachers are the best, so i'm the very best of
-						the best teachersdsadsadsadsadsadasdsa
+						the best teachers.
 					</div>
 				</div>
 			</li>
@@ -28,7 +28,9 @@
 
 <style lang="less">
 	.profileCardContainer {
+		display: flex;
 		margin: 2rem;
+		justify-content: center;
 	}
 	.profileCard {
 		padding: 0.2em;
@@ -36,19 +38,20 @@
 		flex-wrap: wrap;
 		justify-content: center;
 		gap: 2em;
+		width: 80vh;
 		box-shadow: 10px 5px 3px #12343b;
 	}
 	.profileCard > li {
 		padding: 0.2em;
 		list-style: none;
-		flex-basis: 350px;
+		flex-basis: 400px;
 		border: 2px solid black;
 		outline: 2px solid white;
 		outline-offset: -0.3em;
 		position: relative;
 		box-shadow: 10px 12px 10px #12343b;
 		cursor: pointer;
-	} //#e4decd
+	}
 	.profileCard > li img {
 		box-sizing: border-box;
 		padding: 0.2em;
@@ -58,10 +61,10 @@
 		vertical-align: middle;
 		border-radius: none;
 	}
-	.profileCard::after {
-		content: '';
-		flex-basis: 350px;
-	}
+	// .profileCard::after {
+	// 	content: '';
+	// 	flex-basis: 450px;
+	// }
 	.overlay {
 		position: absolute;
 		width: 100%;
