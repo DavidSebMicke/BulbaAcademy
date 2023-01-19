@@ -94,14 +94,11 @@ namespace BulbasaurAPI.Controllers
           
             if (updateCaregiver == null)
                 return BadRequest(ModelState);
-            if (caregiverId != updateCaregiver.Id) 
-                return BadRequest(ModelState);
             
-
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var existingCaregiver = await _caregiver.GetById(updateCaregiver.Id);
+            var existingCaregiver = await _caregiver.GetById(caregiverId);
 
             if (existingCaregiver != null)
             {
@@ -110,7 +107,7 @@ namespace BulbasaurAPI.Controllers
                 existingCaregiver.PhoneNumber = updateCaregiver.PhoneNumber;
                 existingCaregiver.HomeAddress = updateCaregiver.HomeAddress;
                 existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
-                existingCaregiver.SSN = updateCaregiver.SSN;
+                //existingCaregiver.SSN = updateCaregiver.SSN;
 
                 await _caregiver.Update();
             }
@@ -118,6 +115,7 @@ namespace BulbasaurAPI.Controllers
             {
                 NotFound();
             }
+
             return Ok("Successfully updated");
         }
 
