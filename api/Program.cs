@@ -1,6 +1,7 @@
 using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Middlewares;
 using BulbasaurAPI.Repository;
+using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;

@@ -1,4 +1,7 @@
 ﻿using BulbasaurAPI.Models;
+using BulbasaurAPI.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
+using System.Web.Http.ModelBinding;
 
 namespace BulbasaurAPI.Repository
 {
@@ -13,47 +16,49 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        public bool CreateCaregiver(int childId, Caregiver caregiver)
+        public async Task<bool> Create(Caregiver caregiver)
         {
-            var ChildEntity = _context.Children.Where(a => a.Id == childId).FirstOrDefault();
+            var care = await _context.Caregivers.AddAsync(caregiver);
 
+            return await SaveAsync();
+        }
+        public async Task<bool> Update()
+        {
 
-
-            //var caregiverChild = new CaregiverChild()
-            //{
-            //    Caregiver = caregiver,
-            //    Child = ChildEntity,
-            //};
-
-            //_context.Add(caregiverChild);
-            //_context.Add(caregiver);
-
-            return Save();
+            return await SaveAsync();
 
         }
 
 
-        public ICollection<Caregiver> GetAllCaregivers()
+        public Task<bool> Delete(Caregiver entity)
+        {
+           var caregiverDelete = _context.Caregivers.Where(x => x.Id == entity.Id).FirstOrDefault();
+           _context.Caregivers.Remove(caregiverDelete);
+
+            return SaveAsync();
+        }
+
+        public IEnumerable<Caregiver> GetAll()
         {
             return _context.Caregivers.ToList();
         }
 
-        public Caregiver GetCaregiverById(int id)
-        {
 
-            return _context.Caregivers.FirstOrDefault(x => x.Id == id);
+        public async Task<Caregiver> GetById(int id)
+        {
+            return await _context.Caregivers.FirstOrDefaultAsync(x => x.Id == id);
         }
 
 
-
-
-
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            var saved = _context.SaveChanges();
+            var saved = await _context.SaveChangesAsync();
             return saved > 0 ? true : false;
         }
 
-
+        public Caregiver EntityExists(int id)
+        {
+            return _context.Caregivers.Where(x => x.Id == id).FirstOrDefault();
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BulbasaurAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BulbasaurAPI.Repository
+namespace BulbasaurAPI.Repository.Interface
 {
     public interface IGroupRepository
     {
@@ -11,11 +11,11 @@ namespace BulbasaurAPI.Repository
         Task<IEnumerable<Group>> GetGroupsByPersonId(int id);
 
 
-        Task<IEnumerable<Group>> GetAllGroupsAsync();   
+        Task<IEnumerable<Group>> GetAllGroupsAsync();
 
-        Task<Group> CreateGroupAsync();
+        //Task<Group> CreateGroupAsync();
 
-        Task<bool> DeleteGroupAsync(int id);   
+        Task<bool> DeleteGroupAsync(int id);
 
         Task UpdateGroupAsync(Group group);
 
