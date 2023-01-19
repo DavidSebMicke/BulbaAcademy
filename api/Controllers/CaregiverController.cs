@@ -1,6 +1,7 @@
 ﻿using BulbasaurAPI.Models;
-using BulbasaurAPI.Repository;
+using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace BulbasaurAPI.Controllers
@@ -24,7 +25,7 @@ namespace BulbasaurAPI.Controllers
             try
             {
 
-                return Ok(_caregiver.GetAllCaregivers());
+                return Ok(_caregiver.GetAll());
             }
             catch (Exception)
             {
@@ -40,7 +41,7 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-                return Ok(_caregiver.GetCaregiverById(id));
+                return Ok(_caregiver.GetById(id));
             }
             catch (Exception)
             {
@@ -50,11 +51,13 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCaregiver([FromBody] Caregiver caregiverCreate, [FromQuery] int childId)
+        public async Task<IActionResult> CreateCaregiverAsync([FromBody] Caregiver caregiverCreate)
         {
             if (caregiverCreate == null) return BadRequest(ModelState);
 
-            var caregivers = _caregiver.GetAllCaregivers().Where(c => c.Id == caregiverCreate.Id).FirstOrDefault();
+            var caregivers = _caregiver.EntityExists(caregiverCreate.Id);
+           
+
 
             if (caregivers != null)
             {
@@ -64,14 +67,59 @@ namespace BulbasaurAPI.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (!_caregiver.CreateCaregiver(childId, caregiverCreate))
-            {
-                ModelState.AddModelError("", "Something went wrong wihle saving");
-                return StatusCode(500, ModelState);
-            }
+
+            await _caregiver.Create(caregiverCreate);
 
             return Ok("Successfully created");
 
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCaregiverById([FromQuery] int id)
+        {
+            var caregiverDelete = _caregiver.EntityExists(id);
+            if (caregiverDelete == null) return BadRequest(ModelState);
+
+
+
+            await _caregiver.Delete(caregiverDelete);
+
+            return Ok("Successfully deleted");
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] Caregiver updateCaregiver)
+        {
+            if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
+          
+            if (updateCaregiver == null)
+                return BadRequest(ModelState);
+            if (caregiverId != updateCaregiver.Id) 
+                return BadRequest(ModelState);
+            
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var existingCaregiver = await _caregiver.GetById(updateCaregiver.Id);
+
+            if (existingCaregiver != null)
+            {
+                existingCaregiver.FirstName = updateCaregiver.FirstName;
+                existingCaregiver.LastName = updateCaregiver.LastName;
+                existingCaregiver.PhoneNumber = updateCaregiver.PhoneNumber;
+                existingCaregiver.HomeAddress = updateCaregiver.HomeAddress;
+                existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
+                existingCaregiver.SSN = updateCaregiver.SSN;
+
+                await _caregiver.Update();
+            }
+            else
+            {
+                NotFound();
+            }
+            return Ok("Successfully updated");
+        }
+
     }
 }

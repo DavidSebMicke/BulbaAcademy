@@ -1,4 +1,5 @@
 ﻿using BulbasaurAPI.Models;
+using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
@@ -12,13 +13,13 @@ namespace BulbasaurAPI.Repository
         {
             _context = context;
         }
-
-        public async Task<Group> CreateGroupAsync(Group group)
-        {
-            await _context.Groups.AddAsync(group);
-            return group;
-        }
-
+      
+        //public async Task<Group> CreateGroupAsync(Group group)
+        //{
+             
+        //    return await _context.Groups.AddAsync(group);
+        //}
+        
         public async Task<bool> DeleteGroupAsync(int id)
         {
             var delete = await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
