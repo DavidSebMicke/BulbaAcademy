@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    [Migration("20230113140459_hej")]
-    partial class hej
+    [Migration("20230118134802_addedIpToLogging")]
+    partial class addedIpToLogging
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,8 +45,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("TokenStr")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -145,6 +144,10 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -287,8 +290,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("TokenStr")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

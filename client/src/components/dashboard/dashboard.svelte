@@ -40,24 +40,13 @@
 					>{/if}
 			</li>
 			<li>
-				<a href="/about"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
+				<a href="/staff"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/about">Personal</a
+						href="/staff">Personal</a
 					>{/if}
 			</li>
-			<!-- <li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li>
-			<li>Bulba Academy</li> -->
 		</ul>
 	</nav>
 </div>
@@ -80,33 +69,33 @@
 	}
 
 	a {
-		color: currentColor;
+		//color: currentColor;
 		text-decoration: none;
 		text-align: left;
 		font-size: 20px;
 		justify-content: space-around;
-		gap: 24px;
 	}
 
 	.nav-container {
 		display: flex;
 		justify-content: left;
-		height: 100em;
-		color: currentColor;
-		background-color: purple;
+		height: 100rem;
 		text-decoration: none;
 		float: left;
-		padding: 10px;
+		padding: 5px;
 		overflow: hidden;
 		margin-bottom: 1%;
 		margin-right: 1%;
+		border-radius: 25px;
+		border-color: rgba(0, 0, 0, 0.233);
+		border-style: solid;
 	}
 
 	h2 {
 		display: flex;
 		justify-content: left;
 		height: 100em;
-		color: currentColor;
+		//color: currentColor;
 		background-color: @dark-mode-background;
 		text-decoration: none;
 		float: left;
@@ -118,14 +107,14 @@
 
 	nav ul {
 		list-style-type: none;
-		color: currentColor;
+		//color: currentColor;
 		text-decoration: none;
 	}
 
 	button {
 		border: none;
 		background: none;
-		color: currentColor;
+		//color: currentColor;
 		text-transform: uppercase;
 	}
 </style>

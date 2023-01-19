@@ -5,25 +5,17 @@ using System.Net;
 
 namespace BulbasaurAPI.Middlewares
 {
-    public class AuthenticationMiddleware
+    public class AuthenticationMiddleware : IMiddleware
     {
-        private readonly RequestDelegate _next;
-
-        public AuthenticationMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
-
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             var path = context.Request.Path;
 
             if (context.Request.Path == "/api/Authentication/login" || context.Request.Path == "/api/Authentication/createUser")
             {
-                await _next(context);
+                await next(context);
                 return;
             }
-
 
             try
             {
@@ -44,7 +36,7 @@ namespace BulbasaurAPI.Middlewares
                 {
                     // Attaches user to the request-context, making it possible to use it for authorization later on
                     context.Items["User"] = user;
-                    await _next.Invoke(context);
+                    await next.Invoke(context);
                 }
                 else
                 {
@@ -59,7 +51,6 @@ namespace BulbasaurAPI.Middlewares
                 await context.Response.WriteAsync("Error when authenticating user.");
             }
         }
-
 
         //Returns errormessage for invalid access token
         private async Task ReturnErrorResponse(HttpContext context)
