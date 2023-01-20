@@ -14,6 +14,14 @@ namespace BulbasaurAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(p =>
+            {
+                p.AddPolicy("policyCors", b =>
+                {
+                    b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+
             // Add services to the container.
             builder.Services.AddControllers();
 
@@ -29,7 +37,7 @@ namespace BulbasaurAPI
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
-
+            
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
@@ -50,8 +58,9 @@ namespace BulbasaurAPI
                     service.SeedDataContext();
                 }
             }
-
+            app.UseCors("policyCors");  
             app.UseHttpsRedirection();
+
 
             // Logging middleware
             //app.Use(async (context, next) =>
@@ -64,7 +73,7 @@ namespace BulbasaurAPI
             //app.UseMiddleware<AuthenticationMiddleware>();
 
             app.MapControllers();
-
+            
             app.Run();
         }
     }

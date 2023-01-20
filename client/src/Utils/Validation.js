@@ -19,4 +19,3 @@ export function lengthAtLeast (str, min){
     return str.length >= min;
 };
 
-
