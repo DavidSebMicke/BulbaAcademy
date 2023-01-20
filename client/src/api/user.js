@@ -61,7 +61,7 @@ export const getUsers = (filter = '') => {
 
 const url = "https://localhost:7215/api/Authentication/login";
 
-export async function TryLogIn(inputEmail, inputPassword)
+export async function TokenByPasswordLogin(inputEmail, inputPassword)
 {
     
 
@@ -81,11 +81,16 @@ export async function TryLogIn(inputEmail, inputPassword)
 	if(response.ok){
 
 		
-		console.log("2f token: " + data.twoFToken);
-		console.log("redirect to 2 factor authentication");
+		return {
+			token : data.twoFToken,
+			message : "ok"
+		} 
+		
 	}
 	else{
-		console.log(data)
+		return {
+			message : data
+		}
 	}
 	
 

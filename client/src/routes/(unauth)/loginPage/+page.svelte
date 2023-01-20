@@ -1,10 +1,28 @@
 <script>
-	import {TryLogIn} from "../../../api/user"
+	import {TokenByPasswordLogin} from "../../../api/user"
 	import {useForm, HintGroup, validators, Hint, email, required} from "svelte-use-form";
 	
 	const form = useForm();
 	let inputEmail;
 	let inputPassword;
+	let incorrect = false;
+
+	function handleLoginClick(){
+
+		incorrect  = false;
+
+		TokenByPasswordLogin(inputEmail, inputPassword).then(resp => {
+
+			if(resp.token){
+				console.log(resp.token);
+				
+			}
+			else{
+				
+				incorrect = true;
+			}
+		});
+	}
 
 </script>
 
@@ -12,7 +30,7 @@
 	<div id="step1">Logga in i Bulba Academy</div>
 
 	<div class="step2">
-		<form use:form  on:submit|preventDefault={TryLogIn(inputEmail, inputPassword)}>
+		<form name="loginForm" use:form  on:submit|preventDefault={handleLoginClick}>
 			<p>
 				Användarnamn<br />
 				<input type="email" name="email" use:validators={[required, email]} bind:value={inputEmail} />
@@ -31,10 +49,20 @@
 				</HintGroup>
 				<br /><br />
 			</p>
-			<button id="step3" disabled={!$form.valid} type="submit">
-				<h1>Logga in</h1>
-			</button>
+			<div>
+				<button id="step3" disabled={!$form.valid} type="submit">
+					<h1>Logga in</h1>
+					
+				</button>
+				{#if incorrect}
+					<p>
+						Incorrect email or password
+					</p>
+				{/if}
+			</div>
+			
 		</form>
+
 
 	</div>
 
