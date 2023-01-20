@@ -1,3 +1,5 @@
+import { redirect } from "@sveltejs/kit";
+
 // Move this to a separate api file later if it will be used by other components
 export const getUsers = (filter = '') => {
 	return [
@@ -52,4 +54,40 @@ export const getUsers = (filter = '') => {
 			user.lastName.toLowerCase().includes(filter.toLowerCase())
 	);
 	// Filter should be done in backend later
+
+	
 };
+
+
+const url = "https://localhost:7215/api/Authentication/login";
+
+export async function TryLogIn(inputEmail, inputPassword)
+{
+    
+
+    const response = await fetch(`${url}`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+			email : inputEmail,
+			password : inputPassword
+		})
+
+    });
+	const data = await response.json();
+	if(response.ok){
+
+		
+		console.log("2f token: " + data.twoFToken);
+		console.log("redirect to 2 factor authentication");
+	}
+	else{
+		console.log(data)
+	}
+	
+
+
+}
