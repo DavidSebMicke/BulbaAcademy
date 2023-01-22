@@ -2,7 +2,7 @@
 
 namespace BulbasaurAPI.Repository.Interface
 {
-    public interface ICaregiverRepository : IBaseRepository<Caregiver>
+    public interface IPersonellRepository : IBaseRepository<Personell>
     {
     }
 }
