@@ -18,17 +18,13 @@ namespace BulbasaurAPI.Repository
 
         public async Task<bool> Create(Caregiver caregiver)
         {
-            var care = await _context.Caregivers.AddAsync(caregiver);
-
+            await _context.Caregivers.AddAsync(caregiver);
             return await SaveAsync();
         }
         public async Task<bool> Update()
         {
-
             return await SaveAsync();
-
         }
-
 
         public Task<bool> Delete(Caregiver entity)
         {
