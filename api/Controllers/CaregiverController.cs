@@ -3,14 +3,12 @@ using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace BulbasaurAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CaregiverController : ControllerBase
     {
-
         private readonly ICaregiverRepository _caregiver;
 
         public CaregiverController(ICaregiverRepository context)
@@ -24,16 +22,14 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-
                 return Ok(_caregiver.GetAll());
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
+
         // GET: api/1
         [HttpGet]
         [Route("{id}")]
@@ -45,7 +41,6 @@ namespace BulbasaurAPI.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -56,8 +51,6 @@ namespace BulbasaurAPI.Controllers
             if (caregiverCreate == null) return BadRequest(ModelState);
 
             var caregivers = _caregiver.EntityExists(caregiverCreate.Id);
-           
-
 
             if (caregivers != null)
             {
@@ -67,22 +60,19 @@ namespace BulbasaurAPI.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-
             await _caregiver.Create(caregiverCreate);
 
             return Ok("Successfully created");
-
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteCaregiverById([FromQuery] int id)
         {
             var caregiverDelete = _caregiver.EntityExists(id);
+            var caregiverToDelete = await _caregiver.GetById(id);
             if (caregiverDelete == null) return BadRequest(ModelState);
 
-
-
-            await _caregiver.Delete(caregiverDelete);
+            await _caregiver.Delete(caregiverToDelete);
 
             return Ok("Successfully deleted");
         }
@@ -91,10 +81,10 @@ namespace BulbasaurAPI.Controllers
         public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] Caregiver updateCaregiver)
         {
             if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
-          
+
             if (updateCaregiver == null)
                 return BadRequest(ModelState);
-            
+
             if (!ModelState.IsValid)
                 return BadRequest();
 
@@ -109,7 +99,7 @@ namespace BulbasaurAPI.Controllers
                 existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
                 //existingCaregiver.SSN = updateCaregiver.SSN;
 
-                await _caregiver.Update();
+                await _caregiver.Update(existingCaregiver);
             }
             else
             {
@@ -118,6 +108,5 @@ namespace BulbasaurAPI.Controllers
 
             return Ok("Successfully updated");
         }
-
     }
 }

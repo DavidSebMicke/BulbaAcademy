@@ -1,14 +1,19 @@
-﻿namespace BulbasaurAPI.Repository.Interface
+﻿using BulbasaurAPI.Models;
+
+namespace BulbasaurAPI.Repository.Interface
 {
     public interface IBaseRepository<T>
     {
-        Task<bool> Create(T entity);
-        Task<bool> Update();
-        Task<bool> Delete(T entity);
-        IEnumerable<T> GetAll();
-        Task<T> GetById(int id);
-        Task<bool> SaveAsync();
-        T EntityExists(int id);
+        Task<T> Create(T entity);
 
+        Task<T> Update(T newEntity);
+
+        Task Delete(T entity);
+
+        Task<IEnumerable<T>> GetAll();
+
+        Task<T?> GetById(int id);
+
+        Task<bool> EntityExists(int id);
     }
 }
