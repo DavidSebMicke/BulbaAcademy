@@ -40,6 +40,7 @@ namespace BulbasaurAPI
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
             
             var app = builder.Build();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

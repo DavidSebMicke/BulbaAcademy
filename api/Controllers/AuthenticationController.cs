@@ -25,7 +25,7 @@ namespace BulbasaurAPI.Controllers
 
             var user = await _context.Users.Where(x => x.Username == logInForm.Email).FirstOrDefaultAsync();
 
-            if (user == null) return BadRequest("User not found.");
+            if (user == null) return Unauthorized("User not found");
             else
             {
 
@@ -37,7 +37,7 @@ namespace BulbasaurAPI.Controllers
                     };
                      
                 }
-                else return BadRequest("Wrong password");
+                else return Unauthorized("Wrong password");
             }
         }
 

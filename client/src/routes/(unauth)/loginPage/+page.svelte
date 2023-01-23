@@ -1,27 +1,22 @@
 <script>
-	import {TokenByPasswordLogin} from "../../../api/user"
+	import {PasswordLogIn} from "../../../api/user"
 	import {useForm, HintGroup, validators, Hint, email, required} from "svelte-use-form";
 	
 	const form = useForm();
 	let inputEmail;
 	let inputPassword;
-	let incorrect = false;
+	let pwLoginInvalidResponse = false;
 
 	function handleLoginClick(){
 
-		incorrect  = false;
+		pwLoginInvalidResponse = false;
 
-		TokenByPasswordLogin(inputEmail, inputPassword).then(resp => {
+		PasswordLogIn(inputEmail, inputPassword).then(success => {
 
-			if(resp.token){
-				console.log(resp.token);
-				
-			}
-			else{
-				
-				incorrect = true;
-			}
+			pwLoginInvalidResponse = !success;
+	
 		});
+		 
 	}
 
 </script>
@@ -54,7 +49,7 @@
 					<h1>Logga in</h1>
 					
 				</button>
-				{#if incorrect}
+				{#if pwLoginInvalidResponse}
 					<p>
 						Incorrect email or password
 					</p>

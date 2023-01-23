@@ -61,10 +61,8 @@ export const getUsers = (filter = '') => {
 
 const url = "https://localhost:7215/api/Authentication/login";
 
-export async function TokenByPasswordLogin(inputEmail, inputPassword)
+export async function PasswordLogIn(inputEmail, inputPassword)
 {
-    
-
     const response = await fetch(`${url}`, {
         method: 'POST',
         headers: {
@@ -77,22 +75,21 @@ export async function TokenByPasswordLogin(inputEmail, inputPassword)
 		})
 
     });
-	const data = await response.json();
+	
 	if(response.ok){
 
-		
-		return {
-			token : data.twoFToken,
-			message : "ok"
-		} 
-		
-	}
-	else{
-		return {
-			message : data
+		let data = await response.json();
+
+		if(data.twoFToken){
+
+			console.log(data.twoFToken);
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
-	
-
-
+	else{
+		return false;
+	}
 }
