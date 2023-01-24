@@ -9,10 +9,7 @@ namespace BulbasaurAPI.Repository.Interface
 
         Task<IEnumerable<Group>> GetGroupsByPersonId(int id);
 
-
         Task<IEnumerable<Group>> GetAllGroupsAsync();
-
-        //Task<Group> CreateGroupAsync();
 
         Task<bool> DeleteGroupAsync(int id);
 
