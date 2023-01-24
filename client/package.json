@@ -24,6 +24,7 @@
 		"svelte": "^3.54.0",
 		"svelte-preprocess": "^5.0.0",
 		"svelte-preprocess-less": "^0.4.0",
+		"svelte-use-form": "^2.6.1",
 		"vite": "^4.0.0"
 	},
 	"type": "module",

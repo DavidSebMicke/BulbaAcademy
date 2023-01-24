@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    [Migration("20230118134802_addedIpToLogging")]
-    partial class addedIpToLogging
+    [Migration("20230120114041_BulbasaurDB")]
+    partial class BulbasaurDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -45,10 +45,11 @@ namespace BulbasaurAPI.Controllers
             }
         }
 
+        // Post
         [HttpPost]
-        public async Task<IActionResult> CreateCaregiverAsync([FromBody] Caregiver caregiverCreate)
+        public async Task<IActionResult> CreateCaregiverAsync([FromBody] Caregiver createdCareGiver)
         {
-            if (caregiverCreate == null) return BadRequest(ModelState);
+            if (createdCareGiver == null) return BadRequest(ModelState);
 
             var caregivers = _caregiver.EntityExists(caregiverCreate.Id);
 
@@ -65,8 +66,9 @@ namespace BulbasaurAPI.Controllers
             return Ok("Successfully created");
         }
 
+        //Delete
         [HttpDelete]
-        public async Task<IActionResult> DeleteCaregiverById([FromQuery] int id)
+        public async Task<IActionResult> DeleteCaregiverById(int id)
         {
             var caregiverDelete = _caregiver.EntityExists(id);
             var caregiverToDelete = await _caregiver.GetById(id);
@@ -77,6 +79,7 @@ namespace BulbasaurAPI.Controllers
             return Ok("Successfully deleted");
         }
 
+        //Put(Update)
         [HttpPut]
         public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] Caregiver updateCaregiver)
         {

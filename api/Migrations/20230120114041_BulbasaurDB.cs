@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BulbasaurAPI.Migrations
 {
-    public partial class nolimittokenlength : Migration
+    public partial class BulbasaurDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -285,6 +285,7 @@ namespace BulbasaurAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Action = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
