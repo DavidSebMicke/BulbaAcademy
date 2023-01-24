@@ -1,9 +1,50 @@
 <script>
-	let message;
-	let title;
-	let datePublished;
-	let dateEnd;
+	import { once } from 'svelte/internal';
+	import { truncateText, handleDateFormatting } from './noticeBoard';
+	import NoticeModal from './noticeModal.svelte';
+	let messages = [
+		{
+			date: new Date('2023-01-04'),
+			title: 'First',
+			text: 'Dependent certainty off discovery him his tolerably offending</h2><p>Do greatest at in learning steepest. Breakfast extremity suffering one who all otherwise suspected. He at no nothing forbade up moments. Wholly uneasy at missed be of pretty whence. John way sir high than law who week. Surrounded prosperous introduced it if is up dispatched.'
+		},
+		{
+			date: new Date('2023-01-14'),
+			title: 'Second',
+			text: 'Improved so strictly produced answered elegance is.</p><p>Give lady of they such they sure it. Me contained explained my education. Vulgar as hearts by garret. Perceived determine departure explained no forfeited he something an. Contrasted dissimilar get joy you instrument out reasonably.'
+		},
+		{
+			date: new Date('2023-01-16'),
+			title: 'Third',
+			text: 'Again keeps at no meant stuff. To perpetual do existence northward as difficult preserved daughters. Continued at up to zealously necessary breakfast. Surrounded sir motionless she end literature.'
+		},
+		{
+			date: new Date('2023-01-20'),
+			title: 'Fourth',
+			text: 'Gay direction neglected but supported yet her.</p><p>Kept in sent gave feel will oh it we. Has pleasure procured men laughing shutters nay. Old insipidity motionless continuing law shy partiality.'
+		},
+		{
+			date: new Date('2023-01-24'),
+			title: 'Fifth',
+			text: 'Depending acuteness dependent eat use dejection. Unpleasing astonished discovered not nor shy. Morning hearted now met yet beloved evening. Has and upon his last here must.'
+		}
+	];
+	let currentItem = null;
+	let showModal = false;
 	let showBanner = true;
+	let modal;
+
+	function openModal() {
+		showModal = true;
+	}
+	function setIndexValue(indexNumber) {
+		currentItem = messages[indexNumber];
+	}
+
+	function closeModal(event) {
+		showModal = event.detail.Boolean;
+		currentItem = null;
+	}
 	function toggleBanner() {
 		showBanner = !showBanner;
 	}
@@ -13,45 +54,73 @@
 	<div class="messageButton">
 		<button class="showMessage" on:click={toggleBanner}>Noticeboard</button>
 	</div>
-{/if}
-{#if showBanner}
+{:else}
 	<div class="crisis-banner">
-		{title}
-		<p>
-			Attention: Crisis Crisis Crisis Crisis Crisis Crisis Crisis
-			{message}
-		</p>
-		<p>
-			{datePublished} /{dateEnd}
-		</p>
-
-		<button class="closeCross" on:click={toggleBanner}
-			><iconify-icon icon="material-symbols:close" width="20" /></button
-		>
+		{#each messages as message, i}
+			<div class="grid-items">
+				<h3 class="noticeTitle" style="grid-column:{i}">{message.title}</h3>
+				<li class="noticeMessage" style="grid-column:{i}">
+					{truncateText(message.text)}
+				</li>
+				<li class="noticeDate" style="grid-column:{i}">
+					{handleDateFormatting(message.date)} / {handleDateFormatting(message.date)}
+				</li>
+				<button on:click={openModal} on:click={() => setIndexValue(i)} class="showMore"
+					>Read more</button
+				>
+				{#if i + 1 == messages.length}
+					<button class="closeCross" on:click={toggleBanner}
+						><iconify-icon icon="material-symbols:close" width="30" /></button
+					>
+				{/if}
+				{#if showModal}
+					<NoticeModal {...currentItem} on:message={closeModal} />
+				{/if}
+			</div>
+		{/each}
 	</div>
 {/if}
 
 <style lang="less">
 	@import 'public\less\global.less';
 
-	// .noticeBoard-container {
-	// 	display: inline-flex;
-	// }
 	.crisis-banner {
-		display: flex;
 		background-color: @crisis-message-background;
 		color: black;
-		width: 100%;
-		position: relative;
-		padding: 1em;
+		list-style: none;
+		display: inline-flex;
+		border: 2px solid black;
+		margin: 2em;
+		text-align: center;
+		padding-left: 0;
+		border-right: none;
+	}
+	.grid-items {
+		border-right: 2px solid black;
+	}
+
+	.noticeTitle {
+		margin: 0.5rem;
+		text-indent: 0.5rem;
+		font-size: 1.2rem;
+		text-align: center;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		border-bottom: 1px solid @light-mode-flavour1;
+	}
+	.showMore {
+		justify-content: center;
+		.classic-button;
+	}
+	.noticeMessage {
+		text-align: center;
 	}
 	.closeCross {
-		display: inline-flex;
 		position: absolute;
-		right: 0;
-		top: 0;
-		background: none;
 		border: none;
+		top: 9em;
+		right: 2.5em;
+
 		&:hover {
 			cursor: pointer;
 		}
