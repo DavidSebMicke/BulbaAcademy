@@ -51,9 +51,9 @@ namespace BulbasaurAPI.Controllers
         {
             if (createdCareGiver == null) return BadRequest(ModelState);
 
-            var caregivers = _caregiver.EntityExists(caregiverCreate.Id);
+            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.Id);
 
-            if (caregivers != null)
+            if (caregiverExists)
             {
                 ModelState.AddModelError("", "Caregiver already exists");
                 return StatusCode(422, ModelState);
@@ -61,7 +61,7 @@ namespace BulbasaurAPI.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _caregiver.Create(caregiverCreate);
+            await _caregiver.Create(createdCareGiver);
 
             return Ok("Successfully created");
         }
@@ -70,9 +70,10 @@ namespace BulbasaurAPI.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteCaregiverById(int id)
         {
-            var caregiverDelete = _caregiver.EntityExists(id);
+            var caregiverExists = await _caregiver.EntityExists(id);
+            if (!caregiverExists) return NotFound("A caregiver with the given ID does not exist.");
             var caregiverToDelete = await _caregiver.GetById(id);
-            if (caregiverDelete == null) return BadRequest(ModelState);
+            if (caregiverToDelete == null) return NotFound("A caregiver with the given ID does not exist.");
 
             await _caregiver.Delete(caregiverToDelete);
 
