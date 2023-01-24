@@ -37,7 +37,7 @@ namespace BulbasaurAPI.Controllers
         // POST: api/chat/create
         [HttpPost]
         [Route("create")]
-        public async Task<ChatDTO?> CreateChat([FromBody] NewChatDTO newChat)
+        public async Task<ActionResult<ChatDTO?>> CreateChat([FromBody] NewChatDTO newChat)
         {
             var user = (User)HttpContext.Items["User"];
             return await _chat.CreateChat(user, newChat);

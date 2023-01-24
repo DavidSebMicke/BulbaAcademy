@@ -3,14 +3,12 @@ using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace BulbasaurAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CaregiverController : ControllerBase
     {
-
         private readonly ICaregiverRepository _caregiver;
 
         public CaregiverController(ICaregiverRepository context)
@@ -24,16 +22,14 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-
                 return Ok(_caregiver.GetAll());
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
+
         // GET: api/1
         [HttpGet]
         [Route("{id}")]
@@ -45,7 +41,6 @@ namespace BulbasaurAPI.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -56,11 +51,9 @@ namespace BulbasaurAPI.Controllers
         {
             if (createdCareGiver == null) return BadRequest(ModelState);
 
-            var checkForExistingCareGiver = _caregiver.EntityExists(createdCareGiver.Id);
-           
+            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.Id);
 
-
-            if (checkForExistingCareGiver != null)
+            if (caregiverExists)
             {
                 ModelState.AddModelError("", "Caregiver already exists");
                 return StatusCode(422, ModelState);
@@ -68,21 +61,22 @@ namespace BulbasaurAPI.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-
             await _caregiver.Create(createdCareGiver);
 
             return Ok("Successfully created");
-
         }
 
         //Delete
         [HttpDelete]
         public async Task<IActionResult> DeleteCaregiverById(int id)
         {
-            var caregiverToDelete = _caregiver.EntityExists(id);
-            if (caregiverToDelete == null) return BadRequest(ModelState);
+            var caregiverExists = await _caregiver.EntityExists(id);
+            if (!caregiverExists) return NotFound("A caregiver with the given ID does not exist.");
+            var caregiverToDelete = await _caregiver.GetById(id);
+            if (caregiverToDelete == null) return NotFound("A caregiver with the given ID does not exist.");
 
             await _caregiver.Delete(caregiverToDelete);
+
             return Ok("Successfully deleted");
         }
 
@@ -91,10 +85,10 @@ namespace BulbasaurAPI.Controllers
         public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] Caregiver updateCaregiver)
         {
             if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
-          
+
             if (updateCaregiver == null)
                 return BadRequest(ModelState);
-            
+
             if (!ModelState.IsValid)
                 return BadRequest();
 
@@ -109,7 +103,7 @@ namespace BulbasaurAPI.Controllers
                 existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
                 //existingCaregiver.SSN = updateCaregiver.SSN;
 
-                await _caregiver.Update();
+                await _caregiver.Update(existingCaregiver);
             }
             else
             {
@@ -118,6 +112,5 @@ namespace BulbasaurAPI.Controllers
 
             return Ok("Successfully updated");
         }
-
     }
 }
