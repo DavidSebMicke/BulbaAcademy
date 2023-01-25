@@ -42,9 +42,8 @@ namespace BulbasaurAPI.Repository
             var user = await _context.Users.Where(u => u.Person.Id == person.Id).FirstOrDefaultAsync();
 
             var result = await _context.Groups
-                .Where<Group>(x => x.Users.Contains(user))
-                .Include(x => x.Users)
-                .ThenInclude(u => u.Person)
+                .Where<Group>(x => x.People.Contains(user.Person))
+                .Include(x => x.People)
                 .ThenInclude(p => p.Role)
                 .ToListAsync();
             return result;

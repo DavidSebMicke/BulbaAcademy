@@ -74,7 +74,7 @@ namespace BulbasaurAPI.Authentication
                 var userGUID = Guid.Parse(jwtToken.Claims.First(c => c.Type == "guid").Value);
 
                 // Access token authentication through backend
-                dbToken = await db.AccessTokens.Include(a => a.User).FirstAsync(t => t.TokenStr == Hasher.Hash(accessToken));
+                dbToken = await db.AccessTokens.Include(a => a.User).ThenInclude(u => u.Person).FirstAsync(t => t.TokenStr == Hasher.Hash(accessToken));
             }
             catch
             {
@@ -162,7 +162,7 @@ namespace BulbasaurAPI.Authentication
                 var userGUID = Guid.Parse(jwtToken.Claims.First(c => c.Type == "guid").Value);
 
                 // Access token authentication through backend
-                dbToken = await db.TwoFTokens.Include(a => a.User).FirstAsync(t => t.TokenStr == Hasher.Hash(token));
+                dbToken = await db.TwoFTokens.Include(a => a.User).ThenInclude(u => u.Person).FirstAsync(t => t.TokenStr == Hasher.Hash(token));
             }
             catch
             {

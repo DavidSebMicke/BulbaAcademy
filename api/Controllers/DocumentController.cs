@@ -33,7 +33,7 @@ namespace BulbasaurAPI.Controllers
 
                 if (document.UploadedBy.Id == user.Id ||
                     document.EligibleList.Contains(user) ||
-                    document.EligibleGroups.Any(g => g.Users.Any(u => u.Id == user.Id)))
+                    document.EligibleGroups.Any(g => g.People.Any(u => u.Id == user.Id)))
                 {
                     var file = PDFUtils.GetFile(document);
                     if (file == null) return NotFound("The PDF file was not found.");
@@ -69,7 +69,7 @@ namespace BulbasaurAPI.Controllers
                 {
                     if (document.UploadedBy.Id == user.Id ||
                         document.EligibleList.Contains(user) ||
-                        document.EligibleGroups.Any(g => g.Users.Any(u => u.Id == user.Id)))
+                        document.EligibleGroups.Any(g => g.People.Any(u => u.Id == user.Person.Id)))
                     {
                         var file = PDFUtils.GetFile(document);
                         if (file == null) continue;
