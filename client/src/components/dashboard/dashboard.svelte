@@ -10,7 +10,7 @@
 		duration: 100
 	};
 
-	let isExpanded = false;
+	let isExpanded = true;
 </script>
 
 <div class="nav-container">
@@ -28,19 +28,17 @@
 				<a href="/mainPage"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/mainPage">Startsida</a
+						href="/">Startsida</a
 					>{/if}
 			</li>
 			<li>
-				<a href="/"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
-						class="text"
-						in:fade={fadeIn}
-						out:fade={fadeOut}
-						href="/profile">Profil</a
+				<a href="/"><iconify-icon icon="healthicons:ui-user-profile" /></a
+				>{#if isExpanded}<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile"
+						>Profil</a
 					>{/if}
 			</li>
 			<li>
-				<a href="/staff"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
+				<a href="/staff"><iconify-icon icon="ic:baseline-work" /></a>{#if isExpanded}<a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
