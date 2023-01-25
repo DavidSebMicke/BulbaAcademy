@@ -30,14 +30,13 @@ namespace BulbasaurAPI.Controllers
                 {
                     return NotFound();
                 }
-                
             }
             catch (Exception ex)
             {
-
                 return BadRequest(ex.Message);
             }
         }
+
         // GET: api/1
         [HttpGet]
         [Route("{id}")]
@@ -86,8 +85,10 @@ namespace BulbasaurAPI.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeletePersonellById(int id)
         {
-            var personellToDelete = _personell.EntityExists(id);
-            if(personellToDelete == null)  return BadRequest(ModelState);
+            var entityExists = await _personell.EntityExists(id);
+            if (!entityExists) return NotFound();
+            var personellToDelete = await _personell.GetById(id);
+            if (personellToDelete == null) return BadRequest(ModelState);
 
             await _personell.Delete(personellToDelete);
             return Ok("Successfully deleted");
@@ -109,21 +110,20 @@ namespace BulbasaurAPI.Controllers
             {
                 existingPersonell.FirstName = updatedPersonell.FirstName;
                 existingPersonell.LastName = updatedPersonell.LastName;
-                existingPersonell.PhoneNumber = updatedPersonell.PhoneNumber; 
+                existingPersonell.PhoneNumber = updatedPersonell.PhoneNumber;
                 existingPersonell.HomeAddress = updatedPersonell.HomeAddress;
                 existingPersonell.EmailAddress = updatedPersonell.EmailAddress;
                 existingPersonell.Employment = updatedPersonell.Employment;
                 existingPersonell.Role = updatedPersonell.Role;
                 existingPersonell.FullTimeEmployment = updatedPersonell.FullTimeEmployment;
 
-                await _personell.Update();
+                await _personell.Update(existingPersonell);
             }
-
             else
             {
                 NotFound();
             }
-            return Ok("Successfully updated");           
+            return Ok("Successfully updated");
         }
     }
 }
