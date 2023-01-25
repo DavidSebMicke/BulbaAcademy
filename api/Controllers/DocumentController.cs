@@ -20,7 +20,7 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpGet]
-        [Route("/:id")]
+        [Route("{id}")]
         public async Task<ActionResult<DocumentDTO>> GetDocument(int id)
         {
             try
@@ -129,7 +129,7 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpDelete]
-        [Route("/:id")]
+        [Route("{id}")]
         public async Task<ActionResult> DeleteDocument(int id)
         {
             try
