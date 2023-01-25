@@ -14,43 +14,39 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        public async Task<bool> Create(Personell personell)
+        public async Task<Personell> Create(Personell personell)
         {
-            await _context.Personells.AddAsync(personell);
-            return await SaveAsync();
+            var newEntity = (await _context.Personells.AddAsync(personell)).Entity;
+            await _context.SaveChangesAsync();
+            return newEntity;
         }
 
-        public async Task<bool> Delete(Personell personell)
+        public async Task Delete(Personell personell)
         {
-            var deletedPersonell = _context.Personells.Where(x => x.Id == personell.Id).FirstOrDefault();
-            _context.Personells.Remove(deletedPersonell);
-
-            return await SaveAsync();
+            _context.Personells.Remove(personell);
+            await _context.SaveChangesAsync();
         }
 
-        public IEnumerable<Personell> GetAll()
+        public async Task<IEnumerable<Personell>> GetAll()
         {
-            return _context.Personells.ToList();
+            return await _context.Personells.ToListAsync();
         }
 
-        public async Task<bool> Update()
+        public async Task<Personell> Update(Personell newEntity)
         {
-            return await SaveAsync();
-        }
-        public async Task<Personell> GetById(int id)
-        {
-            return await _context.Personells.FirstOrDefaultAsync(x => x.Id == id);
+            var updatedEntity = _context.Personells.Update(newEntity).Entity;
+            await _context.SaveChangesAsync();
+            return updatedEntity;
         }
 
-        public async Task<bool> SaveAsync()
+        public async Task<Personell?> GetById(int id)
         {
-            var savedEntity = await _context.SaveChangesAsync();
-            return savedEntity > 0 ? true : false;
+            return await _context.Personells.FindAsync(id);
         }
 
-        public Personell EntityExists(int id)
+        public async Task<bool> EntityExists(int id)
         {
-            return _context.Personells.Where(x => x.Id == id).FirstOrDefault();
+            return _context.Personells.Any(p => p.Id == id);
         }
     }
 }
