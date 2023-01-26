@@ -4,11 +4,12 @@
 	}
 </script>
 
-<div class="griden">
+<body class="login">
+	<!-- <div class="griden"> -->
 	<div id="step1">Logga in i Bulba Academy</div>
 
 	<div class="step2">
-		<p>Användarnamn<br /><input value="" /></p>
+		<p class="loginp">Användarnamn<br /><input value="" /></p>
 		<p>
 			Lösenord<br /><input value="" />
 			<br /><br />
@@ -20,7 +21,8 @@
 	</div>
 
 	<img class="bulben" src="public\img\bulbi.jpg" alt="gfdkl" />
-</div>
+	<!-- </div> -->
+</body>
 
 <style lang="less">
 	// @import 'public\less\variables.less';
@@ -29,15 +31,16 @@
 	@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-	// .body {
-	// 	font-family: 'Poiret One', cursive;
-	// 	font-family: 'Plus Jakarta Sans', sans-serif;
-	// 	font-family: 'Inter', sans-serif;
-	// }
-	.griden {
+	.login {
+		font-family: 'Poiret One', cursive;
+		font-family: 'Plus Jakarta Sans', sans-serif;
+		font-family: 'Inter', sans-serif;
+		background-color: white !important;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
+	// .griden {
+	// }
 
 	#step1 {
 		position: absolute;
@@ -57,6 +60,7 @@
 		letter-spacing: 0.04em;
 
 		color: #000000;
+		background-color: white;
 
 		//border: 1px solid #000000;
 		//text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -79,6 +83,10 @@
 		letter-spacing: 0.04em;
 
 		color: #000000;
+		background-color: white;
+	}
+	.loginp {
+		background-color: white;
 	}
 
 	#step3 {
@@ -110,8 +118,6 @@
 		height: 250.18px;
 		left: 50rem;
 		top: 10rem;
-
-		//border: 1px solid #000000;
-		//transform: rotate(33.25deg);
+		background-color: white;
 	}
 </style>
