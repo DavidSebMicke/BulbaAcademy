@@ -13,15 +13,40 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        public async Task<List<Person>> GetAllPersons()
+        public async Task<Person> Create(Person person)
         {
-
-           return await _context.Persons.ToListAsync();
+            var newPerson = (await _context.Persons.AddAsync(person)).Entity;
+            await _context.SaveChangesAsync();
+            return newPerson;
         }
 
-        public async Task<Person> GetPersonById(int id)
+        public async Task<Person> Update(Person person)
         {
-            return await _context.Persons.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var updatedEntity = _context.Persons.Update(person).Entity;
+            await _context.SaveChangesAsync();
+            return updatedEntity;
         }
+
+        public async Task Delete(Person entity)
+        {
+            var personDelete = _context.Persons.Where(x => x.Id == entity.Id).FirstOrDefault();
+            _context.Persons.Remove(personDelete);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Person>> GetAll()
+        {
+            return await _context.Persons.ToListAsync();
+        }
+
+        public async Task<Person?> GetById(int id)
+        {
+            return await _context.Persons.FindAsync(id);
+        }
+        public async Task<bool> EntityExists(int id)
+        {
+            return await _context.Persons.AnyAsync(c => c.Id == id);
+        }
+       
     }
 }

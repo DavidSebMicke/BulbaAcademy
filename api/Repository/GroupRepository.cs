@@ -31,23 +31,23 @@ namespace BulbasaurAPI.Repository
             return await _context.Groups.ToListAsync();
         }
 
-        public async Task<Group> GetGroupByIdAsync(int id)
-        {
-            return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
-        }
+        //public async Task<Group> GetGroupByIdAsync(int id)
+        //{
+        //    return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
+        //}
 
-        public async Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
-        {
-            var person = await _context.Persons.Where(x => x.Id == id).FirstOrDefaultAsync();
-            var user = await _context.Users.Where(u => u.Person.Id == person.Id).FirstOrDefaultAsync();
+        //public async Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
+        //{
+        //    var person = await _context.Persons.Where(x => x.Id == id).FirstOrDefaultAsync();
+        //    var user = await _context.Users.Where(u => u.Person.Id == person.Id).FirstOrDefaultAsync();
 
-            var result = await _context.Groups
-                .Where<Group>(x => x.People.Contains(user.Person))
-                .Include(x => x.People)
-                .ThenInclude(p => p.Role)
-                .ToListAsync();
-            return result;
-        }
+        //    var result = await _context.Groups
+        //        .Where<Group>(x => x.Users.Contains(user.Person))
+        //        .Include(x => x.People)
+        //        .ThenInclude(p => p.Role)
+        //        .ToListAsync();
+        //    return result;
+        //}
 
         public async Task<bool> SaveAsync()
         {
