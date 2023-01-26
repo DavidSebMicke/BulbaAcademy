@@ -22,7 +22,7 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-                return Ok(_caregiver.GetAll());
+                return Ok(await _caregiver.GetAll());
             }
             catch (Exception)
             {
@@ -37,7 +37,7 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-                return Ok(_caregiver.GetById(id));
+                return Ok(await _caregiver.GetById(id));
             }
             catch (Exception)
             {

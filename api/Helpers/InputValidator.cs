@@ -4,11 +4,10 @@ namespace BulbasaurAPI.Helpers
 {
     public class InputValidator
     {
-
         public static bool ValidateEmailFormat(string str)
         {
             //to limit max length?
-            if(str.Length > 100) return false;
+            if (str.Length > 255) return false;
 
             return Regex.IsMatch(str, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
         }
@@ -16,7 +15,7 @@ namespace BulbasaurAPI.Helpers
         public static bool ValidatePasswordFormat(string str)
         {
             //to limit max length?
-            if (str.Length > 100) return false;
+            if (str.Length > 255) return false;
             //at least 8 characters
             else if (str.Length < 8) return false;
             //at least 3 lowercase letters
@@ -30,8 +29,6 @@ namespace BulbasaurAPI.Helpers
 
             //password good to go!
             else return true;
-
-           
         }
     }
 }

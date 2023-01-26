@@ -4,7 +4,6 @@
     {
         public int Id { get; set; }
         public List<User> InvolvedUsersList { get; set; }
-
-        public List<ChatItem> ChatItemList { get; set; } 
+        public List<ChatItem> ChatItemList { get; set; }
     }
 }
