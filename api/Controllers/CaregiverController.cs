@@ -1,7 +1,7 @@
 ﻿using BulbasaurAPI.Models;
-using BulbasaurAPI.Repository;
+using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -9,7 +9,6 @@ namespace BulbasaurAPI.Controllers
     [ApiController]
     public class CaregiverController : ControllerBase
     {
-
         private readonly ICaregiverRepository _caregiver;
 
         public CaregiverController(ICaregiverRepository context)
@@ -23,16 +22,14 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-
-                return Ok(_caregiver.GetAllCaregivers());
+                return Ok(_caregiver.GetAll());
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
+
         // GET: api/1
         [HttpGet]
         [Route("{id}")]
@@ -40,23 +37,23 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-                return Ok(_caregiver.GetCaregiverById(id));
+                return Ok(_caregiver.GetById(id));
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
+        // Post
         [HttpPost]
-        public async Task<IActionResult> CreateCaregiver([FromBody] Caregiver caregiverCreate, [FromQuery] int childId)
+        public async Task<IActionResult> CreateCaregiverAsync([FromBody] Caregiver createdCareGiver)
         {
-            if (caregiverCreate == null) return BadRequest(ModelState);
+            if (createdCareGiver == null) return BadRequest(ModelState);
 
-            var caregivers = _caregiver.GetAllCaregivers().Where(c => c.Id == caregiverCreate.Id).FirstOrDefault();
+            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.Id);
 
-            if (caregivers != null)
+            if (caregiverExists)
             {
                 ModelState.AddModelError("", "Caregiver already exists");
                 return StatusCode(422, ModelState);
@@ -64,14 +61,56 @@ namespace BulbasaurAPI.Controllers
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (!_caregiver.CreateCaregiver(childId, caregiverCreate))
-            {
-                ModelState.AddModelError("", "Something went wrong wihle saving");
-                return StatusCode(500, ModelState);
-            }
+            await _caregiver.Create(createdCareGiver);
 
             return Ok("Successfully created");
+        }
 
+        //Delete
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCaregiverById(int id)
+        {
+            var caregiverExists = await _caregiver.EntityExists(id);
+            if (!caregiverExists) return NotFound("A caregiver with the given ID does not exist.");
+            var caregiverToDelete = await _caregiver.GetById(id);
+            if (caregiverToDelete == null) return NotFound("A caregiver with the given ID does not exist.");
+
+            await _caregiver.Delete(caregiverToDelete);
+
+            return Ok("Successfully deleted");
+        }
+
+        //Put(Update)
+        [HttpPut]
+        public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] Caregiver updateCaregiver)
+        {
+            if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
+
+            if (updateCaregiver == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var existingCaregiver = await _caregiver.GetById(caregiverId);
+
+            if (existingCaregiver != null)
+            {
+                existingCaregiver.FirstName = updateCaregiver.FirstName;
+                existingCaregiver.LastName = updateCaregiver.LastName;
+                existingCaregiver.PhoneNumber = updateCaregiver.PhoneNumber;
+                existingCaregiver.HomeAddress = updateCaregiver.HomeAddress;
+                existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
+                //existingCaregiver.SSN = updateCaregiver.SSN;
+
+                await _caregiver.Update(existingCaregiver);
+            }
+            else
+            {
+                NotFound();
+            }
+
+            return Ok("Successfully updated");
         }
     }
 }

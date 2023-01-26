@@ -8,6 +8,38 @@
 	border: 2px solid black;
 }
 
+
+[data-theme="light"] {
+	--primary-color: @light-mode-flavour1;
+	--secondary-color: @light-mode-flavour2
+	--bg-color: @light-mode-background;
+	--color: @light-mode-text;
+  }
+  
+  [data-theme="dark"] {
+	--primary-color: @dark-mode-flavour1;
+	--secondary-color: @dark-mode-flavour2;
+	--bg-color: @dark-mode-background;
+	--color: @dark-mode-text;
+  }
+  
+  body, div, span, p, a, button, input, textarea {
+	margin: 0;
+	background-color: var(--bg-color);
+	color: var(--color);
+	//background-color: transparent;
+  }
+
+  
+
+  
+
+  .container {
+	max-width: 960px;
+	margin: 0 auto;
+  }  
+
+
 * {
 	box-sizing: border-box;
 }
@@ -22,19 +54,16 @@ a {
 	gap: 24px;
 }
 
-:root {
-	@light-mode-text: hsl(100, 40%, 10%);
-	@light-mode-background: hsl(75, 40%, 70%);
-	@light-mode-flavour1: hsl(50, 40%, 65%);
-	@light-mode-flavour2: hsl(25, 40%, 60%);
-}
-
-div {
-	background-color: @dark-mode-background;
-	color: @dark-mode-text;
-}
-
-body {
-	background-color: @dark-mode-background;
-	color: @dark-mode-text;
+.classic-button {
+	padding: 10px 20px;
+	background-color: rgb(1, 1, 46);
+	&:hover {
+		background-color: rgb(0, 123, 139);
+	}
+	color: white;
+	font-size: 10px;
+	border: none;
+	border-radius: 5px;
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+	transition: all 0.2s ease-in-out;
 }

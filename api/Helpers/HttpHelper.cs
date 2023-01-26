@@ -1,4 +1,6 @@
-﻿namespace BulbasaurAPI.Helpers
+﻿using BulbasaurAPI.Models;
+
+namespace BulbasaurAPI.Helpers
 {
     public class HttpHelper
     {
@@ -9,6 +11,11 @@
                 return context.Request.Headers["X-Forwarded-For"];
             else
                 return context.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        }
+
+        public static User? GetRequestUser(HttpContext context)
+        {
+            return (User)context.Items["User"];
         }
     }
 }

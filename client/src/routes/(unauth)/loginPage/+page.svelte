@@ -1,6 +1,18 @@
 <script>
-	function handleClick() {
-		alert('Du är inloggad');
+	import { PasswordLogIn } from '../../../api/user';
+	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
+
+	const form = useForm();
+	let inputEmail;
+	let inputPassword;
+	let pwLoginInvalidResponse = false;
+
+	function handleLoginClick() {
+		pwLoginInvalidResponse = false;
+
+		PasswordLogIn(inputEmail, inputPassword).then((success) => {
+			pwLoginInvalidResponse = !success;
+		});
 	}
 </script>
 
@@ -9,20 +21,47 @@
 	<div id="step1">Logga in i Bulba Academy</div>
 
 	<div class="step2">
-		<p class="loginp">Användarnamn<br /><input value="" /></p>
-		<p>
-			Lösenord<br /><input value="" />
-			<br /><br />
+		<form name="loginForm" use:form on:submit|preventDefault={handleLoginClick}>
+			<p>
+				Användarnamn<br />
+				<input
+					type="email"
+					name="email"
+					use:validators={[required, email]}
+					bind:value={inputEmail}
+				/>
+				<HintGroup for="email">
+					<Hint on="required">* You need to enter your email</Hint>
+					<Hint on="email" hideWhenRequired>* Email is not valid</Hint>
+				</HintGroup>
+			</p>
 
-			<button id="step3" on:click={handleClick}>
-				<h1>Logga in</h1>
-			</button>
-		</p>
+			<p>
+				Lösenord<br />
+				<input
+					type="password"
+					name="password"
+					use:validators={[required]}
+					bind:value={inputPassword}
+				/>
+				<HintGroup for="password">
+					<Hint on="required">* You need to enter your password</Hint>
+				</HintGroup>
+				<br /><br />
+			</p>
+			<div>
+				<button id="step3" disabled={!$form.valid} type="submit">
+					<h1>Logga in</h1>
+				</button>
+				{#if pwLoginInvalidResponse}
+					<p>Incorrect email or password</p>
+				{/if}
+			</div>
+		</form>
 	</div>
 
-	<img class="bulben" src="public\img\bulbi.jpg" alt="gfdkl" />
-	<!-- </div> -->
-</body>
+	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
+</div>
 
 <style lang="less">
 	// @import 'public\less\variables.less';

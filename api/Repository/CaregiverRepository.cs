@@ -1,11 +1,13 @@
-﻿using BulbasaurAPI.Models;
+﻿using System.Runtime.InteropServices;
+using BulbasaurAPI.Models;
+using BulbasaurAPI.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
+using System.Web.Http.ModelBinding;
 
 namespace BulbasaurAPI.Repository
 {
     public class CaregiverRepository : ICaregiverRepository
     {
-
-
         private readonly DbServerContext _context;
 
         public CaregiverRepository(DbServerContext context)
@@ -13,47 +15,40 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        public bool CreateCaregiver(int childId, Caregiver caregiver)
+        public async Task<Caregiver> Create(Caregiver caregiver)
         {
-            var ChildEntity = _context.Children.Where(a => a.Id == childId).FirstOrDefault();
-
-
-
-            //var caregiverChild = new CaregiverChild()
-            //{
-            //    Caregiver = caregiver,
-            //    Child = ChildEntity,
-            //};
-
-            //_context.Add(caregiverChild);
-            //_context.Add(caregiver);
-
-            return Save();
-
+            var newCaregiver = (await _context.Caregivers.AddAsync(caregiver)).Entity;
+            await _context.SaveChangesAsync();
+            return newCaregiver;
         }
 
-
-        public ICollection<Caregiver> GetAllCaregivers()
+        public async Task<Caregiver> Update(Caregiver caregiver)
         {
-            return _context.Caregivers.ToList();
+            var updatedEntity = _context.Caregivers.Update(caregiver).Entity;
+            await _context.SaveChangesAsync();
+            return updatedEntity;
         }
 
-        public Caregiver GetCaregiverById(int id)
+        public async Task Delete(Caregiver entity)
         {
-
-            return _context.Caregivers.FirstOrDefault(x => x.Id == id);
+            var caregiverDelete = _context.Caregivers.Where(x => x.Id == entity.Id).FirstOrDefault();
+            _context.Caregivers.Remove(caregiverDelete);
+            await _context.SaveChangesAsync();
         }
 
-
-
-
-
-        public bool Save()
+        public async Task<IEnumerable<Caregiver>> GetAll()
         {
-            var saved = _context.SaveChanges();
-            return saved > 0 ? true : false;
+            return await _context.Caregivers.ToListAsync();
         }
 
+        public async Task<Caregiver?> GetById(int id)
+        {
+            return await _context.Caregivers.FindAsync(id);
+        }
 
+        public async Task<bool> EntityExists(int id)
+        {
+            return await _context.Caregivers.AnyAsync(c => c.Id == id);
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using BulbasaurAPI.Models;
 
-namespace BulbasaurAPI.Repository
+namespace BulbasaurAPI.Repository.Interface
 {
     public interface IPersonRepository
     {
