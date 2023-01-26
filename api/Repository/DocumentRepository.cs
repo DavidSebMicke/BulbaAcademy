@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Repository
 {
-    public class DocumentRepository : IBaseRepository<Document>
+    public class DocumentRepository : IDocumentRepository
     {
         private readonly DbServerContext _context;
 

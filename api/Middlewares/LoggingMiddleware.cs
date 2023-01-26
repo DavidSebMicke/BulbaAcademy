@@ -21,7 +21,7 @@ namespace BulbasaurAPI.Middlewares
             var accessToken = context.Response.Headers.Authorization;
             User? user = null;
 
-            if (!String.IsNullOrEmpty(accessToken))
+            if (!string.IsNullOrEmpty(accessToken))
             {
                 user = await TokenUtils.AuthenticateToken(accessToken, ipAddress);
             }

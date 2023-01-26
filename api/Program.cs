@@ -1,5 +1,6 @@
 using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Middlewares;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -35,11 +36,12 @@ namespace BulbasaurAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<DbServerContext>();
-            builder.Services.AddScoped<IPersonellRepository, PersonellRepository>();
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
-            
+            builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
+            builder.Services.AddScoped<IBaseRepository<Role>, RoleRepository>();
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -61,9 +63,8 @@ namespace BulbasaurAPI
                     service.SeedDataContext();
                 }
             }
-            app.UseCors("policyCors");  
+            app.UseCors("policyCors");
             app.UseHttpsRedirection();
-
 
             // Logging middleware
             //app.Use(async (context, next) =>
@@ -76,7 +77,7 @@ namespace BulbasaurAPI
             //app.UseMiddleware<AuthenticationMiddleware>();
 
             app.MapControllers();
-            
+
             app.Run();
         }
     }
