@@ -7,7 +7,7 @@
         public DateTime UploadDate { get; set; }
         public string DocumentTitle { get; set; }
 
-        // Exchange this for a UserDTO later
+        // Exchange this for a PersonDTO later
         public string UploadedBy { get; set; }
 
         public DocumentDTO(Models.Document document, byte[] documentData)
