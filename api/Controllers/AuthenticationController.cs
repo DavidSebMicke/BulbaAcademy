@@ -1,10 +1,11 @@
 ﻿using BulbasaurAPI.Authentication;
 using BulbasaurAPI.DTOs.Tokens;
+using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using System.Security.Cryptography;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -29,11 +30,11 @@ namespace BulbasaurAPI.Controllers
             else
             {
 
-                if (Hasher.Verify(logInForm.Password, user.Password))
+                if (Hasher.Verify(user.Salt + logInForm.Password, user.Password))
                 {
                     return new PasswordLogInResponse
                     {
-                        TwoFToken = await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext), _context)
+                        Token = await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext), _context)
                     };
                      
                 }
@@ -42,7 +43,7 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("createUser")]
-        public async Task<ActionResult<User>> CreateUser(string email, string password)
+        public async Task<ActionResult<NewUserDTO>> CreateUser(string email, string password)
         {
             //checks if email format is valid
             if(!InputValidator.ValidateEmailFormat(email)) return BadRequest("Not a valid email");
@@ -58,17 +59,19 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-
                 User newUser = new User()
                 {
                     Username = email,
-                    Password = Hasher.Hash(password),
-                    AccessLevel = Authorization.UserAccessLevel.ADMIN
+                    Password = Hasher.HashWithSalt(password, out string salt),
+                    Salt = salt,
+                    AccessLevel = Authorization.UserAccessLevel.USER
                 };
+
 
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
-                return newUser;
+
+                return new NewUserDTO(newUser); 
             }
         }
     }
