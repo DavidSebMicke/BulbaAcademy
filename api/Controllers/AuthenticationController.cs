@@ -3,6 +3,8 @@ using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
+using BulbasaurAPI.TOTPUtils;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -72,6 +74,36 @@ namespace BulbasaurAPI.Controllers
                 await _context.SaveChangesAsync();
 
                 return new NewUserDTO(newUser); 
+            }
+
+        }
+
+        [HttpPost("login/totp")]
+        public async Task<ActionResult<UserToken>> AccessTokenByTOTP(int userID, string code)
+        {
+            var tOTP = await _context.TOTPs.Where(x=>x.Id== userID).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(x => x.Id == userID).FirstOrDefaultAsync();
+
+            if (tOTP != null && user != null)
+            {
+
+                if (TOTPUtil.VerifyTOTP(tOTP, code))
+                {
+                    return new UserToken
+                    {
+                        Token = await TokenUtils.GenerateAccessToken(user, HttpHelper.GetIpAddress(HttpContext), _context)
+                    };
+                }
+
+                else
+                {
+                    return Unauthorized("Wrong code");
+                }
+
+            }
+            else
+            {
+                return Unauthorized("User invalid");
             }
         }
     }
