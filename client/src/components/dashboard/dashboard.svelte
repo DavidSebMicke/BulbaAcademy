@@ -25,7 +25,7 @@
 		<ul>
 			<!-- <li>Bulba Academy</li> -->
 			<li>
-				<a href="/mainPage"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
+				<a href="/"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
 						in:fade={fadeIn}
 						out:fade={fadeOut}
 						href="/">Startsida</a

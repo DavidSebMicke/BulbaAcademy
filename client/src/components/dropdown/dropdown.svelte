@@ -34,27 +34,13 @@
 				</select>
 			</a>
 		</li>
-
-		<li class="nav-item has-dropdown">
-			<a href="#">Theme</a>
-
-			<ul class="dropdown">
-				<li class="dropdown-item">
-					<a href="#">light</a>
-				</li>
-				<li class="dropdown-item">
-					<a href="#">dark</a>
-				</li>
-				<li class="dropdown-item">
-					<a href="#">solarize</a>
-				</li>
-			</ul>
-			<a href="#">Profil</a>
-			<a href="#">Logga ut</a>
-			<!-- <div class="drop">
+	</ul>
+	<!-- <a href="#">Profil</a>
+	<a href="#">Logga ut</a> -->
+	<!-- <div class="drop">
                 <title>Verktyg</title>
              -->
-			<!-- <button
+	<!-- <button
                     ><h2>Mer</h2>
                     <select name="" required>
                         <option value="Meddelanden">Meddelanden</option>
@@ -69,29 +55,27 @@
                     </select>
                 </button>
             </div> -->
-		</li>
-	</ul>
 </nav>
 
 <style lang="less">
 	@import 'public\less\variables.less';
 	@import 'public\less\global.less';
 
-	.navbar {
-		height: 70px;
-		width: 100%;
-		background: black;
-		color: white;
-	}
+	// .navbar {
+	// 	height: 70px;
+	// 	width: 100%;
+	// 	background: black;
+	// 	color: white;
+	// }
 
-	.navbar-nav {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
+	// .navbar-nav {
+	// 	list-style-type: none;
+	// 	margin: 0;
+	// 	padding: 0;
 
-		display: flex;
-		align-items: center;
-		justify-content: space-evenly;
-		height: 100%;
-	}
+	// 	display: flex;
+	// 	align-items: center;
+	// 	justify-content: space-evenly;
+	// 	height: 100%;
+	// }
 </style>

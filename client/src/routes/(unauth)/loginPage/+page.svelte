@@ -17,7 +17,6 @@
 </script>
 
 <body class="login">
-	<!-- <div class="griden"> -->
 	<div id="step1">Logga in i Bulba Academy</div>
 
 	<div class="step2">
@@ -61,7 +60,7 @@
 	</div>
 
 	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
-</div>
+</body>
 
 <style lang="less">
 	// @import 'public\less\variables.less';
@@ -74,13 +73,9 @@
 		font-family: 'Poiret One', cursive;
 		font-family: 'Plus Jakarta Sans', sans-serif;
 		font-family: 'Inter', sans-serif;
-		background-color: white !important;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
-	// .griden {
-	// }
-
 	#step1 {
 		position: absolute;
 		width: 724px;
@@ -97,12 +92,6 @@
 
 		align-items: center;
 		letter-spacing: 0.04em;
-
-		color: #000000;
-		background-color: white;
-
-		//border: 1px solid #000000;
-		//text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	}
 
 	.step2 {
@@ -157,6 +146,5 @@
 		height: 250.18px;
 		left: 50rem;
 		top: 10rem;
-		background-color: white;
 	}
 </style>
