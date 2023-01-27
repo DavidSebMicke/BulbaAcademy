@@ -16,17 +16,14 @@ namespace BulbasaurAPI.Controllers
         public GroupController(IGroupRepository groups/*, IPersonRepository persons*/)
         {
             _groups = groups;
-            //_persons = persons;
         }
 
         [HttpGet]
         [Route("GetGroupByPersonID")]
         public async Task<IActionResult> GetGroupsByPersonId(int id)
         {
-
-            
             var result = await _groups.GetGroupsByPersonId(id);
-           
+
             return Ok(result);
         }
     }
