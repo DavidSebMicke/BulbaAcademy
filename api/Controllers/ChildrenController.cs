@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-
 namespace BulbasaurAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -26,8 +25,8 @@ namespace BulbasaurAPI.Controllers
             {
                 var children = await _children.GetAll();
                 if (!children.Any()) return NoContent();
-                
-                return Ok(await _children.GetAll());
+
+                return Ok(children);
             }
             catch (Exception)
             {
@@ -45,7 +44,6 @@ namespace BulbasaurAPI.Controllers
                 if (!await _children.EntityExists(id))
                 {
                     return NotFound("Cant find the specified ID");
-
                 }
 
                 return Ok(await _children.GetById(id));
@@ -111,7 +109,6 @@ namespace BulbasaurAPI.Controllers
                 existingChild.PhoneNumber = updateChild.PhoneNumber;
                 existingChild.HomeAddress = updateChild.HomeAddress;
                 existingChild.EmailAddress = updateChild.EmailAddress;
-                
 
                 await _children.Update(updateChild);
             }
@@ -122,7 +119,5 @@ namespace BulbasaurAPI.Controllers
 
             return Ok("Successfully updated");
         }
-
-
     }
 }
