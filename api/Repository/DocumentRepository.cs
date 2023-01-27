@@ -36,7 +36,7 @@ namespace BulbasaurAPI.Repository
             return await _context.Documents
                 .Include(d => d.UploadedBy)
                 .Include(d => d.EligibleList)
-                .Include(d => d.EligibleGroups).ThenInclude(g => g.Users)
+                .Include(d => d.EligibleGroups).ThenInclude(g => g.People)
                 .ToListAsync();
         }
 
