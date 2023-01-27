@@ -28,8 +28,6 @@ namespace BulbasaurAPI
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
 
-        //public virtual DbSet<GroupPerson> GroupPersons { get; set; }
-
         public virtual DbSet<Chat> Chats { get; set; }
         public virtual DbSet<ChatItem> ChatItems { get; set; }
         public virtual DbSet<Document> Documents { get; set; }
@@ -74,27 +72,7 @@ namespace BulbasaurAPI
             modelBuilder.Entity<AccessToken>().ToTable("AccessTokens");
             modelBuilder.Entity<TwoFToken>().ToTable("TwoFTokens");
 
-            //modelBuilder.Entity<CaregiverChild>()
-            //    .HasKey(cg => new { cg.CaregiverId, cg.ChildId });
-            //modelBuilder.Entity<CaregiverChild>()
-            //    .HasOne(c => c.Caregiver)
-            //    .WithMany(c => c.CaregiverChildren)
-            //    .HasForeignKey(c => c.CaregiverId);
-            //modelBuilder.Entity<CaregiverChild>()
-            //    .HasOne(c => c.Child)
-            //    .WithMany(c => c.CaregiverChildren)
-            //    .HasForeignKey(c => c.ChildId);
-
-            //modelBuilder.Entity<GroupPerson>()
-            //    .HasKey(cg => new { cg.GroupId, cg.PersonId });
-            //modelBuilder.Entity<GroupPerson>()
-            //    .HasOne(c => c.Group)
-            //    .WithMany(c => c.GroupPersons)
-            //    .HasForeignKey(c => c.GroupId);
-            //modelBuilder.Entity<GroupPerson>()
-            //    .HasOne(c => c.Person)
-            //    .WithMany(c => c.GroupPersons)
-            //    .HasForeignKey(c => c.PersonId);
+            
         }
     }
 }

@@ -37,6 +37,12 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
+                if (!await _caregiver.EntityExists(id))
+                {
+                    return NotFound("Cant find the specified ID");
+
+                }
+
                 return Ok(await _caregiver.GetById(id));
             }
             catch (Exception)
@@ -107,7 +113,7 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-                NotFound();
+                NotFound("Cant find the specified ID");
             }
 
             return Ok("Successfully updated");

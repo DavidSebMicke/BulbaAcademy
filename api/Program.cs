@@ -39,6 +39,7 @@ namespace BulbasaurAPI
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+            builder.Services.AddScoped<IChildrenRepository, ChildrenRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IBaseRepository<Role>, RoleRepository>();
 
