@@ -29,7 +29,7 @@ namespace BulbasaurAPI.Repository
 
         public async Task Delete(Person entity)
         {
-            var personDelete = _context.Persons.Where(x => x.Id == entity.Id).FirstOrDefault();
+            var personDelete = await _context.Persons.Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
             _context.Persons.Remove(personDelete);
             await _context.SaveChangesAsync();
         }
@@ -43,10 +43,10 @@ namespace BulbasaurAPI.Repository
         {
             return await _context.Persons.FindAsync(id);
         }
+
         public async Task<bool> EntityExists(int id)
         {
             return await _context.Persons.AnyAsync(c => c.Id == id);
         }
-       
     }
 }
