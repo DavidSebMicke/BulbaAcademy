@@ -58,7 +58,9 @@ namespace BulbasaurAPI.Controllers
         {
             if (createdCareGiver == null) return BadRequest(ModelState);
 
-            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.Id);
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.SSN);
 
             if (caregiverExists)
             {
@@ -66,11 +68,26 @@ namespace BulbasaurAPI.Controllers
                 return StatusCode(422, ModelState);
             }
 
-            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _caregiver.Create(createdCareGiver);
 
-            return Ok("Successfully created");
+
+            var newCaregiver =  await _caregiver.Create(createdCareGiver);
+
+
+            var newUser = await UserUtils.RegisterUserWithPerson(newCaregiver);
+
+            if (newUser != null)
+            {
+
+
+
+                return Ok("Successfully created");
+
+            }
+            else
+            {
+                return BadRequest("Email invalid");
+            }
         }
 
         //Delete

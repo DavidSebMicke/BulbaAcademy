@@ -4,7 +4,9 @@ using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Web.Http.ModelBinding;
 using BulbasaurAPI.Utils;
+using BulbasaurAPI.Services;
 using Microsoft.AspNet.Identity;
+
 
 namespace BulbasaurAPI.Repository
 {
@@ -20,17 +22,11 @@ namespace BulbasaurAPI.Repository
         public async Task<Caregiver> Create(Caregiver caregiver)
         {
             var newCaregiver = (await _context.Caregivers.AddAsync(caregiver)).Entity;
-            var newUser = await UserUtils.RegisterUserWithPerson(newCaregiver, _context);
 
-            if(newUser != null)
-            {
-                await _context.SaveChangesAsync();
+
+
                 return newCaregiver;
-            }
-            else
-            {
-                return null; ;
-            }
+
             
         }
 

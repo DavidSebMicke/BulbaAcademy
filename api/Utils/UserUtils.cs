@@ -1,14 +1,23 @@
 ﻿using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
+using BulbasaurAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Utils
 {
-    internal static class UserUtils
+    internal class UserUtils
     {
-        public static async Task<User?> RegisterUser(string email, DbServerContext _context)
+
+        private static DbServerContext _context;
+
+        public UserUtils(DbServerContext context)
+        {
+            _context = context;
+        }
+
+        public static async Task<User?> RegisterUser(string email)
         {
             //checks if email format is valid
             if (!InputValidator.ValidateEmailFormat(email)) 
@@ -44,7 +53,7 @@ namespace BulbasaurAPI.Utils
         }
 
 
-        public static async Task<User?> RegisterUserWithPerson(Person person, DbServerContext _context)
+        public static async Task<User?> RegisterUserWithPerson(Person person)
         {
 
             //checks if user already exists
@@ -55,10 +64,12 @@ namespace BulbasaurAPI.Utils
             }
             else
             {
+                var password = RandomPassword.GenerateRandomPassword();
+
                 User newUser = new User()
                 {
                     Username = person.EmailAddress,
-                    Password = Hasher.HashWithSalt(RandomPassword.GenerateRandomPassword(), out string salt),
+                    Password = Hasher.HashWithSalt(password, out string salt),
                     Salt = salt,
                     AccessLevel = Authorization.UserAccessLevel.USER,
                     Person = person
@@ -67,7 +78,7 @@ namespace BulbasaurAPI.Utils
 
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
-
+                await EmailAPI.SendPasswordToUserEmail(newUser.Username, password);
                 return newUser;
             }
 
