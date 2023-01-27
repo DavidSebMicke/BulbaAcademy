@@ -1,5 +1,6 @@
 ﻿using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
+using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
