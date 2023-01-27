@@ -3,7 +3,7 @@ using dotenv.net;
 using System.Text;
 using System.Text.Json;
 
-namespace BulbasaurAPI.ExternalAPIs
+namespace BulbasaurAPI.Services
 {
     internal class EmailAPI
     {

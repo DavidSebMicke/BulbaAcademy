@@ -44,7 +44,7 @@ namespace BulbasaurAPI.Controllers
             }
         }
 
-        [HttpPost("createUser")]
+        [HttpPost("createUserTEST")]
         public async Task<ActionResult<NewUserDTO>> CreateUser(string email, string password)
         {
             //checks if email format is valid
