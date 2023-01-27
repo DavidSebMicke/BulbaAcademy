@@ -39,6 +39,12 @@ export function containsSpecialChars(str) {
 		  };
 }
 
+// Check that the passwords match
+export function passwordsMatch(str1, form) {
+	var isValid = str1 === form.password.value;
+	return isValid ? null : { passwordsDoNotMatch: 'Lösenorden är inte lika.' };
+}
+
 // Try using minlength on input instead. Keeping the function for now incase it works
 export function lengthAtLeast(str, min) {
 	var isValid = str.length >= min;
