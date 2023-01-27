@@ -80,9 +80,9 @@ export async function PasswordLogIn(inputEmail, inputPassword)
 
 		let data = await response.json();
 
-		if(data.twoFToken){
+		if(data.token){
 
-			console.log(data.twoFToken);
+			console.log(data.token);
 			return true;
 		}
 		else {

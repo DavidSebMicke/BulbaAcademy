@@ -5,6 +5,6 @@ namespace BulbasaurAPI.DTOs.Tokens
     public class PasswordLogInResponse
     {
         [MaxLength(1024)]
-        public string TwoFToken { get; set; }
+        public string Token { get; set; }
     }
 }
