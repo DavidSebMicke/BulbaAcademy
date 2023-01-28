@@ -11,6 +11,9 @@ namespace BulbasaurAPI.DTOs.Document
         [MaxLength(255)]
         public string DocumentTitle { get; set; }
 
+        [MaxLength(255)]
+        public string FileName { get; set; }
+
         // Exchange this for a PersonDTO later
         [MaxLength(200)]
         public string UploadedBy { get; set; }
@@ -22,6 +25,7 @@ namespace BulbasaurAPI.DTOs.Document
             Id = document.Id;
             UploadDate = document.UploadDate;
             DocumentTitle = document.DocumentTitle;
+            FileName = document.FileName;
             UploadedBy = $"{document.UploadedBy.Person.FirstName} {document.UploadedBy.Person.LastName}";
         }
     }
