@@ -95,6 +95,7 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
                 var user = HttpHelper.GetRequestUser(HttpContext);
 
                 // Construct and get paths for file
