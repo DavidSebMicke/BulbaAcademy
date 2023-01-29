@@ -57,6 +57,7 @@ export function emailCheck(str) {
 	return isValid ? null : { invalidEmail: 'Ogiltig epost.' };
 }
 
+
 // Tests the string (removes dashes(-) and spaces) and makes sure that it either starts with a + or a 0, and that it contains only numbers after that
 export function phoneNumberCheck(str) {
 	str = str.replace('-', '');
@@ -113,4 +114,12 @@ export function SSNCheck(str) {
 export function TwoFactorInputCheck(str) {
 	var isValid = /[0-9]{3}[ ]?[0-9]{3}/.test(str); // 000000 or 000 000
 	return isValid ? null : { invalid2FACode: 'Ogiltig kod. Sex siffror krävs.' };
+}
+
+export function RequiredMsg(fieldName=''){
+	if (fieldName == ''){
+		return 'Fält kan inte lämnas tomt';
+	}	
+	return `Du måste ange ${fieldName.toLowerCase()}`;
+	
 }

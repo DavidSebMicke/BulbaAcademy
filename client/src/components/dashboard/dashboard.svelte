@@ -45,6 +45,22 @@
 						href="/staff">Personal</a
 					>{/if}
 			</li>
+			<li>
+				<a href="/staff"><iconify-icon icon="mdi:file-document" /></a>{#if isExpanded}<a
+						class="text"
+						in:fade={fadeIn}
+						out:fade={fadeOut}
+						href="/registration">Dokument</a
+					>{/if}
+			</li>
+			<li>
+				<a href="/staff"><iconify-icon icon="ic:sharp-grid-on" /></a>{#if isExpanded}<a
+						class="text"
+						in:fade={fadeIn}
+						out:fade={fadeOut}
+						href="/staff">Avdelningar</a
+					>{/if}
+			</li>
 		</ul>
 	</nav>
 </div>
@@ -77,7 +93,7 @@
 	.nav-container {
 		display: flex;
 		justify-content: left;
-		height: 100rem;
+		height: 15rem;
 		text-decoration: none;
 		float: left;
 		padding: 5px;
@@ -87,20 +103,6 @@
 		border-radius: 25px;
 		border-color: rgba(0, 0, 0, 0.233);
 		border-style: solid;
-	}
-
-	h2 {
-		display: flex;
-		justify-content: left;
-		height: 100em;
-		//color: currentColor;
-		background-color: @dark-mode-background;
-		text-decoration: none;
-		float: left;
-		padding: 10px;
-		overflow: hidden;
-		margin-bottom: 1%;
-		margin-right: 1%;
 	}
 
 	nav ul {

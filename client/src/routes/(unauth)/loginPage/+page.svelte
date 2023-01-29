@@ -1,5 +1,5 @@
 <script>
-	import { PasswordLogIn } from '../../../api/user';
+	import { PasswordLogIn } from '../../../api/forms';
 	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
 
 	const form = useForm();
