@@ -6,6 +6,8 @@ namespace BulbasaurAPI.DTOs.Tokens
     public class UserToken
     {
         [MaxLength(1024)]
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
+
+        public string IDToken { get; set; }
     }
 }

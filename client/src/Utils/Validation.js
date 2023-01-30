@@ -38,7 +38,7 @@ export function doesNotContainSpaces(str) {
 
 // check at least 1 special character
 export function containsSpecialChars(str) {
-	var isValid = /([!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?]){1,}/.test(str);
+	var isValid = /([!@#$%&*()\\[\]{}\-_+=~|:"',./?]){1,}/.test(str);
 	return isValid
 		? null
 		: {
