@@ -74,7 +74,7 @@ namespace BulbasaurAPI.Controllers
             var newCaregiver =  await _caregiver.Create(createdCareGiver);
 
 
-            var newUser = await UserUtils.RegisterUserWithPerson(newCaregiver);
+            var newUser = await UserUtils.RegisterUserWithPerson(newCaregiver, RandomPassword.GenerateRandomPassword());
 
             if (newUser != null)
             {
