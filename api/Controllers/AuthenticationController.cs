@@ -5,6 +5,7 @@ using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.TOTPUtils;
+using BulbasaurAPI.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,35 +44,13 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("createUserTEST")]
-        public async Task<ActionResult<NewUserDTO>> CreateUser(LogInForm loginForm)
+        public async Task<ActionResult<User>> CreateUser(LogInForm loginForm)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var newUser = await UserUtils.RegisterUser(loginForm.Email, RandomPassword.GenerateRandomPassword(), sendEmail:true);
 
-            //checks if email format is valid
-            if (!InputValidator.ValidateEmailFormat(loginForm.Email)) return BadRequest("Not a valid email");
-            //checks if password format is valid
-            if (!InputValidator.ValidatePasswordFormat(loginForm.Password)) return BadRequest("Not a valid password");
-
-            //checks if user already exists
-            if (await _context.Users.AnyAsync(u => u.Username == loginForm.Email))
-            {
-                return BadRequest("User already exists");
-            }
-            else
-            {
-                User newUser = new User()
-                {
-                    Username = loginForm.Email,
-                    Password = Hasher.HashWithSalt(loginForm.Password, out string salt),
-                    Salt = salt,
-                    AccessLevel = Authorization.UserAccessLevel.USER
-                };
-
-                await _context.Users.AddAsync(newUser);
-                await _context.SaveChangesAsync();
-
-                return new NewUserDTO(newUser);
-            }
+            if (newUser == null) return Unauthorized("not workin");
+            else return newUser;
+            
         }
 
         [HttpPost("login/totp")]
@@ -96,7 +75,7 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-                return Unauthorized("User invalid");
+                return Unauthorized("User not found");
             }
         }
     }

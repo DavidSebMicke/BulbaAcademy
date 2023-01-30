@@ -17,7 +17,7 @@ namespace BulbasaurAPI.Utils
             _context = context;
         }
 
-        public static async Task<User?> RegisterUser(string email)
+        public static async Task<User?> RegisterUser(string email, string password, bool sendEmail = false)
         {
             //checks if email format is valid
             if (!InputValidator.ValidateEmailFormat(email)) 
@@ -37,7 +37,7 @@ namespace BulbasaurAPI.Utils
                 User newUser = new User()
                 {
                     Username = email,
-                    Password = Hasher.HashWithSalt(RandomPassword.GenerateRandomPassword(), out string salt),
+                    Password = Hasher.HashWithSalt(password, out string salt),
                     Salt = salt,
                     AccessLevel = Authorization.UserAccessLevel.USER
                 };
@@ -46,6 +46,8 @@ namespace BulbasaurAPI.Utils
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
 
+                await EmailAPI.SendPasswordToUserEmail(email, password);
+
                 return newUser;
             }
 
@@ -53,7 +55,7 @@ namespace BulbasaurAPI.Utils
         }
 
 
-        public static async Task<User?> RegisterUserWithPerson(Person person)
+        public static async Task<User?> RegisterUserWithPerson(Person person, string password, bool sendEmail = false)
         {
 
             //checks if user already exists
@@ -64,7 +66,6 @@ namespace BulbasaurAPI.Utils
             }
             else
             {
-                var password = RandomPassword.GenerateRandomPassword();
 
                 User newUser = new User()
                 {
@@ -78,7 +79,7 @@ namespace BulbasaurAPI.Utils
 
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
-                await EmailAPI.SendPasswordToUserEmail(newUser.Username, password);
+                if(sendEmail) await EmailAPI.SendPasswordToUserEmail(newUser.Username, password);
                 return newUser;
             }
 

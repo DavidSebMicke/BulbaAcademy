@@ -2,7 +2,7 @@
 // Uses regex to check if the input is valid and returns an error message in Swedish if it is not
 // Check at least 3 lowercase letters
 export function containsLowerCase(str) {
-	var isValid = /([a-z]){3}/.test(str);
+	var isValid = /([a-z]){3,}/.test(str);
 	return isValid
 		? null
 		: {
@@ -12,7 +12,7 @@ export function containsLowerCase(str) {
 
 // Check at least 3 uppercase letters
 export function containsUpperCase(str) {
-	var isValid = /([A-Z]){3}/.test(str);
+	var isValid = /([A-Z]){3,}/.test(str);
 	return isValid
 		? null
 		: {
@@ -22,15 +22,24 @@ export function containsUpperCase(str) {
 
 // check at least 3 numbers
 export function containsNumbers(str) {
-	var isValid = /([0-9]){3}/.test(str);
+	var isValid = /([0-9]){3,}/.test(str);
 	return isValid
 		? null
 		: { notEnoughNumbersInPassword: 'Ditt lösenord måste bestå av minst 3 siffror.' };
 }
 
+// check that string does not contain spaces
+export function doesNotContainSpaces(str) {
+	var isValid = !/\s/.test(str);
+	return isValid
+		? null
+		: { notEnoughNumbersInPassword: 'Ditt lösenord får inte innehålla mellanslag.' };
+}
+
+
 // check at least 1 special character
 export function containsSpecialChars(str) {
-	var isValid = /([!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?])/.test(str);
+	var isValid = /([!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?]){1,}/.test(str);
 	return isValid
 		? null
 		: {
