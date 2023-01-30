@@ -20,7 +20,7 @@ namespace BulbasaurAPI.Services
             EmailInfo sender = new EmailInfo { email = senderEmail, name = "Bulbasaur School" };
             EmailInfo receiver = new EmailInfo { email = email, name = "ReceiverName" };
 
-            EmailContent emailContent = new(sender, receiver, "Here is your password to Bulba Academy!", password);
+            EmailContent emailContent = new(sender, receiver, "Here is your password to Bulba Academy!", password, innerMsg: "Your password code:");
 
             var response = await client.PostAsJsonAsync(uri, emailContent);
 
@@ -40,7 +40,7 @@ namespace BulbasaurAPI.Services
             EmailInfo sender = new EmailInfo { email = senderEmail, name = "Bulbasaur School" };
             EmailInfo receiver = new EmailInfo { email = userEmail, name = "ReceiverName" };
 
-            EmailContent emailContent = new(sender, receiver, "Bulba Academy - Login with your two factor code!", twoFactorCode);
+            EmailContent emailContent = new(sender, receiver, "Bulba Academy - Login with your two factor code!", twoFactorCode, innerMsg: "Your secret code:");
 
             var response = await client.PostAsJsonAsync(uri, emailContent);
 
