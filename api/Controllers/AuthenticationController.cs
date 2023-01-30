@@ -1,9 +1,11 @@
 ﻿using BulbasaurAPI.Authentication;
+using BulbasaurAPI.DTOs.Login;
 using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.TOTPUtils;
+using BulbasaurAPI.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,72 +23,44 @@ namespace BulbasaurAPI.Controllers
         {
             _context = context;
         }
-        
+
         [HttpPost("login")]
         public async Task<ActionResult<PasswordLogInResponse>> Login([FromBody] LogInForm logInForm)
         {
-
             var user = await _context.Users.Where(x => x.Username == logInForm.Email).FirstOrDefaultAsync();
 
             if (user == null) return Unauthorized("User not found");
             else
             {
-
                 if (Hasher.Verify(user.Salt + logInForm.Password, user.Password))
                 {
                     return new PasswordLogInResponse
                     {
                         Token = await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext), _context)
                     };
-                     
                 }
                 else return Unauthorized("Wrong password");
             }
         }
 
         [HttpPost("createUserTEST")]
-        public async Task<ActionResult<NewUserDTO>> CreateUser(string email, string password)
+        public async Task<ActionResult<User>> CreateUser(LogInForm loginForm)
         {
-            //checks if email format is valid
-            if(!InputValidator.ValidateEmailFormat(email)) return BadRequest("Not a valid email");
-            //checks if password format is valid
-            if (!InputValidator.ValidatePasswordFormat(password)) return BadRequest("Not a valid password");
+            var newUser = await UserUtils.RegisterUser(loginForm.Email, RandomPassword.GenerateRandomPassword(), sendEmail:true);
 
-
-            //checks if user already exists
-            if (await _context.Users.AnyAsync(u => u.Username == email))
-            {
-
-                return BadRequest("User already exists");
-            }
-            else
-            {
-                User newUser = new User()
-                {
-                    Username = email,
-                    Password = Hasher.HashWithSalt(password, out string salt),
-                    Salt = salt,
-                    AccessLevel = Authorization.UserAccessLevel.USER
-                };
-
-
-                await _context.Users.AddAsync(newUser);
-                await _context.SaveChangesAsync();
-
-                return new NewUserDTO(newUser); 
-            }
-
+            if (newUser == null) return Unauthorized("not workin");
+            else return newUser;
+            
         }
 
         [HttpPost("login/totp")]
         public async Task<ActionResult<UserToken>> AccessTokenByTOTP(int userID, string code)
         {
-            var tOTP = await _context.TOTPs.Where(x=>x.Id== userID).FirstOrDefaultAsync();
+            var tOTP = await _context.TOTPs.Where(x => x.Id == userID).FirstOrDefaultAsync();
             var user = await _context.Users.Where(x => x.Id == userID).FirstOrDefaultAsync();
 
             if (tOTP != null && user != null)
             {
-
                 if (TOTPUtil.VerifyTOTP(tOTP, code))
                 {
                     return new UserToken
@@ -94,16 +68,14 @@ namespace BulbasaurAPI.Controllers
                         Token = await TokenUtils.GenerateAccessToken(user, HttpHelper.GetIpAddress(HttpContext), _context)
                     };
                 }
-
                 else
                 {
                     return Unauthorized("Wrong code");
                 }
-
             }
             else
             {
-                return Unauthorized("User invalid");
+                return Unauthorized("User not found");
             }
         }
     }

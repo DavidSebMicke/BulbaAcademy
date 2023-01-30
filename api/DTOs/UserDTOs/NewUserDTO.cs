@@ -8,8 +8,9 @@ namespace BulbasaurAPI.DTOs.UserDTOs
     {
         public int Id { get; set; }
 
-        [MaxLength(255)]
-        [EmailAddress]
+        [MaxLength(255, ErrorMessage = "Emailadressen är för lång.")]
+        [MinLength(5, ErrorMessage = "Emailadressen är för kort.")]
+        [EmailAddress(ErrorMessage = "Ogiltig emailadress.")]
         public string Username { get; set; }
 
         public UserAccessLevel AccessLevel { get; set; }
@@ -17,7 +18,7 @@ namespace BulbasaurAPI.DTOs.UserDTOs
         public NewUserDTO(User user)
         {
             Id = user.Id;
-            Username= user.Username;
+            Username = user.Username;
             AccessLevel = user.AccessLevel;
         }
     }

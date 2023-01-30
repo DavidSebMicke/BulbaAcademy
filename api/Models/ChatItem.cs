@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BulbasaurAPI.DTOs.Chat;
+using System.ComponentModel.DataAnnotations;
 
 namespace BulbasaurAPI.Models
 {
@@ -10,5 +11,14 @@ namespace BulbasaurAPI.Models
 
         [MaxLength(10000)]
         public string Message { get; set; }
+
+        public ChatItem()
+        { }
+
+        public ChatItem(ChatMessageDTO chatMessage, User user)
+        {
+            Author = user;
+            Message = chatMessage.Content;
+        }
     }
 }
