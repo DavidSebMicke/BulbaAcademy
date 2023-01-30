@@ -30,10 +30,25 @@
 			<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint>
 		</HintGroup>
 		<h3>Vårdnadshavare</h3>
-		<label for="name">Förnamn </label>
+
+		<label for="Firstname">Förnamn </label>
+		<input type="text" name="Firstname" use:validators={[required]} />
+		<HintGroup for="Firstname">
+			<Hint on="required">{RequiredMsg('Förnamn')}</Hint>
+		</HintGroup>
+
+		<label for="Lastname">Efternamn </label>
+		<input type="text" name="Lastname" use:validators={[required]} />
+		<HintGroup for="Lastname">
+			<Hint on="required">{RequiredMsg('Efternamn')}</Hint>
+		</HintGroup>
+		<label for="name">Address</label>
 		<input type="text" name="name" />
-		<label for="name">Efternamn </label>
-		<input type="text" name="name" />
+		<input name="sSNnumber" use:validators={[required, SSNCheck]} />
+		<HintGroup for="sSNnumber">
+			<Hint on="required">{RequiredMsg('Personnummer')}</Hint>
+			<Hint on="invalidSSN" hideWhenRequired>{$form.sSNnumber.errors.invalidSSN}</Hint>
+		</HintGroup><br />
 		<h3>Barn</h3>
 		<label for="name">Förnamn</label>
 		<input type="text" name="name" />
@@ -48,9 +63,9 @@
 
 		<button disabled={!$form.valid} on:click|preventDefault> Registrera </button>
 	</form>
-	<pre>
+	<!-- <pre>
 		{JSON.stringify($form, null, 1)}
-	</pre>
+	</pre> -->
 </main>
 
 <style>
