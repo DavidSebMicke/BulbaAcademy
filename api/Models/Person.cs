@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BulbasaurAPI.Models
 {
@@ -27,5 +28,8 @@ namespace BulbasaurAPI.Models
         public Role? Role { get; set; }
 
         public List<Group> Groups { get; set; } = new List<Group>();
+
+        [NotMapped]
+        public string FullName => FirstName + " " + LastName;
     }
 }
