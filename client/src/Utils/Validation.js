@@ -2,7 +2,7 @@
 // Uses regex to check if the input is valid and returns an error message in Swedish if it is not
 // Check at least 3 lowercase letters
 export function containsLowerCase(str) {
-	var isValid = /([a-z]){3,}/.test(str);
+	var isValid = /([a-zåäö]){3,}/.test(str);
 	return isValid
 		? null
 		: {
@@ -12,7 +12,7 @@ export function containsLowerCase(str) {
 
 // Check at least 3 uppercase letters
 export function containsUpperCase(str) {
-	var isValid = /([A-Z]){3,}/.test(str);
+	var isValid = /([A-ZÅÄÖ]){3,}/.test(str);
 	return isValid
 		? null
 		: {
@@ -35,7 +35,6 @@ export function doesNotContainSpaces(str) {
 		? null
 		: { notEnoughNumbersInPassword: 'Ditt lösenord får inte innehålla mellanslag.' };
 }
-
 
 // check at least 1 special character
 export function containsSpecialChars(str) {
@@ -62,7 +61,7 @@ export function lengthAtLeast(str, min) {
 
 // Checks if the input is a valid email
 export function emailCheck(str) {
-	var isValid = /[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/.test(str);
+	var isValid = /[a-zåäöA-ZÅÄÖ0-9]+@[a-zåäöA-ZÅÄÖ0-9]+\.[a-zåäöA-ZÅÄÖ0-9]+/.test(str);
 	return isValid ? null : { invalidEmail: 'Ogiltig epost.' };
 }
 
@@ -84,19 +83,19 @@ export function postCodeCheck(str) {
 
 // Checks the street address. Makes sure that it only contains letters, numbers, and spaces
 export function streetAddressCheck(str) {
-	var isValid = /[a-zA-Z]+[ ]?[0-9]*[ ]?[a-zA-Z]*/.test(str);
+	var isValid = /[a-zåäöA-ZÅÄÖ]+[ ]?[0-9]*[ ]?[a-zåäöA-ZÅÄÖ]*/.test(str);
 	return isValid ? null : { invalidStreetAddress: 'Ogiltig gatuadress.' };
 }
 
 // Checkes if the city contains only letters
 export function cityCheck(str) {
-	var isValid = /[a-zA-Z]+/.test(str);
+	var isValid = /[a-zåäöA-ZÅÄÖ]+/.test(str);
 	return isValid ? null : { invalidCity: 'Ogiltigt stadsnamn.' };
 }
 
 // Checks if the input contains only letters
 export function onlyLettersCheck(str) {
-	var isValid = /[a-zA-Z]+/.test(str);
+	var isValid = /[a-zåäöA-ZÅÄÖ]+/.test(str);
 	return isValid ? null : { invalidInput: 'Endast bokstäver tillåtna.' };
 }
 
