@@ -25,6 +25,7 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
+                //Gets user that is doing the request
                 var user = HttpHelper.GetRequestUser(HttpContext);
 
                 var document = await _document.GetById(id);

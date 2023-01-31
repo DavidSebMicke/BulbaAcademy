@@ -1,7 +1,7 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.DTOs.Group;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace BulbasaurAPI.Repository
 {
@@ -14,19 +14,42 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
+        public async Task<GroupDTO> Create(Group entity)
+        {
+            var create = await _context.Groups.AddAsync(entity);
+            var newDto = new GroupDTO();
+
+            newDto.Name = entity.Name;
+            newDto.People = entity.People;
+        }
+
+
+
+
+        public async Task Delete(Group entity)
+        {
+            // TODO this..
+            //Denna kanske failar iom kopplingar som finns med FKs. 
+            var delete = await _context.Groups.Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
+            _context.Remove(delete);
+
+            await _context.SaveChangesAsync();
+
+        }
+
         //public async Task<Group> CreateGroupAsync(Group group)
         //{
         //    return await _context.Groups.AddAsync(group);
         //}
 
-        public async Task<bool> DeleteGroupAsync(int id)
+
+
+        public Task<bool> EntityExists(int id)
         {
-            var delete = await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
-            _context.Remove(delete);
-            return await SaveAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Group>> GetAllGroupsAsync()
+        public async Task<IEnumerable<Group>> GetAll()
         {
             return await _context.Groups.ToListAsync();
         }
@@ -49,15 +72,12 @@ namespace BulbasaurAPI.Repository
         //    return result;
         //}
 
-        public async Task<bool> SaveAsync()
-        {
-            var saved = await _context.SaveChangesAsync();
-            return saved > 0;
-        }
 
-        public Task UpdateGroupAsync(Group group)
+        public Task<Group> Update(Group newEntity)
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
