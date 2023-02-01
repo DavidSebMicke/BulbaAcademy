@@ -1,81 +1,68 @@
 <script>
-	import { fade } from 'svelte/transition';
-	const fadeIn = {
-		delay: 100,
-		duration: 200
-	};
+	let user = { loggedIn: false };
 
-	const fadeOut = {
-		delay: 0,
-		duration: 100
-	};
-
-	let isExpanded = false;
+	function toggle() {
+		user.loggedIn = !user.loggedIn;
+	}
 </script>
+
+<button id="logouts" on:click={toggle}>Logga ut</button>
+
+{#if user.loggedIn}
+	<button on:click={toggle}>Log out</button>
+{/if}
 
 <nav class="navbar">
 	<ul class="navbar-nav">
-		<li class="nav-item">Hem</li>
-		<li class="nav-item">Logga ut</li>
-		<li class="nav-item">Profil</li>
-		<li class="nav-mer">
-			<a href="mer"
-				>Mer
-				<select name="" required>
-					<option value="Meddelanden">Meddelanden</option>
-					<option value="Lärlogg">Lärlogg</option>
-					<option value="Planeringar">Planeringar</option>
-					<option value="Lämna Hämta">Lämna Hämta</option>
-					<option value="Schema">Schema</option>
-					<option value="Kontaktlistor">Kontaktlistor</option>
-					<option value="Profil">Profil</option>
-					<option value="Inställningar">Inställningar</option>
-					<option value="Logga ut">Logga ut</option>
-				</select>
-			</a>
+		<li class="nav-item">
+			Mer<h />
+			<select name="" required>
+				<option value="Profil">Profil</option>
+				<option value="Inställningar">Inställningar</option>
+			</select>
 		</li>
 	</ul>
-	<!-- <a href="#">Profil</a>
-	<a href="#">Logga ut</a> -->
-	<!-- <div class="drop">
-                <title>Verktyg</title>
-             -->
-	<!-- <button
-                    ><h2>Mer</h2>
-                    <select name="" required>
-                        <option value="Meddelanden">Meddelanden</option>
-                        <option value="Lärlogg">Lärlogg</option>
-                        <option value="Planeringar">Planeringar</option>
-                        <option value="Lämna Hämta">Lämna Hämta</option>
-                        <option value="Schema">Schema</option>
-                        <option value="Kontaktlistor">Kontaktlistor</option>
-                        <option value="Profil">Profil</option>
-                        <option value="Inställningar">Inställningar</option>
-                        <option value="Logga ut">Logga ut</option>
-                    </select>
-                </button>
-            </div> -->
 </nav>
 
 <style lang="less">
 	@import 'public\less\variables.less';
 	@import 'public\less\global.less';
+	@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+	@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
 
-	// .navbar {
-	// 	height: 70px;
-	// 	width: 100%;
-	// 	background: black;
-	// 	color: white;
-	// }
-
-	// .navbar-nav {
-	// 	list-style-type: none;
-	// 	margin: 0;
-	// 	padding: 0;
-
-	// 	display: flex;
-	// 	align-items: center;
-	// 	justify-content: space-evenly;
-	// 	height: 100%;
-	// }
+	.navbar {
+		// height: 40px;
+		// width: 100%;
+		display: flex;
+		font-family: 'Inter', sans-serif;
+		font-weight: medium;
+		justify-content: right;
+		height: 10rem;
+		text-decoration: none;
+		float: right;
+		padding: 5px;
+		overflow: hidden;
+		margin: 20px;
+	}
+	.navbar-nav {
+		font-family: 'Poiret One';
+		font-weight: bold;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		// align-items: center;
+		height: 100%;
+	}
+	#logouts {
+		display: flex;
+		font-family: 'Inter', sans-serif;
+		font-weight: bold;
+		justify-content: top;
+		text-decoration: none;
+		float: right;
+		padding: 10px;
+		overflow: hidden;
+		margin: 20px;
+		border-radius: 100px;
+	}
 </style>
