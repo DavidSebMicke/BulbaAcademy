@@ -44,7 +44,6 @@ namespace BulbasaurAPI.Controllers
                 if (!await _caregiver.EntityExists(id))
                 {
                     return NotFound("Cant find the specified ID");
-
                 }
 
                 return Ok(await _caregiver.GetById(id));
@@ -61,31 +60,15 @@ namespace BulbasaurAPI.Controllers
         {
             if (createdCareGiver == null) return BadRequest(ModelState);
 
-            if(!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.SSN);
-
-            if (caregiverExists)
-            {
-                ModelState.AddModelError("", "Caregiver already exists");
-                return StatusCode(422, ModelState);
-            }
-
-
-
-
-            var newCaregiver =  await _caregiver.Create(createdCareGiver);
-
+            var newCaregiver = await _caregiver.Create(createdCareGiver);
 
             var newUser = await UserUtils.RegisterUserWithPerson(newCaregiver, RandomPassword.GenerateRandomPassword());
 
             if (newUser != null)
             {
-
-
-
                 return Ok("Successfully created");
-
             }
             else
             {
@@ -113,6 +96,8 @@ namespace BulbasaurAPI.Controllers
         {
             if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
 
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             if (updateCaregiver == null)
                 return BadRequest(ModelState);
 
@@ -138,22 +123,18 @@ namespace BulbasaurAPI.Controllers
             }
 
             return Ok("Successfully updated");
-
-
-
         }
 
         // Post
         [HttpPost]
         [Route("CreateCaregiversAndChild")]
-
         public async Task<ActionResult<CaregiverChildOutDTO>> CreateCaregiversAndChild([FromBody] CaregiverChildDTO ccDTO)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var newChild = new Child(ccDTO);
 
             var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
-
 
             var child = await _children.Create(newChild);
 
@@ -169,13 +150,5 @@ namespace BulbasaurAPI.Controllers
 
             return Ok(outDTO);
         }
-
     }
-
-
-
-
-
-
 }
-

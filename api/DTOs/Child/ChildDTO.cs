@@ -1,33 +1,33 @@
-﻿using BulbasaurAPI.DTOs.Caregiver;
+﻿using BulbasaurAPI.DataAnnotations;
+using BulbasaurAPI.DTOs.Caregiver;
 using System.ComponentModel.DataAnnotations;
 
 namespace BulbasaurAPI.DTOs.Child
 {
     public class ChildDTO
     {
-
-
-        [Required]
-        [MinLength(12)]
-        [MaxLength(12)]
+        [Required(ErrorMessage = "Personnummer saknas.")]
+        [MinLength(12, ErrorMessage = "Personnummer för kort. Måste bestå av 12 siffror.")]
+        [MaxLength(12, ErrorMessage = "Personnummer för långt. Måste bestå av 12 siffror.")]
+        [OnlyNumbers(ErrorMessage = "Endast siffror tillåtna i personnummret.")]
         public string? SSN { get; set; }
 
-        [MaxLength(128)]
+        [Required(ErrorMessage = "Förnamn saknas.")]
+        [MaxLength(128, ErrorMessage = "Förnamn för långt.")]
         public string FirstName { get; set; }
 
-        [MaxLength(128)]
+        [Required(ErrorMessage = "Efternamn saknas.")]
+        [MaxLength(128, ErrorMessage = "Efternamn för långt.")]
         public string LastName { get; set; }
-
 
         public ChildDTO(Models.Child child)
         {
             FirstName = child.FirstName;
             LastName = child.LastName;
         }
+
         public ChildDTO()
         {
-
         }
     }
-
 }
