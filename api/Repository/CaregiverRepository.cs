@@ -50,5 +50,12 @@ namespace BulbasaurAPI.Repository
         {
             return await _context.Caregivers.AnyAsync(c => c.Id == id);
         }
+
+        public async Task ConnectCaregiverAndChild(Caregiver caregiver, Child child)
+        {
+            caregiver.Children.Add(child);
+            child.Caregivers.Add(caregiver);
+            await _context.SaveChangesAsync();
+        }
     }
 }

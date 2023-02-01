@@ -11,9 +11,9 @@ namespace BulbasaurAPI.Controllers
     public class GroupController : ControllerBase
     {
         private readonly IGroupRepository _groups;
-        //private readonly IPersonRepository _persons;
+        
 
-        public GroupController(IGroupRepository groups/*, IPersonRepository persons*/)
+        public GroupController(IGroupRepository groups)
         {
             _groups = groups;
         }

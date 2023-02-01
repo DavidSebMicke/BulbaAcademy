@@ -4,6 +4,7 @@ using BulbasaurAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    partial class DbServerContextModelSnapshot : ModelSnapshot
+    [Migration("20230131153638_UpdatedToString")]
+    partial class UpdatedToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,6 +72,7 @@ namespace BulbasaurAPI.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("PostalCode")
+                        .HasMaxLength(5)
                         .HasColumnType("int");
 
                     b.Property<string>("StreetAddress")
@@ -274,6 +277,7 @@ namespace BulbasaurAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("EmailAddress")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -282,7 +286,7 @@ namespace BulbasaurAPI.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int?>("HomeAddressId")
+                    b.Property<int>("HomeAddressId")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
@@ -291,6 +295,7 @@ namespace BulbasaurAPI.Migrations
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -530,7 +535,9 @@ namespace BulbasaurAPI.Migrations
                 {
                     b.HasOne("BulbasaurAPI.Models.Address", "HomeAddress")
                         .WithMany()
-                        .HasForeignKey("HomeAddressId");
+                        .HasForeignKey("HomeAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BulbasaurAPI.Models.Role", "Role")
                         .WithMany()
