@@ -5,25 +5,35 @@
 		emailCheck,
 		RequiredMsg,
 		streetAddressCheck,
-		phoneNumberCheck
+		phoneNumberCheck,
+		cityCheck,
+		postCodeCheck
 	} from '$Utils/Validation';
 	const form = useForm();
 	let formValues = {
 		careTaker: {
 			email: '',
-			address: '',
+			streetaddress: '',
+			city: '',
+			postalCode: '',
 			phoneNumber: '',
 			firstName: '',
 			lastName: '',
 			sSN: ''
 		},
-		child: {
-			firstName: '',
-			lastName: '',
-			sSN: '',
-			group: 
-		}
+		children: [
+			{
+				firstName: '',
+				lastName: '',
+				sSN: '',
+				group: number
+			}
+		]
 	};
+
+	function submitForm() {
+		console.log(formValues);
+	}
 
 	let groups = [
 		{
@@ -46,7 +56,7 @@
 </script>
 
 <main>
-	<form use:form>
+	<form use:form on:submit|preventDefault={submitForm}>
 		<h1>Registrering</h1>
 
 		<h3>Vårdnadshavare</h3>
@@ -111,17 +121,45 @@
 			<Hint on="invalidSSN" hideWhenRequired>{$form.sSNnumber.errors.invalidSSN}</Hint>
 		</HintGroup><br />
 
-		<label for="address">Address</label>
+		<label for="address">Gatuaddress</label>
 		<input
-			type="address"
+			type="text"
 			name="address"
 			use:validators={[required, streetAddressCheck]}
-			bind:value={formValues.careTaker.address}
+			bind:value={formValues.careTaker.streetaddress}
 		/>
 		<HintGroup for="address">
-			<Hint on="required">{RequiredMsg('Address')}</Hint>
+			<Hint on="required">{RequiredMsg('Gatuaddress')}</Hint>
 			<Hint on="invalidStreetAddress" hideWhenRequired>
 				{$form.address.errors.invalidStreetAddress}
+			</Hint>
+		</HintGroup>
+
+		<label for="stad">Stad</label>
+		<input
+			type="text"
+			name="stad"
+			use:validators={[required, cityCheck]}
+			bind:value={formValues.careTaker.city}
+		/>
+		<HintGroup for="stad">
+			<Hint on="required">{RequiredMsg('Stad')}</Hint>
+			<Hint on="invalidCity" hideWhenRequired>
+				{$form.stad.errors.invalidCity}
+			</Hint>
+		</HintGroup>
+
+		<label for="postalCode">Postkod</label>
+		<input
+			type="text"
+			name="postalCode"
+			use:validators={[required, postCodeCheck]}
+			bind:value={formValues.careTaker.postalCode}
+		/>
+		<HintGroup for="postalCode">
+			<Hint on="required">{RequiredMsg('Postkod')}</Hint>
+			<Hint on="invalidCity" hideWhenRequired>
+				{$form.stad.errors.invalidPostCode}
 			</Hint>
 		</HintGroup>
 
@@ -131,7 +169,7 @@
 			type="text"
 			name="ChildFirstname"
 			use:validators={[required]}
-			bind:value={formValues.child.firstName}
+			bind:value={formValues.children[0].firstName}
 		/>
 		<HintGroup for="ChildFirstname">
 			<Hint on="required">{RequiredMsg('Förnamn')}</Hint>
@@ -141,7 +179,7 @@
 			type="text"
 			name="ChildLastname"
 			use:validators={[required]}
-			bind:value={formValues.child.lastName}
+			bind:value={formValues.children[0].lastName}
 		/>
 		<HintGroup for="ChildLastname">
 			<Hint on="required">{RequiredMsg('Efternamn')}</Hint>
@@ -151,7 +189,7 @@
 		<input
 			name="sSNChild"
 			use:validators={[required, SSNCheck]}
-			bind:value={formValues.child.sSN}
+			bind:value={formValues.children[0].sSN}
 		/>
 		<HintGroup for="sSNChild">
 			<Hint on="required">{RequiredMsg('Personnummer')}</Hint>
@@ -159,39 +197,41 @@
 		</HintGroup><br />
 
 		<div class="form">
-			<select bind:value={child.group.number}>
+			<label for="group">Avdelning</label>
+			<select class="drops" bind:value={formValues.children[0].group}>
 				{#each groups as group}
-					<option value={group}>
+					<option class="optDrop" value={group}>
 						{group.name}
 					</option>
 				{/each}
 			</select>
-
-			<input bind:value={selected} />
 		</div>
 
-		<button disabled={!$form.valid} on:click|preventDefault> Registrera </button>
-
-		<!-- <pre>
-		{JSON.stringify($form, null, 1)}
-	</pre> -->
+		<button class="subButton" type="submit" disabled={!$form.valid}> Registrera </button>
 	</form>
 </main>
 
-<style>
+<style lang="less">
+	.drops {
+		width: 100%;
+		margin-bottom: 3%;
+		cursor: pointer;
+	}
+
 	:global(.touched:invalid) {
 		border-color: red;
 		outline-color: red;
 	}
 
 	main {
-		display: flex;
-		justify-content: space-around;
-		height: 400px;
-		width: 400px;
+		flex: content;
+		justify-content: center;
+		height: 30em;
+		width: 30em;
 		position: relative;
 		flex-wrap: nowrap;
 		margin-bottom: 40%;
+		left: 40%;
 	}
 
 	form {
@@ -207,12 +247,7 @@
 		flex-direction: column;
 	}
 
-	/* pre {
-		bottom: 0;
-		height: 0px;
-		width: 50px;
-		overflow: none;
-		font-size: 12px;
-		position: absolute;
-	} */
+	.subButton {
+		font-size: 20px !important;
+	}
 </style>

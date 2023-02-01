@@ -17,51 +17,92 @@
 	<nav class:expanded={isExpanded}>
 		<button on:click={() => (isExpanded = !isExpanded)}>
 			{#if isExpanded}
-				<iconify-icon icon="material-symbols:keyboard-arrow-left" width="40" />
+				<iconify-icon icon="ci:hamburger" width="40" />
 			{:else}
-				<iconify-icon icon="material-symbols:keyboard-arrow-right" width="40" />
+				<iconify-icon
+					icon="ci:hamburger"
+					rotate="90deg"
+					flip="horizontal,vertical"
+					width="40"
+				/>
 			{/if}
 		</button>
-		<ul>
-			<!-- <li>Bulba Academy</li> -->
-			<li>
-				<a href="/mainPage"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
+		{#if isExpanded}
+			<ul>
+				<!-- <li>Bulba Academy</li> -->
+				<li>
+					<a href="/"><iconify-icon icon="mdi:home" /></a><a
 						in:fade={fadeIn}
 						out:fade={fadeOut}
 						href="/">Startsida</a
-					>{/if}
-			</li>
-			<li>
-				<a href="/"><iconify-icon icon="healthicons:ui-user-profile" /></a
-				>{#if isExpanded}<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile"
-						>Profil</a
-					>{/if}
-			</li>
-			<li>
-				<a href="/staff"><iconify-icon icon="ic:baseline-work" /></a>{#if isExpanded}<a
+					>
+				</li>
+				<li>
+					<a href="/"><iconify-icon icon="healthicons:ui-user-profile" /></a><a
+						class="text"
+						in:fade={fadeIn}
+						out:fade={fadeOut}
+						href="/profile">Profil</a
+					>
+				</li>
+				<li>
+					<a href="/staff"><iconify-icon icon="ic:baseline-work" /></a><a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
 						href="/staff">Personal</a
-					>{/if}
-			</li>
-			<li>
-				<a href="/staff"><iconify-icon icon="mdi:file-document" /></a>{#if isExpanded}<a
+					>
+				</li>
+				<li>
+					<a href="/staff"><iconify-icon icon="material-symbols:forms-add-on" /></a><a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/registration">Dokument</a
-					>{/if}
-			</li>
-			<li>
-				<a href="/staff"><iconify-icon icon="ic:sharp-grid-on" /></a>{#if isExpanded}<a
+						href="/registration">Formulär</a
+					>
+				</li>
+				<li>
+					<a href="/staff"><iconify-icon icon="ic:sharp-grid-on" /></a><a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/staff">Avdelningar</a
-					>{/if}
-			</li>
-		</ul>
+						href="/">Avdelningar</a
+					>
+				</li>
+				<li>
+					<a href="/staff"><iconify-icon icon="mdi:file-document" /></a><a
+						class="text"
+						in:fade={fadeIn}
+						out:fade={fadeOut}
+						href="/">Dokument</a
+					>
+				</li>
+			</ul>
+		{:else}
+			<ul class="iconOnly">
+				<!-- <li>Bulba Academy</li> -->
+				<li>
+					<a href="/"><iconify-icon icon="mdi:home" width="40" /></a>
+				</li>
+				<li>
+					<a href="/"><iconify-icon icon="healthicons:ui-user-profile" width="40" /></a>
+				</li>
+				<li>
+					<a href="/staff"><iconify-icon icon="ic:baseline-work" width="40" /></a>
+				</li>
+				<li>
+					<a href="/registration"
+						><iconify-icon icon="material-symbols:forms-add-on" width="40" /></a
+					>
+				</li>
+				<li>
+					<a href="/staff"><iconify-icon icon="ic:sharp-grid-on" width="40" /></a>
+				</li>
+				<li>
+					<a href="/staff"><iconify-icon icon="mdi:file-document" width="40" /></a>
+				</li>
+			</ul>
+		{/if}
 	</nav>
 </div>
 
@@ -76,10 +117,14 @@
 	ul {
 		padding: 0px;
 	}
-
+	.iconOnly {
+		justify-content: center;
+		align-items: center;
+	}
 	.text {
 		margin-right: 2px;
 		margin-left: 2px;
+		background-color: var(--primary-color);
 	}
 
 	a {
@@ -87,22 +132,26 @@
 		text-decoration: none;
 		text-align: left;
 		font-size: 20px;
-		justify-content: space-around;
+		background-color: var(--primary-color);
+		justify-content: center;
 	}
 
 	.nav-container {
 		display: flex;
 		justify-content: left;
-		height: 15rem;
+		top: 0%;
 		text-decoration: none;
 		float: left;
 		padding: 5px;
-		overflow: hidden;
+		overflow: none;
 		margin-bottom: 1%;
-		margin-right: 1%;
-		border-radius: 25px;
+
 		border-color: rgba(0, 0, 0, 0.233);
 		border-style: solid;
+		background-color: var(--primary-color);
+		height: 100%;
+		position: fixed;
+		z-index: 1;
 	}
 
 	nav ul {
