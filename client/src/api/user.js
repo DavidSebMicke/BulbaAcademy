@@ -62,43 +62,30 @@ export const getUsers = (filter = '') => {
 
 
 const endpoint = "Authentication/login"; 
-const url = "http://localhost:8000/api/Authentication/login"; 
 
 export async function PasswordLogIn(inputEmail, inputPassword)
 {
-	
-	const response = await api.post(endpoint, {
-		email : inputEmail,
-		password : inputPassword
-	});
 
-    // const response = await fetch(`${url}`, {
-    //     method: 'POST',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-	// 		email : inputEmail,
-	// 		password : inputPassword
-	// 		})
 
-    // });
-	
-	if(response.ok){
+	try{
+		const response = await api.post(endpoint, {
+			email : inputEmail,
+			password : inputPassword
+		});
 
-		let data = await response.data;
-
-		if(data.token){
-
-			StoreInSession("TwoFToken", data.token)
+		if(response.ok){
+			await StoreInSession("TwoFToken", response.data.token);
 			return true;
 		}
-		else {
+		else{
+
 			return false;
 		}
+
+	} catch (err) {
+		console.error(err);
+
+		throw err;
 	}
-	else{
-		return false;
-	}
+
 }
