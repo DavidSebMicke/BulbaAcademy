@@ -26,6 +26,8 @@
 	});
 </script>
 
+<img class="logga" src="public\img\logo3.png" alt="gfdk" />
+
 <body class="login">
 	<div id="step1">Logga in i Bulba Academy</div>
 
@@ -155,6 +157,17 @@
 		width: 237.61px;
 		height: 250.18px;
 		left: 50rem;
-		top: 10rem;
+		top: 5rem;
+	}
+
+	.logga {
+		box-sizing: border-box;
+		display: grid;
+		position: absolute;
+		width: 335px;
+		height: 51px;
+		left: 50rem;
+		top: 20rem;
+		border-radius: nullpx;
 	}
 </style>
