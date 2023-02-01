@@ -1,4 +1,6 @@
 import { redirect } from "@sveltejs/kit";
+import {StoreInSession}from "../Utils/SessionStore.js"
+import { api } from "./api.js";
 
 // Move this to a separate api file later if it will be used by other components
 export const getUsers = (filter = '') => {
@@ -59,30 +61,37 @@ export const getUsers = (filter = '') => {
 };
 
 
-const url = "https://localhost:7215/api/Authentication/login";
+const endpoint = "Authentication/login"; 
+const url = "http://localhost:8000/api/Authentication/login"; 
 
 export async function PasswordLogIn(inputEmail, inputPassword)
 {
-    const response = await fetch(`${url}`, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-			email : inputEmail,
-			password : inputPassword
-		})
+	
+	const response = await api.post(endpoint, {
+		email : inputEmail,
+		password : inputPassword
+	});
 
-    });
+    // const response = await fetch(`${url}`, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+	// 		email : inputEmail,
+	// 		password : inputPassword
+	// 		})
+
+    // });
 	
 	if(response.ok){
 
-		let data = await response.json();
+		let data = await response.data;
 
 		if(data.token){
 
-			console.log(data.token);
+			StoreInSession("TwoFToken", data.token)
 			return true;
 		}
 		else {

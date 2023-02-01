@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.DTOs.UserDTOs;
+using BulbasaurAPI.Models;
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -47,6 +48,36 @@ namespace BulbasaurAPI.Authentication
 
             return accessToken;
         }
+
+
+        public static string GenerateIDToken(User user)
+        {
+            if (user == null) return "";
+
+            // Generate token through JwtSecurityTokenHandler
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { 
+                    new Claim("userID", user.Id.ToString()), 
+                    new Claim("email", user.Username), 
+                    new Claim("accessLevel", user.AccessLevel.ToString()), 
+                    new Claim("name", user.Person?.FullName),
+                    new Claim("role", user.Person?.Role?.ToString()),
+                }),
+
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            string idToken = tokenHandler.WriteToken(token);
+
+
+            return idToken;
+        }
+
+
 
         // Authenticates an accesstoken. Returns a user if it is valid, null if it is not
         public static async Task<User?> AuthenticateToken(string accessToken, string ipAddress)

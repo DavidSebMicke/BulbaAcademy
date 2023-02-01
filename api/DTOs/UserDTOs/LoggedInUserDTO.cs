@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BulbasaurAPI.DTOs.UserDTOs
 {
-    public class NewUserDTO
+    public class LoggedInUserDTO
     {
         public int Id { get; set; }
 
@@ -15,7 +15,7 @@ namespace BulbasaurAPI.DTOs.UserDTOs
 
         public UserAccessLevel AccessLevel { get; set; }
 
-        public NewUserDTO(User user)
+        public LoggedInUserDTO(User user)
         {
             Id = user.Id;
             Username = user.Username;

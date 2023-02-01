@@ -25,7 +25,9 @@ namespace BulbasaurAPI.Helpers
             //at least 3 numbers
             else if (!Regex.IsMatch(str, @"(?:.*\d){3,}")) return false;
             //at least 1 special character
-            else if (!Regex.IsMatch(str, @"(?:.*[!@#$%^&*()\\[\]{}\-_+=~`|:;""'<>,./?]){1,}")) return false;
+            else if (!Regex.IsMatch(str, @"(?:.*[!@#$%&*()\\[\]{}\-_+=~|:""',./?]){1,}")) return false;
+            //does not contain spaces
+            else if (Regex.IsMatch(str, @"\s")) return false;
 
             //password good to go!
             else return true;

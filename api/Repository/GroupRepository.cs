@@ -28,6 +28,20 @@ namespace BulbasaurAPI.Repository
         {
             throw new NotImplementedException();
         }
+        public Task<Group> GetGroupByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public async Task<Group> GetGroupByIdAsync(int id)
+        //{
+        //    return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
+        //}
 
         public Task<IEnumerable<Group>> GetAll()
         {

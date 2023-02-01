@@ -3,6 +3,7 @@ using BulbasaurAPI.Middlewares;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using BulbasaurAPI.Repository.Interface;
+using BulbasaurAPI.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
@@ -66,6 +67,8 @@ namespace BulbasaurAPI
             }
             app.UseCors("policyCors");
             app.UseHttpsRedirection();
+
+            new UserUtils(new DbServerContext(builder.Configuration));
 
             // Logging middleware
             //app.Use(async (context, next) =>
