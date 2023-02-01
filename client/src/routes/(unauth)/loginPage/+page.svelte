@@ -72,7 +72,9 @@
 	</div>
 
 	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
+
 </body>
+
 
 <style lang="less">
 	// @import 'public\less\variables.less';

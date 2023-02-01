@@ -11,7 +11,9 @@
 	{#if showChatWindow}
 		<ChatWindow {closeChat} />
 	{:else}
-		<button class="chatBubble" on:click={openChat} />
+		<button class="chatBubble" on:click={openChat}>
+			<iconify-icon icon="material-symbols:chat-outline-rounded" width="40" />
+		</button>
 	{/if}
 </div>
 
@@ -34,8 +36,8 @@
 
 	.chatBubble {
 		position: relative;
-		background-color: gray;
-		opacity: 0.2;
+		background-color: var(--primary-color);
+		opacity: 1;
 		width: 4rem;
 		height: 4rem;
 		border-radius: 50%;

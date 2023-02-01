@@ -4,9 +4,9 @@
 </script>
 
 <body>
-	<div class="StartCalendar">
-		<Calendar />
-	</div>
+	<a href="/loginPage" style="z-index:1000;"
+		>lasdasdmasloifjaskyhvksjdrhyebvnlikridujnbyltokhiurutjnyrboirtjlhoisjtliybhvuntreogin</a
+	>
 </body>
 
 <style lang="less">
@@ -14,7 +14,10 @@
 	@import 'public\less\global.less';
 
 	.StartCalendar {
-		width: 60%;
-		height: 50%;
+		width: 80%;
+		height: 70%;
+		position: absolute;
+		left: 10%;
+		bottom: 3%;
 	}
 </style>

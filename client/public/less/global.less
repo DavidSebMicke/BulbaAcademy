@@ -14,6 +14,8 @@
 	--secondary-color: @light-mode-flavour2
 	--bg-color: @light-mode-background;
 	--color: @light-mode-text;
+	--flavour-color--3: @dark-mode-flavour3;
+
   }
   
   [data-theme="dark"] {
@@ -21,18 +23,16 @@
 	--secondary-color: @dark-mode-flavour2;
 	--bg-color: @dark-mode-background;
 	--color: @dark-mode-text;
+	--flavour-color--3: @light-mode-flavour3;
   }
   
-  body, div, span, p, a, button, input, textarea {
+  body, span, p, a, button, input, textarea, .drops {
 	margin: 0;
 	background-color: var(--bg-color);
 	color: var(--color);
 	//background-color: transparent;
   }
 
-  
-
-  
 
   .container {
 	max-width: 960px;
@@ -54,16 +54,18 @@ a {
 	gap: 24px;
 }
 
-.classic-button {
-	padding: 10px 20px;
-	background-color: rgb(1, 1, 46);
+.classic-button, .ec-button, .ec-active, .ec-timeGridWeek, .ec-dayGridMonth, .subButton {
+	padding: 10px 20px!important;
+	background-color: var(--primary-color) !important;
 	&:hover {
-		background-color: rgb(0, 123, 139);
+		background-color: rgb(0, 123, 139)!important;
 	}
-	color: white;
+	color: white!important;
 	font-size: 10px;
-	border: none;
-	border-radius: 5px;
-	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
-	transition: all 0.2s ease-in-out;
+	border: none!important;
+	border-radius: 5px!important;
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3)!important;
+	transition: all 0.2s ease-in-out !important; 
+	cursor: pointer;
 }
+
