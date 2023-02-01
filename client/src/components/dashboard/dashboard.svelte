@@ -32,6 +32,7 @@
 				<!-- <li>Bulba Academy</li> -->
 				<li>
 					<a href="/"><iconify-icon icon="mdi:home" /></a><a
+
 						in:fade={fadeIn}
 						out:fade={fadeOut}
 						href="/">Startsida</a
