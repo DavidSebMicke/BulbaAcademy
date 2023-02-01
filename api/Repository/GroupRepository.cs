@@ -28,6 +28,7 @@ namespace BulbasaurAPI.Repository
         {
             throw new NotImplementedException();
         }
+
         public Task<Group> GetGroupByIdAsync(int id)
         {
             throw new NotImplementedException();
@@ -53,12 +54,22 @@ namespace BulbasaurAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
+        public Task<Group> Update(Group newEntity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Group> Update(Group newEntity)
+        public Task<IEnumerable<Group>> GetAllGroupsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteGroupAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateGroupAsync(Group group)
         {
             throw new NotImplementedException();
         }
