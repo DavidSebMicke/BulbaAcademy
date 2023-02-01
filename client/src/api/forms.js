@@ -5,9 +5,9 @@ const endpoint = "Caregiver/CreateCaregiversAndChild";
 
 export async function RegisterChildWithCaregivers(inputForm)
 {
-	console.log("Hej2");
 	
 	const response = await api.post(endpoint, inputForm);
+	console.log(response);
 	
 	if(response.ok){
 		console.log("Hej23");
