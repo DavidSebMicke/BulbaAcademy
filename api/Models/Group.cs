@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BulbasaurAPI.DTOs.Person;
+using System.ComponentModel.DataAnnotations;
 
 namespace BulbasaurAPI.Models
 {
@@ -9,6 +10,6 @@ namespace BulbasaurAPI.Models
         [MaxLength(255)]
         public string Name { get; set; }
 
-        public List<Person> People { get; set; } = new();
+        public List<Group> People { get; set; } = new();
     }
 }

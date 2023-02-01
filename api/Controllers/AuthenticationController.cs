@@ -54,29 +54,38 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("login/totp")]
-        public async Task<ActionResult<UserToken>> AccessTokenByTOTP(int userID, string code)
+        public async Task<ActionResult<UserToken>> TwoFactorLogin(string twoFToken, string code)
         {
-            var tOTP = await _context.TOTPs.Where(x => x.Id == userID).FirstOrDefaultAsync();
-            var user = await _context.Users.Where(x => x.Id == userID).FirstOrDefaultAsync();
+            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == twoFToken);
 
-            if (tOTP != null && user != null)
+            
+
+            if(twoFEntity == null) return BadRequest("Token not valid");
+
+            _context.TwoFTokens.Remove(twoFEntity);
+            await _context.SaveChangesAsync();
+
+            var tOTP = await _context.TOTPs.Where(x => x.Id == twoFEntity.User.Id).FirstOrDefaultAsync();
+
+            if (tOTP == null) return NotFound("Two factor validation unavailable");
+
+
+
+            if (TOTPUtil.VerifyTOTP(tOTP, code))
             {
-                if (TOTPUtil.VerifyTOTP(tOTP, code))
+                return new UserToken
                 {
-                    return new UserToken
-                    {
-                        Token = await TokenUtils.GenerateAccessToken(user, HttpHelper.GetIpAddress(HttpContext), _context)
-                    };
-                }
-                else
-                {
-                    return Unauthorized("Wrong code");
-                }
+                    AccessToken = await TokenUtils.GenerateAccessToken(twoFEntity.User, HttpHelper.GetIpAddress(HttpContext), _context),
+                    IDToken = TokenUtils.GenerateIDToken(twoFEntity.User)
+                };
             }
             else
             {
-                return Unauthorized("User not found");
+                
+                return Forbid("Wrong code");
+            
             }
+
         }
     }
 }

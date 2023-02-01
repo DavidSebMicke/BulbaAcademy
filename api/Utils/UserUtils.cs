@@ -61,7 +61,6 @@ namespace BulbasaurAPI.Utils
             //checks if user already exists
             if (await _context.Users.AnyAsync(u => u.Username == person.EmailAddress))
             {
-
                 return null;
             }
             else

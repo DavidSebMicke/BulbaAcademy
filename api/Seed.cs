@@ -52,7 +52,7 @@ namespace BulbasaurAPI
                         HomeAddress = new("Larsgatan 1", "Sollentuna", 12313),
                         PhoneNumber = "070234412",
                         EmailAddress = "Pappasemial@gmail.com",
-                        SSN = 20180204,
+                        SSN = "20180204312",
                         Role = _context.Roles.Where(x => x.Name == "Child").FirstOrDefault(),
 
                         // Creating empty Group
@@ -61,7 +61,7 @@ namespace BulbasaurAPI
                         // Creating and Assigning the Childs Caregivers
                         Caregivers = new List<Caregiver>()
                         {
-                           new Caregiver() { FirstName = "Mike", LastName = "Gullmarsson", HomeAddress = new("Larsgatan 1", "Sollentuna", 12313), PhoneNumber = "070234412", EmailAddress = "Pappasemial@gmail.com", SSN = 840910,
+                           new Caregiver() { FirstName = "Mike", LastName = "Gullmarsson", HomeAddress = new("Larsgatan 1", "Sollentuna", 12313), PhoneNumber = "070234412", EmailAddress = "Pappasemial@gmail.com", SSN = "19180204312",
                                             Role = _context.Roles.Where(x => x.Name == "Caregiver")
                                                 .FirstOrDefault()
                                            ,}
@@ -74,18 +74,18 @@ namespace BulbasaurAPI
                         HomeAddress = new("Ankeborg 19", "Ankeborg", 66666),
                         PhoneNumber = "07312314",
                         EmailAddress = "Kalleanka@gmail.com",
-                        SSN = 21104204,
+                        SSN = "19280204312",
                         Role = _context.Roles.Where(x => x.Name == "Child").FirstOrDefault(),
 
                         // Creating and Assigning the Childs Caregivers
                         Caregivers = new List<Caregiver>()
                         {
-                               new Caregiver() { FirstName = "Kalle", LastName = "Anka", HomeAddress = new("Ankeborg 19", "Ankeborg", 66666), PhoneNumber = "07312314", EmailAddress = "Mimmianka@gmail.com", SSN = 790711,
+                               new Caregiver() { FirstName = "Kalle", LastName = "Anka", HomeAddress = new("Ankeborg 19", "Ankeborg", 66666), PhoneNumber = "07312314", EmailAddress = "Mimmianka@gmail.com", SSN = "19380204312",
                                                 Role = _context.Roles.Where(x => x.Name == "Caregiver")
                                                     .FirstOrDefault()
                                                },
 
-                               new Caregiver() { FirstName = "Mimmi", LastName = "Anka", HomeAddress = new("Ankeborg 19", "Ankeborg", 66666), PhoneNumber = "07312314", EmailAddress = "Kalleanka@gmail.com", SSN = 780811,
+                               new Caregiver() { FirstName = "Mimmi", LastName = "Anka", HomeAddress = new("Ankeborg 19", "Ankeborg", 66666), PhoneNumber = "07312314", EmailAddress = "Kalleanka@gmail.com", SSN = "19480204312",
                                                 Role = _context.Roles.Where(x => x.Name == "Caregiver")
                                                     .FirstOrDefault()
                                                },
@@ -99,18 +99,18 @@ namespace BulbasaurAPI
                         HomeAddress = new("Manillagatan 2", "Götlaborg", 44123),
                         PhoneNumber = "07344551",
                         EmailAddress = "Filipperna@gmail.com",
-                        SSN = 21114204,
+                        SSN = "12330204312",
                         Role = _context.Roles.Where(x => x.Name == "Child").FirstOrDefault(),
 
                         // Creating and Assigning the Childs Caregivers
                         Caregivers = new List<Caregiver>()
                         {
-                               new Caregiver() { FirstName = "Tsing", LastName = "He", HomeAddress = new("Manillagatan 2", "Götlaborg", 44123), PhoneNumber = "07344551", EmailAddress = "Filipperna@gmail.com", SSN = 770711,
+                               new Caregiver() { FirstName = "Tsing", LastName = "He", HomeAddress = new("Manillagatan 2", "Götlaborg", 44123), PhoneNumber = "07344551", EmailAddress = "Filipperna@gmail.com", SSN = "19680204312",
                                                 Role = _context.Roles.Where(x => x.Name == "Caregiver")
                                                     .FirstOrDefault()
                                                },
 
-                               new Caregiver() { FirstName = "Jao", LastName = "He", HomeAddress = new("Manillagatan 2", "Götlaborg", 44123), PhoneNumber = "07344551", EmailAddress = "Jao@gmail.com", SSN = 810911,
+                               new Caregiver() { FirstName = "Jao", LastName = "He", HomeAddress = new("Manillagatan 2", "Götlaborg", 44123), PhoneNumber = "07344551", EmailAddress = "Jao@gmail.com", SSN = "19580204312",
                                                 Role = _context.Roles.Where(x => x.Name == "Caregiver")
                                                     .FirstOrDefault()
                                                },
@@ -123,13 +123,13 @@ namespace BulbasaurAPI
                         HomeAddress = new("Mormorsgatan 19", "Grandma Town", 12313),
                         PhoneNumber = "07318315",
                         EmailAddress = "mormors@gmail.com",
-                        SSN = 21106209,
+                        SSN = "2000204312",
                         Role = _context.Roles.Where(x => x.Name == "Child").FirstOrDefault(),
 
                         // Creating and Assigning the Childs Caregivers
                         Caregivers = new List<Caregiver>()
                         {
-                               new Caregiver() { FirstName = "Mormor", LastName = "Mormorsson", HomeAddress = new("Mormorsgatan 19", "Grandma Town", 12313), PhoneNumber = "07318315", EmailAddress = "Mormors@gmail.com", SSN = 590811,
+                               new Caregiver() { FirstName = "Mormor", LastName = "Mormorsson", HomeAddress = new("Mormorsgatan 19", "Grandma Town", 12313), PhoneNumber = "07318315", EmailAddress = "Mormors@gmail.com", SSN = "19800204312",
                                                 Role = _context.Roles.Where(x => x.Name == "Caregiver")
                                                     .FirstOrDefault()
                                                },
@@ -149,15 +149,15 @@ namespace BulbasaurAPI
                         HomeAddress = new("Fågelgatan 21", "Mölndal", 40923),
                         PhoneNumber = "07319915",
                         EmailAddress = "Teppas@gmail.com",
-                        SSN = 840811,
+                        SSN = "19880204312",
                         Role = _context.Roles.Where(x => x.Name == "Caregiver").FirstOrDefault(),
                         Children = new List<Child>()
                         {
-                            new Child() { FirstName = "Magnus", LastName = "Fågelberg", HomeAddress = new("Fågelgatan 21", "Mölndal", 40923), PhoneNumber = "07319915", EmailAddress = "Teppas@gmail.com", SSN = 210111,
+                            new Child() { FirstName = "Magnus", LastName = "Fågelberg", HomeAddress = new("Fågelgatan 21", "Mölndal", 40923), PhoneNumber = "07319915", EmailAddress = "Teppas@gmail.com", SSN = "20120204312",
                                                 Role = _context.Roles.Where(x => x.Name == "Child")
                                                     .FirstOrDefault()
                                                },
-                            new Child() { FirstName = "Monika", LastName = "Fågelberg", HomeAddress = new("Fågelgatan 21", "Mölndal", 40923), PhoneNumber = "07319915", EmailAddress = "Teppas@gmail.com", SSN = 211211,
+                            new Child() { FirstName = "Monika", LastName = "Fågelberg", HomeAddress = new("Fågelgatan 21", "Mölndal", 40923), PhoneNumber = "07319915", EmailAddress = "Teppas@gmail.com", SSN = "20150204312",
                                                 Role = _context.Roles.Where(x => x.Name == "Child")
                                                     .FirstOrDefault()
                                                },

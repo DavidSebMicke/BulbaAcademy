@@ -11,7 +11,7 @@
             {
                 "abcdefghijkmnopqrstuvwxyz",
                 "ABCDEFGHJKLMNOPQRSTUVWXYZ",
-                "!@#$%^&*-?",
+                "!@#$%&*-?",
                 "1234567890"
             };
 
