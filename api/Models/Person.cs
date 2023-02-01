@@ -6,24 +6,24 @@ namespace BulbasaurAPI.Models
     public abstract class Person
     {
         public int Id { get; set; }
-
+        [MinLength(12)]
         [MaxLength(12)]
-        public int SSN { get; set; }
+        public string SSN { get; set; }
 
         [MaxLength(128)]
         public string FirstName { get; set; }
 
         [MaxLength(128)]
         public string LastName { get; set; }
-
-        public Address HomeAddress { get; set; }
+       
+        public Address? HomeAddress { get; set; }
 
         [MaxLength(20)]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
         [MaxLength(255)]
         [EmailAddress]
-        public string EmailAddress { get; set; }
+        public string? EmailAddress { get; set; }
 
         public Role? Role { get; set; }
 

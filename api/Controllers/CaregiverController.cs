@@ -1,8 +1,8 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.DTOs.Caregiver;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -11,14 +11,17 @@ namespace BulbasaurAPI.Controllers
     public class CaregiverController : ControllerBase
     {
         private readonly ICaregiverRepository _caregiver;
+        private readonly IChildrenRepository _children;
 
-        public CaregiverController(ICaregiverRepository context)
+        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children)
         {
-            _caregiver = context;
+            _children = children;
+            _caregiver = caregiver;
         }
 
         // GET: api/GetAll
         [HttpGet]
+        [Route("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -135,6 +138,44 @@ namespace BulbasaurAPI.Controllers
             }
 
             return Ok("Successfully updated");
+
+
+
         }
+
+        // Post
+        [HttpPost]
+        [Route("CreateCaregiversAndChild")]
+
+        public async Task<ActionResult<CaregiverChildOutDTO>> CreateCaregiversAndChild([FromBody] CaregiverChildDTO ccDTO)
+        {
+
+            var newChild = new Child(ccDTO);
+
+            var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
+
+
+            var child = await _children.Create(newChild);
+
+            var caregiversOut = new List<Caregiver>();
+
+            foreach (Caregiver item in caregivers)
+            {
+                caregiversOut.Add(await _caregiver.Create(item));
+                await _caregiver.ConnectCaregiverAndChild(item, newChild);
+            }
+
+            var outDTO = new CaregiverChildOutDTO(caregiversOut, child);
+
+            return Ok(outDTO);
+        }
+
     }
+
+
+
+
+
+
 }
+
