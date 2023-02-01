@@ -1,5 +1,5 @@
 <script>
-	import { PasswordLogIn } from '../../../api/forms';
+	import { PasswordLogIn } from '../../../api/user';
 	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
 	import { onMount } from 'svelte';
 
@@ -16,17 +16,14 @@
 		});
 	}
 
-	onMount(()=>{
+	onMount(() => {
+		var twoFToken = window.sessionStorage.getItem('TwoFToken');
 
-		var twoFToken = window.sessionStorage.getItem("TwoFToken");
-
-		if(twoFToken){
+		if (twoFToken) {
 			//validera token och redirect till TOTP inlogg;
-			console.log(twoFToken)
+			console.log(twoFToken);
 		}
-
 	});
-
 </script>
 
 <div class="griden">
@@ -73,8 +70,6 @@
 	</div>
 
 	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
-
-
 </div>
 
 <style lang="less">

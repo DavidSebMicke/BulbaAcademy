@@ -1,30 +1,23 @@
 import axios from 'axios';
 import {api} from './api'
 
-export async function PasswordLogIn(inputEmail, inputPassword)
+const endpoint = "Caregiver/CreateCaregiversAndChild"; 
+
+export async function RegisterChildWithCaregivers(inputForm)
 {
-    const response = await api.request('Authentication/login',{
-        method:'POST',
-        data: {
-			email : inputEmail,
-			password : inputPassword
-		}
-    })
+	console.log("Hej2");
+	
+	const response = await api.post(endpoint, inputForm);
 	
 	if(response.ok){
+		console.log("Hej23");
+		let data = await response.data;
+		console.log(data);
+		return true;
 
-		let data = await response.json();
-
-		if(data.token){
-
-			console.log(data.token);
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
-	else{
+	else
+	{
 		return false;
 	}
 }
