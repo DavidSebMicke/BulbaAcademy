@@ -1,7 +1,7 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.DTOs.Group;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace BulbasaurAPI.Repository
 {
@@ -14,48 +14,51 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        //public async Task<Group> CreateGroupAsync(Group group)
+        public Task<Group> Create(Group entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Delete(Group entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> EntityExists(int id)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<Group> GetGroupByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public async Task<Group> GetGroupByIdAsync(int id)
         //{
-        //    return await _context.Groups.AddAsync(group);
+        //    return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
         //}
 
-        public async Task<bool> DeleteGroupAsync(int id)
+        public Task<IEnumerable<Group>> GetAll()
         {
-            var delete = await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
-            _context.Remove(delete);
-            return await SaveAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Group>> GetAllGroupsAsync()
+        public Task<Group?> GetById(int id)
         {
-            return await _context.Groups.ToListAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<Group> GetGroupByIdAsync(int id)
+        public Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
         {
-            return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
-        {
-            var person = await _context.Persons.Where(x => x.Id == id).FirstOrDefaultAsync();
-            var user = await _context.Users.Where(u => u.Person.Id == person.Id).FirstOrDefaultAsync();
-
-            var result = await _context.Groups
-                .Where<Group>(x => x.People.Contains(user.Person))
-                .Include(x => x.People)
-                .ThenInclude(p => p.Role)
-                .ToListAsync();
-            return result;
-        }
-
-        public async Task<bool> SaveAsync()
-        {
-            var saved = await _context.SaveChangesAsync();
-            return saved > 0;
-        }
-
-        public Task UpdateGroupAsync(Group group)
+        public Task<Group> Update(Group newEntity)
         {
             throw new NotImplementedException();
         }

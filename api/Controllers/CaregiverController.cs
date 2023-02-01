@@ -1,7 +1,8 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.DTOs.Caregiver;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
+using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -10,19 +11,22 @@ namespace BulbasaurAPI.Controllers
     public class CaregiverController : ControllerBase
     {
         private readonly ICaregiverRepository _caregiver;
+        private readonly IChildrenRepository _children;
 
-        public CaregiverController(ICaregiverRepository context)
+        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children)
         {
-            _caregiver = context;
+            _children = children;
+            _caregiver = caregiver;
         }
 
         // GET: api/GetAll
         [HttpGet]
+        [Route("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                return Ok(_caregiver.GetAll());
+                return Ok(await _caregiver.GetAll());
             }
             catch (Exception)
             {
@@ -37,7 +41,13 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-                return Ok(_caregiver.GetById(id));
+                if (!await _caregiver.EntityExists(id))
+                {
+                    return NotFound("Cant find the specified ID");
+
+                }
+
+                return Ok(await _caregiver.GetById(id));
             }
             catch (Exception)
             {
@@ -51,7 +61,9 @@ namespace BulbasaurAPI.Controllers
         {
             if (createdCareGiver == null) return BadRequest(ModelState);
 
-            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.Id);
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.SSN);
 
             if (caregiverExists)
             {
@@ -59,11 +71,26 @@ namespace BulbasaurAPI.Controllers
                 return StatusCode(422, ModelState);
             }
 
-            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _caregiver.Create(createdCareGiver);
 
-            return Ok("Successfully created");
+
+            var newCaregiver =  await _caregiver.Create(createdCareGiver);
+
+
+            var newUser = await UserUtils.RegisterUserWithPerson(newCaregiver, RandomPassword.GenerateRandomPassword());
+
+            if (newUser != null)
+            {
+
+
+
+                return Ok("Successfully created");
+
+            }
+            else
+            {
+                return BadRequest("Email invalid");
+            }
         }
 
         //Delete
@@ -107,10 +134,48 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-                NotFound();
+                NotFound("Cant find the specified ID");
             }
 
             return Ok("Successfully updated");
+
+
+
         }
+
+        // Post
+        [HttpPost]
+        [Route("CreateCaregiversAndChild")]
+
+        public async Task<ActionResult<CaregiverChildOutDTO>> CreateCaregiversAndChild([FromBody] CaregiverChildDTO ccDTO)
+        {
+
+            var newChild = new Child(ccDTO);
+
+            var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
+
+
+            var child = await _children.Create(newChild);
+
+            var caregiversOut = new List<Caregiver>();
+
+            foreach (Caregiver item in caregivers)
+            {
+                caregiversOut.Add(await _caregiver.Create(item));
+                await _caregiver.ConnectCaregiverAndChild(item, newChild);
+            }
+
+            var outDTO = new CaregiverChildOutDTO(caregiversOut, child);
+
+            return Ok(outDTO);
+        }
+
     }
+
+
+
+
+
+
 }
+

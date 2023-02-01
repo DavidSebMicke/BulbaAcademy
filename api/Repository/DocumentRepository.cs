@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Repository
 {
-    public class DocumentRepository : IBaseRepository<Document>
+    public class DocumentRepository : IDocumentRepository
     {
         private readonly DbServerContext _context;
 
@@ -15,7 +15,9 @@ namespace BulbasaurAPI.Repository
 
         public async Task<Document> Create(Document entity)
         {
-            return (await _context.Documents.AddAsync(entity)).Entity;
+            var add = (await _context.Documents.AddAsync(entity)).Entity;
+            await _context.SaveChangesAsync();
+            return add;
         }
 
         public async Task<Document> Update(Document newEntity)

@@ -25,6 +25,7 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
+                //Gets user that is doing the request
                 var user = HttpHelper.GetRequestUser(HttpContext);
 
                 var document = await _document.GetById(id);
@@ -33,7 +34,7 @@ namespace BulbasaurAPI.Controllers
 
                 if (document.UploadedBy.Id == user.Id ||
                     document.EligibleList.Contains(user) ||
-                    document.EligibleGroups.Any(g => g.People.Any(u => u.Id == user.Id)))
+                    document.EligibleGroups.Any(g => g.People.Any(u => u.Id == user.Person.Id)))
                 {
                     var file = PDFUtils.GetFile(document);
                     if (file == null) return NotFound("The PDF file was not found.");
@@ -95,6 +96,7 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
                 var user = HttpHelper.GetRequestUser(HttpContext);
 
                 // Construct and get paths for file
@@ -118,9 +120,9 @@ namespace BulbasaurAPI.Controllers
 
                 Document newDocument = new(incomingDocument, folderPath, eligibleUsers, eligibleGroups, user);
 
-                var returnDocument = _document.Create(newDocument);
+                var returnDocument = await _document.Create(newDocument);
 
-                return Ok(returnDocument);
+                return Ok(new DocumentDTO(returnDocument,incomingDocument.Document));
             }
             catch (Exception ex)
             {

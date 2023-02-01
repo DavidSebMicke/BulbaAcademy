@@ -1,6 +1,7 @@
 <script>
 	import { PasswordLogIn } from '../../../api/user';
 	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
+	import { onMount } from 'svelte';
 
 	const form = useForm();
 	let inputEmail;
@@ -14,6 +15,15 @@
 			pwLoginInvalidResponse = !success;
 		});
 	}
+
+	onMount(() => {
+		var twoFToken = window.sessionStorage.getItem('TwoFToken');
+
+		if (twoFToken) {
+			//validera token och redirect till TOTP inlogg;
+			console.log(twoFToken);
+		}
+	});
 </script>
 
 <body class="login">

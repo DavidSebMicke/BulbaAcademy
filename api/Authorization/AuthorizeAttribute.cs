@@ -30,7 +30,7 @@ namespace BulbasaurAPI.Authorization
             }
         }
 
-        public async void SendUnauthorizedMessage(AuthorizationFilterContext context)
+        public void SendUnauthorizedMessage(AuthorizationFilterContext context)
         {
             context.Result = new JsonResult(new { message = "You are not authorized to access this content." }) { StatusCode = StatusCodes.Status401Unauthorized };
         }

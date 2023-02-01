@@ -7,6 +7,7 @@ namespace BulbasaurAPI.Models
         public int Id { get; set; }
 
         // Hashed token
+        [MaxLength(1024)]
         public string TokenStr { get; set; }
 
         [MaxLength(40)]

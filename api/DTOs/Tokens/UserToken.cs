@@ -1,8 +1,13 @@
-﻿namespace BulbasaurAPI.DTOs.Tokens
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BulbasaurAPI.DTOs.Tokens
 {
     // Return object for user token
     public class UserToken
     {
-        public string Token { get; set; }
+        [MaxLength(1024)]
+        public string AccessToken { get; set; }
+
+        public string IDToken { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using BulbasaurAPI.DTOs.Document;
 
 namespace BulbasaurAPI.Models
@@ -6,16 +7,27 @@ namespace BulbasaurAPI.Models
     public class Document
     {
         public int Id { get; set; }
+
+        [MaxLength(1000)]
         public string FolderPath { get; set; }
+
+        [MaxLength(255)]
         public string FileName { get; set; }
+
+        [MaxLength(255)]
         public string DocumentTitle { get; set; }
-        public List<User> EligibleList { get; set; }
-        public List<Group> EligibleGroups { get; set; }
+
+        public List<User> EligibleList { get; set; } = new();
+        public List<Group> EligibleGroups { get; set; } = new();
         public User UploadedBy { get; set; }
         public DateTime UploadDate { get; set; } = DateTime.Now;
 
         [NotMapped]
         public string FilePath => Path.Combine(FolderPath, FileName);
+
+        public Document()
+        {
+        }
 
         public Document(IncomingDocumentDTO incomingDocument, string folderPath, List<User> eligibleList, List<Group> eligibleGroups, User uploadedBy)
         {

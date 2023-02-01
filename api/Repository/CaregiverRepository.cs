@@ -3,6 +3,10 @@ using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System.Web.Http.ModelBinding;
+using BulbasaurAPI.Utils;
+using BulbasaurAPI.Services;
+using Microsoft.AspNet.Identity;
+
 
 namespace BulbasaurAPI.Repository
 {
@@ -18,8 +22,12 @@ namespace BulbasaurAPI.Repository
         public async Task<Caregiver> Create(Caregiver caregiver)
         {
             var newCaregiver = (await _context.Caregivers.AddAsync(caregiver)).Entity;
-            await _context.SaveChangesAsync();
-            return newCaregiver;
+
+
+
+                return newCaregiver;
+
+            
         }
 
         public async Task<Caregiver> Update(Caregiver caregiver)
@@ -49,6 +57,13 @@ namespace BulbasaurAPI.Repository
         public async Task<bool> EntityExists(int id)
         {
             return await _context.Caregivers.AnyAsync(c => c.Id == id);
+        }
+
+        public async Task ConnectCaregiverAndChild(Caregiver caregiver, Child child)
+        {
+            caregiver.Children.Add(child);
+            child.Caregivers.Add(caregiver);
+            await _context.SaveChangesAsync();
         }
     }
 }
