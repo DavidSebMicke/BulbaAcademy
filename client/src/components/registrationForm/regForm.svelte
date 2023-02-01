@@ -47,8 +47,8 @@
 	};
 
 	function submitForm() {
-		RegisterChildWithCaregivers(formValues).then((success) => {
-			console.log('success: ' + success);
+		RegisterChildWithCaregivers(formValues).then((formResponse) => {
+			console.log(formResponse);
 		});
 	}
 
