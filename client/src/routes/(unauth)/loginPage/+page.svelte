@@ -16,20 +16,17 @@
 		});
 	}
 
-	onMount(()=>{
+	onMount(() => {
+		var twoFToken = window.sessionStorage.getItem('TwoFToken');
 
-		var twoFToken = window.sessionStorage.getItem("TwoFToken");
-
-		if(twoFToken){
+		if (twoFToken) {
 			//validera token och redirect till TOTP inlogg;
-			console.log(twoFToken)
+			console.log(twoFToken);
 		}
-
 	});
-
 </script>
 
-<div class="griden">
+<body class="login">
 	<div id="step1">Logga in i Bulba Academy</div>
 
 	<div class="step2">
@@ -73,9 +70,7 @@
 	</div>
 
 	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
-
-
-</div>
+</body>
 
 <style lang="less">
 	// @import 'public\less\variables.less';
@@ -84,16 +79,13 @@
 	@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-	// .body {
-	// 	font-family: 'Poiret One', cursive;
-	// 	font-family: 'Plus Jakarta Sans', sans-serif;
-	// 	font-family: 'Inter', sans-serif;
-	// }
-	.griden {
+	.login {
+		font-family: 'Poiret One', cursive;
+		font-family: 'Plus Jakarta Sans', sans-serif;
+		font-family: 'Inter', sans-serif;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
-
 	#step1 {
 		position: absolute;
 		width: 724px;
@@ -110,11 +102,6 @@
 
 		align-items: center;
 		letter-spacing: 0.04em;
-
-		color: #000000;
-
-		//border: 1px solid #000000;
-		//text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	}
 
 	.step2 {
@@ -134,6 +121,10 @@
 		letter-spacing: 0.04em;
 
 		color: #000000;
+		background-color: white;
+	}
+	.loginp {
+		background-color: white;
 	}
 
 	#step3 {
@@ -165,8 +156,5 @@
 		height: 250.18px;
 		left: 50rem;
 		top: 10rem;
-
-		//border: 1px solid #000000;
-		//transform: rotate(33.25deg);
 	}
 </style>
