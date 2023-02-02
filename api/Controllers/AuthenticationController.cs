@@ -54,13 +54,10 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("login/totp")]
-        public async Task<ActionResult<UserToken>> TwoFactorLogin(string twoFToken, string code)
+        public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpIn)
         {
-            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == twoFToken);
-
-            
-
-            if(twoFEntity == null) return BadRequest("Token not valid");
+            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstOrDefaultAsync(x => x.TokenStr == Hasher.Hash(totpIn.TwoFToken));
+            if (twoFEntity == null) return BadRequest("Token not valid");
 
             _context.TwoFTokens.Remove(twoFEntity);
             await _context.SaveChangesAsync();
@@ -71,8 +68,14 @@ namespace BulbasaurAPI.Controllers
 
 
 
-            if (TOTPUtil.VerifyTOTP(tOTP, code))
+            if (TOTPUtil.VerifyTOTP(tOTP, totpIn.Code))
             {
+                //    return new UserToken
+                //    {
+                //        AccessToken = await TokenUtils.GenerateAccessToken(twoFEntity.User, HttpHelper.GetIpAddress(HttpContext), _context),
+                //        IDToken = TokenUtils.GenerateIDToken(twoFEntity.User)
+                //    };
+
                 return new UserToken
                 {
                     AccessToken = await TokenUtils.GenerateAccessToken(twoFEntity.User, HttpHelper.GetIpAddress(HttpContext), _context),
@@ -81,9 +84,9 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-                
+
                 return Forbid("Wrong code");
-            
+
             }
 
         }

@@ -61,24 +61,46 @@ export const getUsers = (filter = '') => {
 };
 
 
-const endpoint = "Authentication/login"; 
 
-export async function PasswordLogIn(inputEmail, inputPassword)
+
+export async function PasswordLogIn(loginForm)
 {
-
-
+	const endpoint = "Authentication/login"; 
 	try{
 		const response = await api.post(endpoint, {
-			email : inputEmail,
-			password : inputPassword
-		});
-
-		if(response.ok){
-			await StoreInSession("TwoFToken", response.data.token);
-			return true;
+			email : loginForm.email,
+			password : loginForm.password
+		});		
+		if(response.status == 200){
+			var token = response.data.token
+			return token;
 		}
 		else{
+			return false;
+		}
 
+	} catch (err) {
+		console.error(err);
+
+		throw err;
+	}
+
+}
+
+
+export async function TOTPLogIn(twoFToken, code)
+{
+	const endpoint = "Authentication/login/totp"; 
+	try{
+		const response = await api.post(endpoint, {
+			twoFToken : twoFToken,
+			code : code
+		});		
+		if(response.status == 200){
+			var data = response.data
+			return data;
+		}
+		else{
 			return false;
 		}
 

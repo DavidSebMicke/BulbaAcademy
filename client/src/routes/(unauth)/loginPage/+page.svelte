@@ -1,31 +1,56 @@
 <script>
 	import { PasswordLogIn } from '../../../api/user';
 	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
+	import { emailCheck } from '../../../Utils/Validation'
 	import { onMount } from 'svelte';
+	import TotpModal from '../../../components/common/totpModal.svelte';
+	import {StoreInSession} from '../../../Utils/SessionStore'
+
 
 	const form = useForm();
-	let inputEmail;
-	let inputPassword;
+	let 
+	logInForm = {
+		email : "",
+		password : ""
+	};
+
 	let pwLoginInvalidResponse = false;
+
+	let showTOTPmodal = false;
+
+	function openModal() {
+		showTOTPmodal = true;
+	}
+
+
+	
+	function closeModal(event) {
+		
+		if(event.detail.closeModal){
+			showTOTPmodal = false;
+		}
+
+		
+	}
+
+
 
 	function handleLoginClick() {
 		pwLoginInvalidResponse = false;
 
-		PasswordLogIn(inputEmail, inputPassword).then((success) => {
-			pwLoginInvalidResponse = !success;
+		PasswordLogIn(logInForm).then((token) => {
+			
+			pwLoginInvalidResponse = !token;
+			
+			if(token){
+				StoreInSession("TwoFToken", token);
+				openModal();
+			}
+			
 		});
 	}
 
-	onMount(()=>{
 
-		var twoFToken = window.sessionStorage.getItem("TwoFToken");
-
-		if(twoFToken){
-			//validera token och redirect till TOTP inlogg;
-			console.log(twoFToken)
-		}
-
-	});
 
 </script>
 
@@ -34,33 +59,33 @@
 
 	<div class="step2">
 		<form name="loginForm" use:form on:submit|preventDefault={handleLoginClick}>
-			<p>
+			<div>
 				Användarnamn<br />
 				<input
 					type="email"
 					name="email"
-					use:validators={[required, email]}
-					bind:value={inputEmail}
+					use:validators={[required, emailCheck]}
+					bind:value={logInForm.email}
 				/>
 				<HintGroup for="email">
 					<Hint on="required">* You need to enter your email</Hint>
-					<Hint on="email" hideWhenRequired>* Email is not valid</Hint>
+					<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint>
 				</HintGroup>
-			</p>
+			</div>
 
-			<p>
+			<div>
 				Lösenord<br />
 				<input
 					type="password"
 					name="password"
 					use:validators={[required]}
-					bind:value={inputPassword}
+					bind:value={logInForm.password}
 				/>
 				<HintGroup for="password">
 					<Hint on="required">* You need to enter your password</Hint>
 				</HintGroup>
 				<br /><br />
-			</p>
+			</div>
 			<div>
 				<button id="step3" disabled={!$form.valid} type="submit">
 					<h1>Logga in</h1>
@@ -76,6 +101,13 @@
 
 
 </div>
+
+{#if showTOTPmodal}
+	
+	<TotpModal title={"Engångskod"} noCloseButton={true}  on:message={closeModal} /> 
+
+
+{/if}
 
 <style lang="less">
 	// @import 'public\less\variables.less';
