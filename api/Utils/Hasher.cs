@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace BulbasaurAPI
+namespace BulbasaurAPI.Utils
 {
     internal static class Hasher
     {
@@ -8,7 +8,6 @@ namespace BulbasaurAPI
 
         internal static string Hash(string str)
         {
-
             return BCrypt.Net.BCrypt.EnhancedHashPassword(str);
         }
 
@@ -18,14 +17,15 @@ namespace BulbasaurAPI
 
             return BCrypt.Net.BCrypt.EnhancedHashPassword(salt + str);
         }
+
         internal static bool Verify(string input, string hash)
         {
             return BCrypt.Net.BCrypt.EnhancedVerify(input, hash);
         }
+
         private static string Salt()
         {
             return BCrypt.Net.BCrypt.GenerateSalt(_saltLength);
-
         }
     }
 }

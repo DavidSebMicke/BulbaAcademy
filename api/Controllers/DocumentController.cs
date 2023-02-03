@@ -1,6 +1,5 @@
 ﻿using BulbasaurAPI.Authorization;
 using BulbasaurAPI.DTOs.Document;
-using BulbasaurAPI.Helpers;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Utils;

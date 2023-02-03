@@ -1,6 +1,6 @@
 ﻿using BulbasaurAPI.Models;
 
-namespace BulbasaurAPI.Helpers
+namespace BulbasaurAPI.Utils
 {
     public class HttpHelper
     {

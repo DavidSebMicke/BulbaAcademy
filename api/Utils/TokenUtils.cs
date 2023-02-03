@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BulbasaurAPI.Authentication
+namespace BulbasaurAPI.Utils
 {
     public class TokenUtils
     {
@@ -17,7 +17,7 @@ namespace BulbasaurAPI.Authentication
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -49,35 +49,30 @@ namespace BulbasaurAPI.Authentication
             return accessToken;
         }
 
-
         public static string GenerateIDToken(User user)
         {
             if (user == null) return "";
 
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { 
-                    new Claim("userID", user.Id.ToString()), 
-                    new Claim("email", user.Username), 
-                    new Claim("accessLevel", user.AccessLevel.ToString()), 
+                Subject = new ClaimsIdentity(new[] {
+                    new Claim("userID", user.Id.ToString()),
+                    new Claim("email", user.Username),
+                    new Claim("accessLevel", user.AccessLevel.ToString()),
                     new Claim("name", user.Person?.FullName),
                     new Claim("role", user.Person?.Role?.ToString()),
                 }),
-
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string idToken = tokenHandler.WriteToken(token);
 
-
             return idToken;
         }
-
-
 
         // Authenticates an accesstoken. Returns a user if it is valid, null if it is not
         public static async Task<User?> AuthenticateToken(string accessToken, string ipAddress)
@@ -88,7 +83,7 @@ namespace BulbasaurAPI.Authentication
 
             AccessToken dbToken;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             try
             {
@@ -134,7 +129,7 @@ namespace BulbasaurAPI.Authentication
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -176,7 +171,7 @@ namespace BulbasaurAPI.Authentication
 
             TwoFToken dbToken;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             try
             {

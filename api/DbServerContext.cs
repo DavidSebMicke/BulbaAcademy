@@ -13,6 +13,9 @@ namespace BulbasaurAPI
             Configuration = configuration;
         }
 
+        public DbServerContext(DbContextOptions<DbServerContext> options) : base(options)
+        { }
+
         public DbServerContext()
         { }
 
@@ -71,8 +74,6 @@ namespace BulbasaurAPI
             modelBuilder.Entity<LogInInformation>().ToTable("LogInInformations");
             modelBuilder.Entity<AccessToken>().ToTable("AccessTokens");
             modelBuilder.Entity<TwoFToken>().ToTable("TwoFTokens");
-
-            
         }
     }
 }
