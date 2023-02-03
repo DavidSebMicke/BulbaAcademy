@@ -1,6 +1,7 @@
 ﻿using BulbasaurAPI.DataAnnotations;
 using BulbasaurAPI.DTOs.Caregiver;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace BulbasaurAPI.DTOs.Child
 {
@@ -20,11 +21,19 @@ namespace BulbasaurAPI.DTOs.Child
         [MaxLength(128, ErrorMessage = "Efternamn för långt.")]
         public string LastName { get; set; }
 
+        public List<int>? EligebableGroups { get; set; }
+
         public ChildDTO(Models.Child child)
         {
             FirstName = child.FirstName;
             LastName = child.LastName;
+            EligebableGroups = (child.Groups.Select(item => item.Id)).ToList();
         }
+
+
+
+
+    
 
         public ChildDTO()
         {

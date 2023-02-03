@@ -14,9 +14,13 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        public Task<Group> Create(Group entity)
+        public async Task<Group> Create(Group group)
         {
-            throw new NotImplementedException();
+            var newGroup = (await _context.Groups.AddAsync(group)).Entity;
+           
+            await _context.SaveChangesAsync();
+            return newGroup;
+
         }
 
         public Task Delete(Group entity)
@@ -24,29 +28,17 @@ namespace BulbasaurAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> EntityExists(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Group> GetGroupByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+     
         public Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
         {
             throw new NotImplementedException();
         }
 
-        //public async Task<Group> GetGroupByIdAsync(int id)
-        //{
-        //    return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
-        //}
+        
 
-        public Task<IEnumerable<Group>> GetAll()
+        public async Task<IEnumerable<Group>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Groups.ToListAsync();
         }
 
         public Task<Group?> GetById(int id)
@@ -60,20 +52,9 @@ namespace BulbasaurAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Group>> GetAllGroupsAsync()
+        public async Task<bool> EntityExists(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteGroupAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateGroupAsync(Group group)
-
-        {
-            throw new NotImplementedException();
+            return await _context.Groups.AnyAsync(c => c.Id == id);
         }
     }
 }

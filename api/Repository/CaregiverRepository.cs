@@ -22,12 +22,7 @@ namespace BulbasaurAPI.Repository
         public async Task<Caregiver> Create(Caregiver caregiver)
         {
             var newCaregiver = (await _context.Caregivers.AddAsync(caregiver)).Entity;
-
-
-
-                return newCaregiver;
-
-            
+            return newCaregiver;
         }
 
         public async Task<Caregiver> Update(Caregiver caregiver)
