@@ -14,7 +14,7 @@ export const api = axios.create({
 
 // Used for setting the Authorization header for all calls
 export const setAccessToken = (token) => {
-	axios.AxiosHeaders.common['Authorization'] = `Bearer ${token}`;
+	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
 
 const configureDefaultRequestHeaders = () => {

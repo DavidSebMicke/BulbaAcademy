@@ -17,7 +17,7 @@ namespace BulbasaurAPI.Authentication
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -33,7 +33,7 @@ namespace BulbasaurAPI.Authentication
             {
                 await db.AccessTokens.AddAsync(new AccessToken()
                 {
-                    TokenStr = Hasher.Hash(accessToken),
+                    TokenStr = accessToken,
                     IpAddress = ipAddress,
                     User = user,
                     IssuedDateTime = DateTime.Now,
@@ -56,7 +56,7 @@ namespace BulbasaurAPI.Authentication
 
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -64,8 +64,8 @@ namespace BulbasaurAPI.Authentication
                     new Claim("userID", user.Id.ToString()), 
                     new Claim("email", user.Username), 
                     new Claim("accessLevel", user.AccessLevel.ToString()), 
-                    new Claim("name", user.Person?.FullName),
-                    new Claim("role", user.Person?.Role?.ToString()),
+                    new Claim("name", user.Person != null ? user.Person?.FullName : ""),
+                    new Claim("role", user.Person != null ? user.Person?.Role.Name : ""),
                 }),
 
             };
@@ -88,7 +88,7 @@ namespace BulbasaurAPI.Authentication
 
             AccessToken dbToken;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             try
             {
@@ -105,7 +105,7 @@ namespace BulbasaurAPI.Authentication
                 var userGUID = Guid.Parse(jwtToken.Claims.First(c => c.Type == "guid").Value);
 
                 // Access token authentication through backend
-                dbToken = await db.AccessTokens.Include(a => a.User).ThenInclude(u => u.Person).FirstAsync(t => t.TokenStr == Hasher.Hash(accessToken));
+                dbToken = await db.AccessTokens.Include(a => a.User).ThenInclude(u => u.Person).FirstAsync(t => t.TokenStr == accessToken);
             }
             catch
             {
@@ -134,7 +134,7 @@ namespace BulbasaurAPI.Authentication
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -150,12 +150,14 @@ namespace BulbasaurAPI.Authentication
             {
                 await db.TwoFTokens.AddAsync(new TwoFToken()
                 {
-                    TokenStr = Hasher.Hash(twoFToken),
+                    TokenStr = twoFToken,
                     IpAddress = ipAddress,
                     User = user,
                     IssuedDateTime = DateTime.Now,
                     LastUsedDateTime = DateTime.Now,
                 });
+
+
 
                 await db.SaveChangesAsync();
             }
@@ -176,7 +178,7 @@ namespace BulbasaurAPI.Authentication
 
             TwoFToken dbToken;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             try
             {
@@ -193,7 +195,7 @@ namespace BulbasaurAPI.Authentication
                 var userGUID = Guid.Parse(jwtToken.Claims.First(c => c.Type == "guid").Value);
 
                 // Access token authentication through backend
-                dbToken = await db.TwoFTokens.Include(a => a.User).ThenInclude(u => u.Person).FirstAsync(t => t.TokenStr == Hasher.Hash(token));
+                dbToken = await db.TwoFTokens.Include(a => a.User).ThenInclude(u => u.Person).FirstAsync(t => t.TokenStr == token);
             }
             catch
             {

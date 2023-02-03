@@ -8,12 +8,11 @@
 
 
 	const form = useForm();
-	let 
-	logInForm = {
+	let logInForm = {
 		email : "",
 		password : ""
 	};
-
+	let qrCode = "";
 	let pwLoginInvalidResponse = false;
 
 	let showTOTPmodal = false;
@@ -38,12 +37,14 @@
 	function handleLoginClick() {
 		pwLoginInvalidResponse = false;
 
-		PasswordLogIn(logInForm).then((token) => {
+		PasswordLogIn(logInForm).then((loginResp) => {
 			
-			pwLoginInvalidResponse = !token;
+			pwLoginInvalidResponse = !loginResp;
 			
-			if(token){
-				StoreInSession("TwoFToken", token);
+			if(loginResp){
+				
+				StoreInSession("TwoFToken", loginResp.token);
+				qrCode = loginResp.qrCode;
 				openModal();
 			}
 			
@@ -104,7 +105,7 @@
 
 {#if showTOTPmodal}
 	
-	<TotpModal title={"Engångskod"} noCloseButton={true}  on:message={closeModal} /> 
+	<TotpModal title={"Engångskod"} {qrCode} noCloseButton={true}  on:message={closeModal} /> 
 
 
 {/if}

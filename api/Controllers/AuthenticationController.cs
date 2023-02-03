@@ -9,6 +9,8 @@ using BulbasaurAPI.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OtpNet;
+using QRCoder;
 using System.Security.Cryptography;
 
 namespace BulbasaurAPI.Controllers
@@ -29,14 +31,39 @@ namespace BulbasaurAPI.Controllers
         {
             var user = await _context.Users.Where(x => x.Username == logInForm.Email).FirstOrDefaultAsync();
 
+
+
             if (user == null) return Unauthorized("User not found");
             else
             {
                 if (Hasher.Verify(user.Salt + logInForm.Password, user.Password))
                 {
+                    var qr = "";
+                    if(!(await _context.TOTPs.AnyAsync(x => x.Key == user.GUID)))
+                    {
+                        var totp = new TOTP
+                        {
+                            Key = user.GUID,
+                            Secret = TOTPUtil.GenerateTOTPSecret(),
+                            TimeWindowUsed = 0
+                        };
+                        string secretFull = $"otpauth://totp/Bulbasaur:{user.Username}?secret={QrUtil.ToBase32String(totp.Secret)}&issuer=Bulbasaur";
+                        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                        QRCodeData qrCodeData = qrGenerator.CreateQrCode(secretFull, QRCodeGenerator.ECCLevel.Q);
+                        BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData);
+                        byte[] qrCodeImage = qrCode.GetGraphic(9);
+                        qr = Convert.ToBase64String(qrCodeImage);
+
+
+                        await _context.TOTPs.AddAsync(totp);
+                        
+
+                    }
+
                     return new PasswordLogInResponse
                     {
-                        Token = await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext), _context)
+                        Token = await TokenUtils.GenerateTwoFToken(user, HttpHelper.GetIpAddress(HttpContext), _context),
+                        QrCode = qr
                     };
                 }
                 else return Unauthorized("Wrong password");
@@ -56,25 +83,18 @@ namespace BulbasaurAPI.Controllers
         [HttpPost("login/totp")]
         public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpIn)
         {
-            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstOrDefaultAsync(x => x.TokenStr == Hasher.Hash(totpIn.TwoFToken));
-            if (twoFEntity == null) return BadRequest("Token not valid");
+            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).ThenInclude(x=> x.Person).FirstOrDefaultAsync(x => x.TokenStr == totpIn.TwoFToken);
 
-            _context.TwoFTokens.Remove(twoFEntity);
-            await _context.SaveChangesAsync();
+            if (twoFEntity == null || twoFEntity.User == null) return BadRequest("Token not valid");
 
-            var tOTP = await _context.TOTPs.Where(x => x.Id == twoFEntity.User.Id).FirstOrDefaultAsync();
+            var tOTP = await _context.TOTPs.Where(x => x.Key == twoFEntity.User.GUID).FirstOrDefaultAsync();
 
             if (tOTP == null) return NotFound("Two factor validation unavailable");
 
+            
 
-
-            if (TOTPUtil.VerifyTOTP(tOTP, totpIn.Code))
-            {
-                //    return new UserToken
-                //    {
-                //        AccessToken = await TokenUtils.GenerateAccessToken(twoFEntity.User, HttpHelper.GetIpAddress(HttpContext), _context),
-                //        IDToken = TokenUtils.GenerateIDToken(twoFEntity.User)
-                //    };
+           if (TOTPUtil.VerifyTOTP(tOTP, totpIn.Code))
+           {
 
                 return new UserToken
                 {
