@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BulbasaurAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BulbasaurAPI.DTOs.Child
 {
@@ -11,6 +12,8 @@ namespace BulbasaurAPI.DTOs.Child
 
         [MaxLength(128)]
         public string LastName { get; set; }
+
+        public Role? Role { get; set; }
         public ChildOutDTO()
         {
 
@@ -20,6 +23,7 @@ namespace BulbasaurAPI.DTOs.Child
             Id = child.Id;
             FirstName = child.FirstName;
             LastName = child.LastName;
+           
         }
     }
 }

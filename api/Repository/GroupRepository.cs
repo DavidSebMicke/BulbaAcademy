@@ -1,4 +1,4 @@
-﻿using BulbasaurAPI.DTOs.Group;
+using BulbasaurAPI.DTOs.Group;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +54,7 @@ namespace BulbasaurAPI.Repository
             throw new NotImplementedException();
         }
 
+        
         public Task<Group> Update(Group newEntity)
         {
             throw new NotImplementedException();
@@ -70,6 +71,7 @@ namespace BulbasaurAPI.Repository
         }
 
         public Task UpdateGroupAsync(Group group)
+
         {
             throw new NotImplementedException();
         }
