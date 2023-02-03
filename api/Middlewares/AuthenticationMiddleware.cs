@@ -1,6 +1,5 @@
-﻿using BulbasaurAPI.Authentication;
-using BulbasaurAPI.Helpers;
-using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Models;
+using BulbasaurAPI.Utils;
 using System.Net;
 
 namespace BulbasaurAPI.Middlewares

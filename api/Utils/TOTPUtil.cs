@@ -1,7 +1,7 @@
 ﻿using OtpNet;
 using BulbasaurAPI.Models;
 
-namespace BulbasaurAPI.TOTPUtils
+namespace BulbasaurAPI.Utils
 {
     internal class TOTPUtil
     {

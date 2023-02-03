@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace BulbasaurAPI.Helpers
+namespace BulbasaurAPI.Utils
 {
     public class InputValidator
     {

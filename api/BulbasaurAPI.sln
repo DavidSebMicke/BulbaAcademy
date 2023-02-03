@@ -5,7 +5,11 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BulbasaurAPI", "BulbasaurAPI.csproj", "{B6417A90-E6E2-4910-92CF-98E8B910FD44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulbasaurAPI-test", "..\BulbasaurAPI-test\BulbasaurAPI-test.csproj", "{27CBBE41-89F1-4CF0-9807-DC9DBFF75E14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BulbasaurUnitTests", "..\BulbasaurAPI-test\BulbasaurUnitTests.csproj", "{27CBBE41-89F1-4CF0-9807-DC9DBFF75E14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{93175129-6AFB-46D8-9CEE-147B69FF76C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulbasaurIntegrationTests", "..\BulbasaurIntegrationTests\BulbasaurIntegrationTests.csproj", "{457FEE77-6F59-4004-8A0F-91BFA5F60B7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +28,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{27CBBE41-89F1-4CF0-9807-DC9DBFF75E14} = {93175129-6AFB-46D8-9CEE-147B69FF76C0}
+		{457FEE77-6F59-4004-8A0F-91BFA5F60B7D} = {93175129-6AFB-46D8-9CEE-147B69FF76C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {586C651E-FDF8-47B5-B58A-38B9796741E7}

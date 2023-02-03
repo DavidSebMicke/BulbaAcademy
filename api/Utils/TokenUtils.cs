@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BulbasaurAPI.Authentication
+namespace BulbasaurAPI.Utils
 {
     public class TokenUtils
     {
@@ -49,7 +49,6 @@ namespace BulbasaurAPI.Authentication
             return accessToken;
         }
 
-
         public static string GenerateIDToken(User user)
         {
             if (user == null) return "";
@@ -60,24 +59,20 @@ namespace BulbasaurAPI.Authentication
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { 
-                    new Claim("userID", user.Id.ToString()), 
-                    new Claim("email", user.Username), 
-                    new Claim("accessLevel", user.AccessLevel.ToString()), 
+                Subject = new ClaimsIdentity(new[] {
+                    new Claim("userID", user.Id.ToString()),
+                    new Claim("email", user.Username),
+                    new Claim("accessLevel", user.AccessLevel.ToString()),
                     new Claim("name", user.Person != null ? user.Person?.FullName : ""),
                     new Claim("role", user.Person != null ? user.Person?.Role.Name : ""),
                 }),
-
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             string idToken = tokenHandler.WriteToken(token);
 
-
             return idToken;
         }
-
-
 
         // Authenticates an accesstoken. Returns a user if it is valid, null if it is not
         public static async Task<User?> AuthenticateToken(string accessToken, string ipAddress)
@@ -156,8 +151,6 @@ namespace BulbasaurAPI.Authentication
                     IssuedDateTime = DateTime.Now,
                     LastUsedDateTime = DateTime.Now,
                 });
-
-
 
                 await db.SaveChangesAsync();
             }
