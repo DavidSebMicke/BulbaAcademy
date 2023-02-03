@@ -3,6 +3,7 @@ using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -12,11 +13,13 @@ namespace BulbasaurAPI.Controllers
     {
         private readonly ICaregiverRepository _caregiver;
         private readonly IChildrenRepository _children;
+        private readonly IGroupRepository _group;
 
-        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children)
+        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children, IGroupRepository groups)
         {
             _children = children;
             _caregiver = caregiver;
+            _group = groups;    
         }
 
         // GET: api/GetAll
@@ -92,7 +95,7 @@ namespace BulbasaurAPI.Controllers
 
         //Put(Update)
         [HttpPut]
-        public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] Caregiver updateCaregiver)
+        public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] CaregiverDTO updateCaregiver)
         {
             if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
 
@@ -113,7 +116,7 @@ namespace BulbasaurAPI.Controllers
                 existingCaregiver.PhoneNumber = updateCaregiver.PhoneNumber;
                 existingCaregiver.HomeAddress = updateCaregiver.HomeAddress;
                 existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
-                //existingCaregiver.SSN = updateCaregiver.SSN;
+                
 
                 await _caregiver.Update(existingCaregiver);
             }
@@ -134,16 +137,22 @@ namespace BulbasaurAPI.Controllers
 
             var newChild = new Child(ccDTO);
 
+            var addGroup = await _group.GetAll();
+            newChild.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
+            var child = await _children.Create(newChild);
+
             var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
 
-            var child = await _children.Create(newChild);
 
             var caregiversOut = new List<Caregiver>();
 
-            foreach (Caregiver item in caregivers)
+            foreach (Caregiver c in caregivers)
+
             {
-                caregiversOut.Add(await _caregiver.Create(item));
-                await _caregiver.ConnectCaregiverAndChild(item, newChild);
+                
+                caregiversOut.Add(await _caregiver.Create(c));
+                c.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
+                await _caregiver.ConnectCaregiverAndChild(c, newChild);
             }
 
             var outDTO = new CaregiverChildOutDTO(caregiversOut, child);

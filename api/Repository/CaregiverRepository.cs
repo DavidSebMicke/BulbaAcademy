@@ -22,12 +22,7 @@ namespace BulbasaurAPI.Repository
         public async Task<Caregiver> Create(Caregiver caregiver)
         {
             var newCaregiver = (await _context.Caregivers.AddAsync(caregiver)).Entity;
-
-
-
-                return newCaregiver;
-
-            
+            return newCaregiver;
         }
 
         public async Task<Caregiver> Update(Caregiver caregiver)
@@ -63,7 +58,14 @@ namespace BulbasaurAPI.Repository
         {
             caregiver.Children.Add(child);
             child.Caregivers.Add(caregiver);
+            await ConnectCaregiverToRoleId(caregiver);
             await _context.SaveChangesAsync();
+           
+        }
+
+        public async Task ConnectCaregiverToRoleId(Caregiver caregiver)
+        {
+            caregiver.Role = await _context.Roles.Where(x => x.Name == "Caregiver").FirstOrDefaultAsync();
         }
     }
 }

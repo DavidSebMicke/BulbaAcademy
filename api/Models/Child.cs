@@ -15,6 +15,8 @@ namespace BulbasaurAPI.Models
             FirstName = dto.Child.FirstName;
             LastName = dto.Child.LastName;
             SSN = dto.Child.SSN;
+            
+           
         }
     }
 }

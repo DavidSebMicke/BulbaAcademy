@@ -4,6 +4,7 @@ using BulbasaurAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    partial class DbServerContextModelSnapshot : ModelSnapshot
+    [Migration("20230203132426_PeopleGroups")]
+    partial class PeopleGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,16 +328,6 @@ namespace BulbasaurAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<Guid>("Key")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("Secret")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<long?>("TimeWindowUsed")
-                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

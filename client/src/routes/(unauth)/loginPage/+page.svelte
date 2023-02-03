@@ -51,11 +51,11 @@
 		});
 	}
 
-
-
 </script>
 
-<div class="griden">
+<img class="logga" src="public\img\logo3.png" alt="gfdk" />
+
+<body class="login">
 	<div id="step1">Logga in i Bulba Academy</div>
 
 	<div class="step2">
@@ -100,8 +100,8 @@
 
 	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
 
+</body>
 
-</div>
 
 {#if showTOTPmodal}
 	
@@ -117,16 +117,13 @@
 	@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-	// .body {
-	// 	font-family: 'Poiret One', cursive;
-	// 	font-family: 'Plus Jakarta Sans', sans-serif;
-	// 	font-family: 'Inter', sans-serif;
-	// }
-	.griden {
+	.login {
+		font-family: 'Poiret One', cursive;
+		font-family: 'Plus Jakarta Sans', sans-serif;
+		font-family: 'Inter', sans-serif;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
-
 	#step1 {
 		position: absolute;
 		width: 724px;
@@ -143,11 +140,6 @@
 
 		align-items: center;
 		letter-spacing: 0.04em;
-
-		color: #000000;
-
-		//border: 1px solid #000000;
-		//text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	}
 
 	.step2 {
@@ -167,6 +159,10 @@
 		letter-spacing: 0.04em;
 
 		color: #000000;
+		background-color: white;
+	}
+	.loginp {
+		background-color: white;
 	}
 
 	#step3 {
@@ -197,9 +193,17 @@
 		width: 237.61px;
 		height: 250.18px;
 		left: 50rem;
-		top: 10rem;
+		top: 5rem;
+	}
 
-		//border: 1px solid #000000;
-		//transform: rotate(33.25deg);
+	.logga {
+		box-sizing: border-box;
+		display: grid;
+		position: absolute;
+		width: 335px;
+		height: 51px;
+		left: 50rem;
+		top: 20rem;
+		border-radius: nullpx;
 	}
 </style>
