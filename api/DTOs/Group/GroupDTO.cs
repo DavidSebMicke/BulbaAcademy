@@ -6,12 +6,16 @@ namespace BulbasaurAPI.DTOs.Group
     {
         public string Name { get; set; }
 
-        public List<PersonDTO> People { get; set; } = new();
+        
 
         public GroupDTO(Models.Group group)
         {
             Name = group.Name;
-            People = new List<PersonDTO>();
+            
+
+        }
+        public GroupDTO()
+        {
 
         }
     }

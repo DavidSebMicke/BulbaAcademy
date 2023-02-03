@@ -4,6 +4,7 @@ using BulbasaurAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulbasaurAPI.Migrations
 {
     [DbContext(typeof(DbServerContext))]
-    partial class DbServerContextModelSnapshot : ModelSnapshot
+    [Migration("20230203140752_totpchange")]
+    partial class totpchange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,14 +175,24 @@ namespace BulbasaurAPI.Migrations
                     b.Property<int?>("DocumentId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int?>("PersonId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentId");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Groups", (string)null);
                 });
@@ -440,21 +452,6 @@ namespace BulbasaurAPI.Migrations
                     b.ToTable("CaregiverChild");
                 });
 
-            modelBuilder.Entity("GroupPerson", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PeopleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GroupsId", "PeopleId");
-
-                    b.HasIndex("PeopleId");
-
-                    b.ToTable("GroupPerson");
-                });
-
             modelBuilder.Entity("BulbasaurAPI.Models.Caregiver", b =>
                 {
                     b.HasBaseType("BulbasaurAPI.Models.Person");
@@ -511,6 +508,14 @@ namespace BulbasaurAPI.Migrations
                     b.HasOne("BulbasaurAPI.Models.Document", null)
                         .WithMany("EligibleGroups")
                         .HasForeignKey("DocumentId");
+
+                    b.HasOne("BulbasaurAPI.Models.Group", null)
+                        .WithMany("People")
+                        .HasForeignKey("GroupId");
+
+                    b.HasOne("BulbasaurAPI.Models.Person", null)
+                        .WithMany("Groups")
+                        .HasForeignKey("PersonId");
                 });
 
             modelBuilder.Entity("BulbasaurAPI.Models.Logging", b =>
@@ -591,21 +596,6 @@ namespace BulbasaurAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GroupPerson", b =>
-                {
-                    b.HasOne("BulbasaurAPI.Models.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BulbasaurAPI.Models.Person", null)
-                        .WithMany()
-                        .HasForeignKey("PeopleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BulbasaurAPI.Models.Caregiver", b =>
                 {
                     b.HasOne("BulbasaurAPI.Models.Person", null)
@@ -636,6 +626,16 @@ namespace BulbasaurAPI.Migrations
                     b.Navigation("EligibleGroups");
 
                     b.Navigation("EligibleList");
+                });
+
+            modelBuilder.Entity("BulbasaurAPI.Models.Group", b =>
+                {
+                    b.Navigation("People");
+                });
+
+            modelBuilder.Entity("BulbasaurAPI.Models.Person", b =>
+                {
+                    b.Navigation("Groups");
                 });
 #pragma warning restore 612, 618
         }
