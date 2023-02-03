@@ -10,8 +10,8 @@ namespace BulbasaurAPI.DataAnnotations
         {
             string strVal = (string)value;
 
-            //strVal.Replace('-', string.Empty.ToCharArray()[0]);
-            //strVal.Replace(' ', string.Empty.ToCharArray()[0]);
+            strVal = strVal.Replace("-", "");
+            strVal = strVal.Replace(" ", "");
 
             string pattern = @"(0|\+)[0-9]+";
 
