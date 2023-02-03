@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BulbasaurAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BulbasaurAPI.DTOs.Caregiver
 {
@@ -11,6 +12,8 @@ namespace BulbasaurAPI.DTOs.Caregiver
 
         [MaxLength(128)]
         public string LastName { get; set; }
+
+        public List<string> Groups { get; set; }
         public CaregiverOutDTO()
         {
 
@@ -20,6 +23,7 @@ namespace BulbasaurAPI.DTOs.Caregiver
             Id = caregiver.Id;
             FirstName = caregiver.FirstName;
             LastName = caregiver.LastName;
+            Groups = (caregiver.Groups.Select(item => item.Name)).ToList();
         }
     }
 

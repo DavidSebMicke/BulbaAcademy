@@ -14,6 +14,9 @@ namespace BulbasaurAPI.DTOs.Child
         public string LastName { get; set; }
 
         public Role? Role { get; set; }
+
+        public List<string> Groups { get; set; }
+
         public ChildOutDTO()
         {
 
@@ -23,7 +26,8 @@ namespace BulbasaurAPI.DTOs.Child
             Id = child.Id;
             FirstName = child.FirstName;
             LastName = child.LastName;
-           
+            Groups = (child.Groups.Select(item => item.Name)).ToList();
+
         }
     }
 }
