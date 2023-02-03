@@ -15,7 +15,9 @@ namespace BulbasaurAPI.Repository
 
         public async Task<Child> Create(Child child)
         {
+
             var newChild = (await _context.Children.AddAsync(child)).Entity;
+            await ConnectChildToRole(newChild);
             await _context.SaveChangesAsync();
             return newChild;
         }
@@ -47,6 +49,11 @@ namespace BulbasaurAPI.Repository
         public async Task<bool> EntityExists(int id)
         {
             return await _context.Children.AnyAsync(c => c.Id == id);
+        }
+
+        public async Task ConnectChildToRole(Child child)
+        {
+            child.Role = await _context.Roles.Where(x => x.Name == "Child").FirstOrDefaultAsync();
         }
     }
 }

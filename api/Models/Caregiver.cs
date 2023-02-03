@@ -17,6 +17,7 @@ namespace BulbasaurAPI.Models
             HomeAddress = caregiverDTO.HomeAddress;
             PhoneNumber = caregiverDTO.PhoneNumber;
             EmailAddress = caregiverDTO.EmailAddress;
+           
 
         }
     }

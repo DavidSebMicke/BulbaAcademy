@@ -33,6 +33,8 @@ namespace BulbasaurAPI.DTOs.Caregiver
         [EmailAddress(ErrorMessage = "Ogiltig emailadress.")]
         public string EmailAddress { get; set; }
 
+        public Role? Role { get; set; } 
+
         public CaregiverDTO(Models.Caregiver caregiver)
         {
             SSN = caregiver.SSN;
@@ -41,6 +43,8 @@ namespace BulbasaurAPI.DTOs.Caregiver
             HomeAddress = caregiver.HomeAddress;
             PhoneNumber = caregiver.PhoneNumber;
             EmailAddress = caregiver.EmailAddress;
+            Role.Id = 2;
+            
         }
 
         public CaregiverDTO()

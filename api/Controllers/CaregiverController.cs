@@ -92,7 +92,7 @@ namespace BulbasaurAPI.Controllers
 
         //Put(Update)
         [HttpPut]
-        public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] Caregiver updateCaregiver)
+        public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] CaregiverDTO updateCaregiver)
         {
             if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
 
@@ -113,7 +113,7 @@ namespace BulbasaurAPI.Controllers
                 existingCaregiver.PhoneNumber = updateCaregiver.PhoneNumber;
                 existingCaregiver.HomeAddress = updateCaregiver.HomeAddress;
                 existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
-                //existingCaregiver.SSN = updateCaregiver.SSN;
+                
 
                 await _caregiver.Update(existingCaregiver);
             }
@@ -133,6 +133,7 @@ namespace BulbasaurAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var newChild = new Child(ccDTO);
+           
 
             var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
 
@@ -141,8 +142,11 @@ namespace BulbasaurAPI.Controllers
             var caregiversOut = new List<Caregiver>();
 
             foreach (Caregiver item in caregivers)
+
             {
+                
                 caregiversOut.Add(await _caregiver.Create(item));
+                  
                 await _caregiver.ConnectCaregiverAndChild(item, newChild);
             }
 

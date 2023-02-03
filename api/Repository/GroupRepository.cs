@@ -53,11 +53,7 @@ namespace BulbasaurAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public Task<Group> Update(Group newEntity)
         {
             throw new NotImplementedException();

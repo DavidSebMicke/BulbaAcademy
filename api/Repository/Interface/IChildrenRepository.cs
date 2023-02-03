@@ -4,5 +4,6 @@ namespace BulbasaurAPI.Repository.Interface
 {
     public interface IChildrenRepository : IBaseRepository<Child>
     {
+        Task ConnectChildToRole(Child child);
     }
 }
