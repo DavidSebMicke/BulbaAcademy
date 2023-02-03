@@ -1,4 +1,4 @@
-﻿using BulbasaurAPI.DTOs.Group;
+using BulbasaurAPI.DTOs.Group;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +28,7 @@ namespace BulbasaurAPI.Repository
         {
             throw new NotImplementedException();
         }
+
         public Task<Group> GetGroupByIdAsync(int id)
         {
             throw new NotImplementedException();
@@ -55,6 +56,22 @@ namespace BulbasaurAPI.Repository
 
         
         public Task<Group> Update(Group newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Group>> GetAllGroupsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteGroupAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateGroupAsync(Group group)
+
         {
             throw new NotImplementedException();
         }
