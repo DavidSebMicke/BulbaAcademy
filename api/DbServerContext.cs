@@ -13,6 +13,8 @@ namespace BulbasaurAPI
         //    Configuration = configuration;
         //}
 
+        private DbContextOptions<DbServerContext> _options;
+
         public DbServerContext(DbContextOptions<DbServerContext> options) : base(options)
         { }
 
@@ -40,6 +42,7 @@ namespace BulbasaurAPI
         //{
         //    services.AddControllers();
         //}
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connString = DotEnv.Read()["_connString"];

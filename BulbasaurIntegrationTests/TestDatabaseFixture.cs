@@ -27,7 +27,8 @@ namespace BulbasaurIntegrationTests
 
         public TestDatabaseFixture()
         {
-            Connection = new SqlConnection(DotEnv.Read()["_testDbConnString"]);
+            var connString = "server=localhost;database=bulbaTestDB;Integrated Security=true;encrypt=false;";
+            Connection = new SqlConnection(connString);
 
             Seed();
 
