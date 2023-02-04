@@ -19,7 +19,7 @@ namespace BulbasaurAPI.Controllers
         {
             _children = children;
             _caregiver = caregiver;
-            _group = groups;    
+            _group = groups;
         }
 
         // GET: api/GetAll
@@ -67,7 +67,8 @@ namespace BulbasaurAPI.Controllers
 
             var newCaregiver = await _caregiver.Create(createdCareGiver);
 
-            var newUser = await UserUtils.RegisterUserWithPerson(newCaregiver, RandomPassword.GenerateRandomPassword());
+            // Register the created caregiver to create a user for them
+            var newUser = await _caregiver.RegisterUserWithPerson(newCaregiver);
 
             if (newUser != null)
             {
@@ -116,7 +117,6 @@ namespace BulbasaurAPI.Controllers
                 existingCaregiver.PhoneNumber = updateCaregiver.PhoneNumber;
                 existingCaregiver.HomeAddress = updateCaregiver.HomeAddress;
                 existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
-                
 
                 await _caregiver.Update(existingCaregiver);
             }
@@ -143,13 +143,11 @@ namespace BulbasaurAPI.Controllers
 
             var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
 
-
             var caregiversOut = new List<Caregiver>();
 
             foreach (Caregiver c in caregivers)
 
             {
-                
                 caregiversOut.Add(await _caregiver.Create(c));
                 c.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
                 await _caregiver.ConnectCaregiverAndChild(c, newChild);
