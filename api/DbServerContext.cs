@@ -6,23 +6,18 @@ namespace BulbasaurAPI
 {
     public class DbServerContext : DbContext
     {
-        public readonly IConfiguration Configuration;
+        //public readonly IConfiguration Configuration;
 
-        public DbServerContext(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        //public DbServerContext(IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
 
         public DbServerContext(DbContextOptions<DbServerContext> options) : base(options)
         { }
 
         public DbServerContext()
         { }
-
-        //public DbServerContext(IConfiguration configuration)
-        //{
-        //    Configuration = configuration;
-        //}
 
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Person> Persons { get; set; }
