@@ -68,8 +68,6 @@ namespace BulbasaurAPI
             app.UseCors("policyCors");
             app.UseHttpsRedirection();
 
-            new UserUtils(new DbServerContext(builder.Configuration));
-
             // Logging middleware
             //app.Use(async (context, next) =>
             //{

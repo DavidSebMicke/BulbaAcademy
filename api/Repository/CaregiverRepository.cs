@@ -7,7 +7,6 @@ using BulbasaurAPI.Utils;
 using BulbasaurAPI.Services;
 using Microsoft.AspNet.Identity;
 
-
 namespace BulbasaurAPI.Repository
 {
     public class CaregiverRepository : ICaregiverRepository
@@ -60,12 +59,16 @@ namespace BulbasaurAPI.Repository
             child.Caregivers.Add(caregiver);
             await ConnectCaregiverToRoleId(caregiver);
             await _context.SaveChangesAsync();
-           
         }
 
         public async Task ConnectCaregiverToRoleId(Caregiver caregiver)
         {
             caregiver.Role = await _context.Roles.Where(x => x.Name == "Caregiver").FirstOrDefaultAsync();
+        }
+
+        public async Task<User?> RegisterUserWithPerson(Caregiver caregiver)
+        {
+            return await UserUtils.RegisterUserWithPerson(caregiver, RandomPassword.GenerateRandomPassword(), _context);
         }
     }
 }

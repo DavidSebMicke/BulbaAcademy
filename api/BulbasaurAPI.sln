@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BulbasaurUnitTests", "..\Bu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{93175129-6AFB-46D8-9CEE-147B69FF76C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulbasaurIntegrationTests", "..\BulbasaurIntegrationTests\BulbasaurIntegrationTests.csproj", "{457FEE77-6F59-4004-8A0F-91BFA5F60B7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BulbasaurIntegrationTests", "..\BulbasaurIntegrationTests\BulbasaurIntegrationTests.csproj", "{457FEE77-6F59-4004-8A0F-91BFA5F60B7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +25,10 @@ Global
 		{27CBBE41-89F1-4CF0-9807-DC9DBFF75E14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27CBBE41-89F1-4CF0-9807-DC9DBFF75E14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27CBBE41-89F1-4CF0-9807-DC9DBFF75E14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{457FEE77-6F59-4004-8A0F-91BFA5F60B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{457FEE77-6F59-4004-8A0F-91BFA5F60B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{457FEE77-6F59-4004-8A0F-91BFA5F60B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{457FEE77-6F59-4004-8A0F-91BFA5F60B7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
