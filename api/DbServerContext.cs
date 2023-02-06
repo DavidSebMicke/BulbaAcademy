@@ -6,7 +6,7 @@ namespace BulbasaurAPI
 {
     public class DbServerContext : DbContext
     {
-        //public readonly IConfiguration Configuration;
+        public readonly IConfiguration Configuration;
 
         //public DbServerContext(IConfiguration configuration)
         //{
@@ -47,7 +47,7 @@ namespace BulbasaurAPI
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
-        //    var connString = DotEnv.Read()["_connString"];
+        //    var connString = Configuration.GetConnectionString("_connString");
         //    if (!optionsBuilder.IsConfigured)
         //    {
         //        optionsBuilder.UseSqlServer(connString);

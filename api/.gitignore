@@ -14,7 +14,7 @@
 
 #appsettings
 appsettings.json
-../api/appsettings.Development.json
+appsettings.Development.json
 appsettings.Test.json
 
 # User-specific files

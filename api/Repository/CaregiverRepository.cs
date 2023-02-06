@@ -45,7 +45,7 @@ namespace BulbasaurAPI.Repository
 
         public async Task<Caregiver?> GetById(int id)
         {
-            return await _context.Caregivers.FindAsync(id);
+            return await _context.Caregivers.Include(c => c.HomeAddress).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<bool> EntityExists(int id)
@@ -69,6 +69,11 @@ namespace BulbasaurAPI.Repository
         public async Task<User?> RegisterUserWithPerson(Caregiver caregiver)
         {
             return await UserUtils.RegisterUserWithPerson(caregiver, RandomPassword.GenerateRandomPassword(), _context);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

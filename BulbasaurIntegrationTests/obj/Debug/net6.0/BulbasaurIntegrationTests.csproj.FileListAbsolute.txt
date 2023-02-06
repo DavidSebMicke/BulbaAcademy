@@ -464,3 +464,4 @@ C:\Users\Emil Wallin\repo\gruppuppgift-1\Bulbasaur\BulbasaurIntegrationTests\obj
 C:\Users\Emil Wallin\repo\gruppuppgift-1\Bulbasaur\BulbasaurIntegrationTests\obj\Debug\net6.0\BulbasaurIntegrationTests.pdb
 C:\Users\Emil Wallin\repo\gruppuppgift-1\Bulbasaur\BulbasaurIntegrationTests\obj\Debug\net6.0\BulbasaurIntegrationTests.genruntimeconfig.cache
 C:\Users\Emil Wallin\repo\gruppuppgift-1\Bulbasaur\BulbasaurIntegrationTests\obj\Debug\net6.0\ref\BulbasaurIntegrationTests.dll
+C:\Users\Emil Wallin\repo\gruppuppgift-1\Bulbasaur\BulbasaurIntegrationTests\bin\Debug\net6.0\appsettings.Test.json
