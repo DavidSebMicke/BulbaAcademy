@@ -12,6 +12,11 @@
 #env
 .env
 
+#appsettings
+appsettings.json
+*/appsettings.Development.json
+appsettings.Test.json
+
 # User-specific files
 *.rsuser
 *.suo
