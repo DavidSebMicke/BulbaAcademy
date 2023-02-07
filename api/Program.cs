@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Middlewares;
 using BulbasaurAPI.Repository;
@@ -7,6 +8,8 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json.Serialization;
 
+=======
+>>>>>>> 05aedaf (New join classes to remove redundansies)
 namespace BulbasaurAPI
 {
     public class Program
@@ -25,12 +28,7 @@ namespace BulbasaurAPI
 
             // Add services to the container.
             builder.Services.AddControllers();
-
-            builder.Services.AddControllers().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
-            builder.Services.AddTransient<Seed>();
-
+           
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
