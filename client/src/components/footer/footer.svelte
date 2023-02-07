@@ -20,7 +20,7 @@
 </script>
 
 {#if hideFooter}
-	<div class="footer" transition:fly={{ y: 200, duration: 1000 }}>
+	<div class="footer" transition:fly={{ y: 200, duration: 2000 }}>
 		<p>Copyright Bulbasaur Academy - Pro group of developers</p>
 		<a href="https://letmegooglethat.com/?q=Pro+developers" target="_blank" rel="noreferrer">
 			Find us here!</a

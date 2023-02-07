@@ -1,36 +1,127 @@
 <script>
-	let teachers = [
-		{ id: 'https://thispersondoesnotexist.com/image', name: ' Hasse' },
-		{ id: 'https://thispersondoesnotexist.com/image', name: ' Lasse' },
-		{ id: 'https://thispersondoesnotexist.com/image', name: ' Karen' },
-		{ id: 'https://thispersondoesnotexist.com/image', name: ' Brollan' },
-		{ id: 'https://thispersondoesnotexist.com/image', name: ' Birgit' },
-		{ id: 'https://thispersondoesnotexist.com/image', name: ' Bosse' }
-	];
+	import ContactCard from './contactCard.svelte';
+	import TeacherGallery from './teacherGallery.svelte';
+
+	export let teachers;
+	let showSpecificTeacher = false;
+	let currentIndex = 0;
+	let person;
+
+	async function nextSlide() {
+		showSpecificTeacher = false;
+		if ((currentIndex + 1) % teachers.length === 8) {
+			currentIndex = 0;
+		}
+		currentIndex = (currentIndex + 1) % teachers.length;
+	}
+
+	function selectTeacher(event) {
+		person = event.detail.Teacher;
+		showSpecificTeacher = event.detail.Boolean;
+	}
+
+	async function prevSlide() {
+		showSpecificTeacher = false;
+		console.log((currentIndex - 1) % teachers.length);
+		if ((currentIndex - 1) % teachers.length === -1) {
+			currentIndex = 8;
+		}
+		currentIndex = (currentIndex - 1) % teachers.length;
+	}
+	//Automatically turns to next img after a delay
+	setInterval(async () => {
+		await nextSlide();
+	}, 10000);
 </script>
 
+<TeacherGallery {teachers} on:Teacher={selectTeacher} />
 <div class="profileCardContainer">
+	<button class="prevButton" on:click={prevSlide}>Previous</button>
 	<div class="profileCard">
-		{#each teachers as { id, name }}
+		{#if showSpecificTeacher}
 			<li>
-				<img src={id} alt="Could not load" />
+				<img src={person.id} alt={person.alt} class="slide" />
 				<div class="overlay">
-					<span class="teacherName">{name} </span>
+					<h1>{person.name}</h1>
+					<h4>( {person.profession} )</h4>
 					<div class="teacherInfo">
-						I'm the best teacher and the teachers are the best, so i'm the very best of
-						the best teachers.
+						{person.info}
 					</div>
 				</div>
 			</li>
-		{/each}
+		{/if}
+		{#if !showSpecificTeacher}
+			<li>
+				<img
+					src={teachers[currentIndex].id}
+					alt={teachers[currentIndex].alt}
+					class="slide"
+				/>
+				<div class="overlay">
+					<h1>{teachers[currentIndex].name}</h1>
+					<h4>( {teachers[currentIndex].profession} )</h4>
+
+					<div class="teacherInfo">
+						{teachers[currentIndex].info}
+					</div>
+				</div>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"
+					><path
+						fill="#d4d4dc"
+						fill-opacity="0.4"
+						d="M0,320L0,96L55.4,96L55.4,288L110.8,288L110.8,192L166.2,192L166.2,256L221.5,256L221.5,96L276.9,96L276.9,0L332.3,0L332.3,192L387.7,192L387.7,224L443.1,224L443.1,96L498.5,96L498.5,224L553.8,224L553.8,288L609.2,288L609.2,224L664.6,224L664.6,96L720,96L720,192L775.4,192L775.4,128L830.8,128L830.8,192L886.2,192L886.2,128L941.5,128L941.5,64L996.9,64L996.9,96L1052.3,96L1052.3,320L1107.7,320L1107.7,160L1163.1,160L1163.1,224L1218.5,224L1218.5,192L1273.8,192L1273.8,160L1329.2,160L1329.2,96L1384.6,96L1384.6,128L1440,128L1440,320L1384.6,320L1384.6,320L1329.2,320L1329.2,320L1273.8,320L1273.8,320L1218.5,320L1218.5,320L1163.1,320L1163.1,320L1107.7,320L1107.7,320L1052.3,320L1052.3,320L996.9,320L996.9,320L941.5,320L941.5,320L886.2,320L886.2,320L830.8,320L830.8,320L775.4,320L775.4,320L720,320L720,320L664.6,320L664.6,320L609.2,320L609.2,320L553.8,320L553.8,320L498.5,320L498.5,320L443.1,320L443.1,320L387.7,320L387.7,320L332.3,320L332.3,320L276.9,320L276.9,320L221.5,320L221.5,320L166.2,320L166.2,320L110.8,320L110.8,320L55.4,320L55.4,320L0,320L0,320Z"
+					/></svg
+				>
+			</li>
+		{/if}
 	</div>
+	<button on:click={nextSlide}>Next</button>
+</div>
+<div class="contactCardElement">
+	<ContactCard {teachers} />
 </div>
 
 <style lang="less">
+	@import 'public/less/global.less';
+
 	.profileCardContainer {
 		display: flex;
 		margin: 2rem;
 		justify-content: center;
+
+		button,
+		.prevButton {
+			padding: 10px 20px;
+			background-color: white;
+			color: black;
+			align-self: center;
+			width: 7em;
+			font-weight: 700;
+			font-family: 'Times New Roman', Times, serif;
+			transition: all 1s;
+			border: 2px solid rgb(132, 130, 130);
+
+			&:hover {
+				background-color: rgb(102, 102, 103);
+				color: white;
+				transform: translateX(2em);
+				border-left: 2px solid #68f689;
+			}
+		}
+
+		button::after {
+			transform: translateX(0);
+		}
+		.prevButton::after {
+			transform: translateX(0);
+		}
+		.prevButton:hover {
+			transform: translateX(-2em);
+			font-weight: 800;
+			border-left: none;
+
+			border-right: 2px solid #68f689;
+		}
 	}
 	.profileCard {
 		padding: 0.2em;
@@ -39,17 +130,14 @@
 		justify-content: center;
 		gap: 2em;
 		width: 80vh;
-		box-shadow: 10px 5px 3px #12343b;
 	}
 	.profileCard > li {
+		text-align: center;
 		padding: 0.2em;
+		color: #2d545e;
 		list-style: none;
-		flex-basis: 400px;
-		border: 2px solid black;
-		outline: 2px solid white;
-		outline-offset: -0.3em;
+		flex-basis: 800px;
 		position: relative;
-		box-shadow: 10px 12px 10px #12343b;
 		cursor: pointer;
 	}
 	.profileCard > li img {
@@ -61,10 +149,10 @@
 		vertical-align: middle;
 		border-radius: none;
 	}
-	// .profileCard::after {
-	// 	content: '';
-	// 	flex-basis: 450px;
-	// }
+	.profileCard::after {
+		content: '';
+		flex-basis: 8 50px;
+	}
 	.overlay {
 		position: absolute;
 		width: 100%;
@@ -75,15 +163,29 @@
 		box-sizing: border-box;
 		padding: 1rem;
 		transform: scale(0);
-		transition: all 0.5s 0.1s ease-in-out;
-		color: #fff;
+		transition: all 0.5s 0.2s ease-in-out;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
+		h1 {
+			text-shadow: 1px 1px rgb(165, 163, 163);
+			position: absolute;
+			color: white;
+			top: 0;
+		}
+		h4 {
+			position: absolute;
+			color: white;
+			font-weight: 400;
+			top: 3rem;
+		}
 	}
 
 	.profileCard li:hover .overlay {
 		transform: scale(1);
+		offset: 4px solid rgb(224, 36, 36);
+		outline-offset: 2px;
 	}
 	.teacherName {
 		font-weight: 600;
@@ -96,9 +198,12 @@
 		-webkit-line-clamp: 1;
 		display: flex;
 		overflow: hidden;
-		color: black;
-		background-color: white;
+		color: white;
+		overflow-wrap: break-all;
 		width: fit-content;
 		height: fit-content;
+	}
+	.contactCardElement {
+		text-align: center;
 	}
 </style>
