@@ -27,7 +27,6 @@ namespace BulbasaurAPI.Repository
         public async Task<Caregiver> Update(Caregiver caregiver)
         {
             var updatedEntity = _context.Caregivers.Update(caregiver).Entity;
-            await _context.SaveChangesAsync();
             return updatedEntity;
         }
 
@@ -35,7 +34,6 @@ namespace BulbasaurAPI.Repository
         {
             var caregiverDelete = _context.Caregivers.Where(x => x.Id == entity.Id).FirstOrDefault();
             _context.Caregivers.Remove(caregiverDelete);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Caregiver>> GetAll()

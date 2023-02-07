@@ -33,7 +33,7 @@ namespace BulbasaurIntegrationTests.IntegrationTests
         }
 
         [Fact]
-        public async Task GetAll()
+        public async Task GetAll_EnsureCount()
         {
             await using var transaction = await _databaseFixture.Connection.BeginTransactionAsync();
             using var context = _databaseFixture.CreateContext(transaction);
@@ -45,7 +45,7 @@ namespace BulbasaurIntegrationTests.IntegrationTests
         }
 
         [Fact]
-        public async Task CreateCaregiver()
+        public async Task CreateCaregiver_EnsureCreated()
         {
             await using var transaction = await _databaseFixture.Connection.BeginTransactionAsync();
 
@@ -90,7 +90,7 @@ namespace BulbasaurIntegrationTests.IntegrationTests
         }
 
         [Fact]
-        public async Task UpdateCaregiver()
+        public async Task UpdateCaregiver_EnsureUpdated()
         {
             await using var transaction = await _databaseFixture.Connection.BeginTransactionAsync();
 
@@ -135,6 +135,77 @@ namespace BulbasaurIntegrationTests.IntegrationTests
                 Assert.Equal(reqObject.HomeAddress.PostalCode, fetchedCaregiver.HomeAddress.PostalCode);
                 Assert.Equal(reqObject.PhoneNumber, fetchedCaregiver.PhoneNumber);
                 Assert.Equal(reqObject.EmailAddress, fetchedCaregiver.EmailAddress);
+            }
+        }
+
+        [Fact]
+        public async Task UpdateCaregiver_UpdatingDeletedThrowsError()
+        {
+            await using var transaction = await _databaseFixture.Connection.BeginTransactionAsync();
+
+            var caregiverId = 8;
+
+            Caregiver reqObject;
+
+            //Get caregiver, delete, update, save throws error
+            using (var context = _databaseFixture.CreateContext(transaction))
+            {
+                var caregiverRepo = new CaregiverRepository(context);
+
+                reqObject = await caregiverRepo.GetById(caregiverId);
+
+                Assert.NotNull(reqObject);
+
+                await caregiverRepo.Delete(reqObject);
+
+                reqObject.SSN = "200001011234";
+                reqObject.FirstName = "Changed name";
+                reqObject.LastName = "Change name";
+                reqObject.PhoneNumber = "+468727632";
+                reqObject.EmailAddress = "NewEmail@email.com";
+                reqObject.HomeAddress.StreetAddress = "New street";
+                reqObject.HomeAddress.City = "New city";
+                reqObject.HomeAddress.PostalCode = 12345;
+
+                await caregiverRepo.SaveChangesAsync();
+
+                var caregiver = await caregiverRepo.Update(reqObject);
+
+                await Assert.ThrowsAnyAsync<Exception>(async () => await caregiverRepo.SaveChangesAsync());
+            }
+        }
+
+        [Fact]
+        public async Task DeleteCaregiver_EnsureDeleted()
+        {
+            await using var transaction = await _databaseFixture.Connection.BeginTransactionAsync();
+
+            var caregiverId = 6;
+
+            Caregiver reqObject;
+
+            //Get caregiver and
+            using (var context = _databaseFixture.CreateContext(transaction))
+            {
+                var caregiverRepo = new CaregiverRepository(context);
+
+                reqObject = await caregiverRepo.GetById(caregiverId);
+
+                Assert.NotNull(reqObject);
+
+                await caregiverRepo.Delete(reqObject);
+
+                await caregiverRepo.SaveChangesAsync();
+            }
+
+            //Get caregiver and
+            using (var context = _databaseFixture.CreateContext(transaction))
+            {
+                var caregiverRepo = new CaregiverRepository(context);
+
+                reqObject = await caregiverRepo.GetById(caregiverId);
+
+                Assert.Null(reqObject);
             }
         }
     }
