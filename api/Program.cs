@@ -41,7 +41,6 @@ namespace BulbasaurAPI
             var connString = builder.Configuration.GetConnectionString("_connString");
             builder.Services.AddDbContext<DbServerContext>(options => options.UseSqlServer(connString));
 
-            //builder.Services.AddDbContext<DbServerContext>();
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
