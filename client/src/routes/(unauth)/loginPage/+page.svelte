@@ -1,53 +1,92 @@
 <script>
 	import { PasswordLogIn } from '../../../api/user';
 	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
+	import { emailCheck } from '../../../Utils/Validation'
+	import { onMount } from 'svelte';
+	import TotpModal from '../../../components/common/totpModal.svelte';
+	import {StoreInSession} from '../../../Utils/SessionStore'
+
 
 	const form = useForm();
-	let inputEmail;
-	let inputPassword;
+	let logInForm = {
+		email : "",
+		password : ""
+	};
+	let qrCode = "";
 	let pwLoginInvalidResponse = false;
+
+	let showTOTPmodal = false;
+
+	function openModal() {
+		showTOTPmodal = true;
+	}
+
+
+	
+	function closeModal(event) {
+		
+		if(event.detail.closeModal){
+			showTOTPmodal = false;
+		}
+
+		
+	}
+
+
 
 	function handleLoginClick() {
 		pwLoginInvalidResponse = false;
 
-		PasswordLogIn(inputEmail, inputPassword).then((success) => {
-			pwLoginInvalidResponse = !success;
+		PasswordLogIn(logInForm).then((loginResp) => {
+			
+			pwLoginInvalidResponse = !loginResp;
+			
+			if(loginResp){
+				
+				StoreInSession("TwoFToken", loginResp.token);
+				qrCode = loginResp.qrCode;
+				openModal();
+			}
+			
 		});
 	}
+
 </script>
 
-<div class="griden">
+<img class="logga" src="public\img\logo3.png" alt="gfdk" />
+
+<body class="login">
 	<div id="step1">Logga in i Bulba Academy</div>
 
 	<div class="step2">
 		<form name="loginForm" use:form on:submit|preventDefault={handleLoginClick}>
-			<p>
+			<div>
 				Användarnamn<br />
 				<input
 					type="email"
 					name="email"
-					use:validators={[required, email]}
-					bind:value={inputEmail}
+					use:validators={[required, emailCheck]}
+					bind:value={logInForm.email}
 				/>
 				<HintGroup for="email">
 					<Hint on="required">* You need to enter your email</Hint>
-					<Hint on="email" hideWhenRequired>* Email is not valid</Hint>
+					<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint>
 				</HintGroup>
-			</p>
+			</div>
 
-			<p>
+			<div>
 				Lösenord<br />
 				<input
 					type="password"
 					name="password"
 					use:validators={[required]}
-					bind:value={inputPassword}
+					bind:value={logInForm.password}
 				/>
 				<HintGroup for="password">
 					<Hint on="required">* You need to enter your password</Hint>
 				</HintGroup>
 				<br /><br />
-			</p>
+			</div>
 			<div>
 				<button id="step3" disabled={!$form.valid} type="submit">
 					<h1>Logga in</h1>
@@ -60,7 +99,16 @@
 	</div>
 
 	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
-</div>
+
+</body>
+
+
+{#if showTOTPmodal}
+	
+	<TotpModal title={"Engångskod"} {qrCode} noCloseButton={true}  on:message={closeModal} /> 
+
+
+{/if}
 
 <style lang="less">
 	// @import 'public\less\variables.less';
@@ -69,16 +117,13 @@
 	@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-	// .body {
-	// 	font-family: 'Poiret One', cursive;
-	// 	font-family: 'Plus Jakarta Sans', sans-serif;
-	// 	font-family: 'Inter', sans-serif;
-	// }
-	.griden {
+	.login {
+		font-family: 'Poiret One', cursive;
+		font-family: 'Plus Jakarta Sans', sans-serif;
+		font-family: 'Inter', sans-serif;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 	}
-
 	#step1 {
 		position: absolute;
 		width: 724px;
@@ -95,11 +140,6 @@
 
 		align-items: center;
 		letter-spacing: 0.04em;
-
-		color: #000000;
-
-		//border: 1px solid #000000;
-		//text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 	}
 
 	.step2 {
@@ -119,6 +159,10 @@
 		letter-spacing: 0.04em;
 
 		color: #000000;
+		background-color: white;
+	}
+	.loginp {
+		background-color: white;
 	}
 
 	#step3 {
@@ -149,9 +193,17 @@
 		width: 237.61px;
 		height: 250.18px;
 		left: 50rem;
-		top: 10rem;
+		top: 5rem;
+	}
 
-		//border: 1px solid #000000;
-		//transform: rotate(33.25deg);
+	.logga {
+		box-sizing: border-box;
+		display: grid;
+		position: absolute;
+		width: 335px;
+		height: 51px;
+		left: 50rem;
+		top: 20rem;
+		border-radius: nullpx;
 	}
 </style>

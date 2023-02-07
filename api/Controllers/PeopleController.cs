@@ -1,8 +1,8 @@
 ﻿using BulbasaurAPI.Models;
+using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BulbasaurAPI.Controllers
 {
@@ -11,51 +11,118 @@ namespace BulbasaurAPI.Controllers
     public class PeopleController : ControllerBase
     {
 
-        private readonly DbServerContext _context;
+        private readonly IPersonRepository _person;
 
-        public PeopleController(DbServerContext context)
+        public PeopleController(IPersonRepository context)
         {
-            _context = context;
+            _person = context;
         }
 
-        // GET: api/People
+        // GET: api/GetAll
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
-            var result = await _context.Persons.ToListAsync();
-            return Ok(result);
-        }
-
-        // GET api/People/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Details (int? id)
-        {
-            if (id == null)
+            try
             {
-                return NotFound();
+                return Ok(await _person.GetAll());
             }
-            var person = await _context.Persons
-                .FirstOrDefaultAsync(x => x.Id == id); 
-            return Ok(person);
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        // POST api/People
+        // GET: api/1
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetPersonById(int id)
+        {
+            try
+            {
+                if (!await _person.EntityExists(id))
+                {
+                    return NotFound("Cant find the specified ID");
+                    
+                }
+
+                return Ok(await _person.GetById(id));
+            }
+            catch (Exception)
+            {
+               throw;
+            }
+        }
+
+        // Post
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> CreatePersonAsync([FromBody] Person createdPerson)
         {
+            if (createdPerson == null) return BadRequest(ModelState);
+
+            var personExists = await _person.EntityExists(createdPerson.Id);
+
+            if (personExists)
+            {
+                ModelState.AddModelError("", "Person already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            await _person.Create(createdPerson);
+
+            return Ok("Successfully created");
         }
 
-        // PUT api/People/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+
+        //Delete
+        [HttpDelete]
+        public async Task<IActionResult> DeletePersonById(int id)
         {
+            var personExists = await _person.EntityExists(id);
+            if (!personExists) return NotFound("A person with the given ID does not exist.");
+            var personToDelete = await _person.GetById(id);
+            if (personToDelete == null) return NotFound("A person with the given ID does not exist.");
+
+            await _person.Delete(personToDelete);
+
+            return Ok("Successfully deleted");
         }
 
-        // DELETE api/People/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        //Put(Update)
+        [HttpPut]
+        public async Task<IActionResult> UpdatePersonById(int personId, [FromBody] Person updatePerson)
         {
+            if (_person.EntityExists(personId) == null) return BadRequest(ModelState);
+
+            if (updatePerson == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var existingPerson = await _person.GetById(personId);
+
+            if (existingPerson != null)
+            {
+                existingPerson.FirstName = updatePerson.FirstName;
+                existingPerson.LastName = updatePerson.LastName;
+                existingPerson.PhoneNumber = updatePerson.PhoneNumber;
+                existingPerson.HomeAddress = updatePerson.HomeAddress;
+                existingPerson.EmailAddress = updatePerson.EmailAddress;
+               
+
+                await _person.Update(existingPerson);
+            }
+            else
+            {
+                NotFound("Cant find the specified ID");
+            }
+
+            return Ok("Successfully updated");
         }
+
+
 
     }
 }

@@ -14,7 +14,10 @@
 	@import 'public\less\global.less';
 
 	.StartCalendar {
-		width: 60%;
-		height: 50%;
+		width: 80%;
+		height: 70%;
+		position: absolute;
+		left: 10%;
+		bottom: 3%;
 	}
 </style>

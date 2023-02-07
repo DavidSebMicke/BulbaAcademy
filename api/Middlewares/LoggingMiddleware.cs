@@ -1,6 +1,5 @@
-﻿using BulbasaurAPI.Authentication;
-using BulbasaurAPI.Helpers;
-using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Models;
+using BulbasaurAPI.Utils;
 
 namespace BulbasaurAPI.Middlewares
 {
@@ -21,7 +20,7 @@ namespace BulbasaurAPI.Middlewares
             var accessToken = context.Response.Headers.Authorization;
             User? user = null;
 
-            if (!String.IsNullOrEmpty(accessToken))
+            if (!string.IsNullOrEmpty(accessToken))
             {
                 user = await TokenUtils.AuthenticateToken(accessToken, ipAddress);
             }

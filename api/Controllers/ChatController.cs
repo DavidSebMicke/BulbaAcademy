@@ -1,8 +1,9 @@
 ﻿using BulbasaurAPI.DTOs.Chat;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
-using BulbasaurAPI.Repository.Chat;
+using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -19,37 +20,87 @@ namespace BulbasaurAPI.Controllers
 
         // GET: api/chat
         [HttpGet]
-        public async Task<ChatDTO?> Get([FromQuery] int id)
+        public async Task<ActionResult<ChatDTO?>> Get([FromQuery] int id)
         {
-            var user = (User)HttpContext.Items["User"];
-            return await _chat.Get(user, id);
+            try
+            {
+                var user = (User)HttpContext.Items["User"];
+                var chat = await _chat.Get(id);
+
+                if (!chat.InvolvedUsersList.Contains(user)) return Unauthorized("Du har inte tillgång till denna chat.");
+
+                return Ok(new ChatDTO(chat));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET: api/chat/list
         [HttpGet]
         [Route("list")]
-        public async Task<ICollection<ChatInfoDTO>?> GetChats()
+        public async Task<ActionResult<ICollection<ChatInfoDTO>?>> GetChats()
         {
-            var user = (User)HttpContext.Items["User"];
-            return await _chat.GetChats(user);
+            try
+            {
+                var user = (User)HttpContext.Items["User"];
+                var chatList = await _chat.GetChats(user);
+                var chatDTOs = chatList.Select(chat => new ChatDTO(chat));
+
+                return Ok(chatDTOs);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/chat/create
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<ChatDTO?>> CreateChat([FromBody] NewChatDTO newChat)
+        public async Task<ActionResult<ChatDTO?>> CreateChat([FromBody] NewChatDTO newChatDTO)
         {
-            var user = (User)HttpContext.Items["User"];
-            return await _chat.CreateChat(user, newChat);
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+                var user = (User)HttpContext.Items["User"];
+
+                var users = await _chat.GetUsersByIds(newChatDTO.Users);
+                users.Add(user);
+
+                var chatItems = new List<ChatItem>()
+                {
+                    new ChatItem() { Author = user, Message = newChatDTO.Message }
+                };
+
+                var newChat = new Chat(users, chatItems);
+
+                var newEntry = await _chat.CreateChat(newChat);
+
+                return Ok(new ChatDTO(newEntry));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST: api/chat/send
         [HttpPost]
         [Route("send")]
-        public async Task<ChatDTO?> SendMessage(ChatMessageDTO chatMessage)
+        public async Task<ActionResult<ChatDTO?>> SendMessage(ChatMessageDTO chatMessage)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var user = (User)HttpContext.Items["User"];
-            return await _chat.SendMessage(user, chatMessage);
+
+            var chat = await _chat.Get(chatMessage.ChatId);
+
+            if (!chat.InvolvedUsersList.Contains(user)) return Unauthorized("Du har inte tillgång till denna chatt.");
+
+            chat.ChatItemList.Add(new(chatMessage, user));
+            var updatedChat = await _chat.UpdateChat(chat);
+            return Ok(new ChatDTO(updatedChat));
         }
     }
 }
