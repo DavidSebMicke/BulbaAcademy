@@ -60,7 +60,8 @@
 	@import 'public\less\global.less';
 	nav {
 		cursor: pointer;
-		color: @dark-mode-text;
+		color: --color;
+		background-color: --bg-color;
 	}
 
 	ul {
@@ -73,7 +74,6 @@
 	}
 
 	a {
-		//color: currentColor;
 		text-decoration: none;
 		text-align: left;
 		font-size: 20px;
@@ -83,7 +83,7 @@
 	.nav-container {
 		display: flex;
 		justify-content: left;
-		height: 100rem;
+		height: 80rem;
 		text-decoration: none;
 		float: left;
 		padding: 5px;
@@ -99,8 +99,7 @@
 		display: flex;
 		justify-content: left;
 		height: 100em;
-		//color: currentColor;
-		background-color: @dark-mode-background;
+		background-color: --bg-color;
 		text-decoration: none;
 		float: left;
 		padding: 10px;

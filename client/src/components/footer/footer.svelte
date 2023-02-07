@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
+
 	let lastScrollPosition = 0;
 	let hideFooter = false;
 
@@ -29,21 +30,24 @@
 {/if}
 
 <style lang="less">
+	@import 'public/less/global.less';
 	.footer {
 		position: fixed;
 		bottom: 0;
 		width: 100%;
-		background-color: #333;
-		color: #fff;
-		padding: 10px;
+		background-color: var(--color);
+		color: var(--bg-color);
+		background-image: url('public/img/pencils.jfif');
+		background-size: cover;
+		padding: 5px;
 		text-align: center;
-	}
-	a {
-		color: #fff;
-		text-decoration: none;
-	}
-	p {
-		color: #fff;
-		text-decoration: none;
+		a {
+			text-decoration: none;
+			color: var(--bg-color);
+		}
+		p {
+			text-decoration: none;
+			color: var(--bg-color);
+		}
 	}
 </style>

@@ -3,21 +3,27 @@
 </script>
 
 <header>
-	<h1>{title}</h1>
+	<div class="background-div">
+		<h1>{title}</h1>
+	</div>
 </header>
 
 <style lang="less">
+	@import 'public/less/global.less';
 	header {
 		display: flex;
 		padding: 20px;
-		justify-content: center;
+		justify-content: left;
 		margin: 0;
-		background-color: #d4d4dc;
+		font-size: 2.5rem;
+	}
+	.background-div {
+		width: 100%;
+		background-color: var(--bg-color);
 	}
 
 	header h1 {
 		margin: 0;
-		font-size: 2.5rem;
 		font-weight: 700;
 	}
 

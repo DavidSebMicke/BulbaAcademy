@@ -44,9 +44,8 @@
 	.gallery-item {
 		text-align: center;
 		color: white;
-		font-size: 1.2em;
-		text-decoration: underline;
-		text-decoration-color: rgb(254, 252, 252);
+		font-size: 1.4em;
+		text-transform: capitalize;
 		img {
 			border: 2px solid white;
 

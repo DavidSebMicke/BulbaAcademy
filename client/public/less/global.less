@@ -1,36 +1,48 @@
 @import '/public/less/variables.less';
 
+[data-theme='light'] {
+	--primary-color: @dark-mode-flavour1;
+	--secondary-color: @dark-mode-flavour2;
+	--bg-color: @dark-mode-text;
+	--color: whitesmoke;
+}
 
-[data-theme="light"] {
-	--primary-color: @light-mode-flavour1;
-	--secondary-color: @light-mode-flavour2
-	--bg-color: @light-mode-background;
-	--color: @light-mode-text;
-  }
-  
-  [data-theme="dark"] {
+[data-theme='dark'] {
 	--primary-color: @dark-mode-flavour1;
 	--secondary-color: @dark-mode-flavour2;
 	--bg-color: @dark-mode-background;
 	--color: @dark-mode-text;
-  }
-  
-  body, div, span, p, a, button, input, textarea {
+}
+
+body,
+span,
+button,
+input,
+textarea {
 	margin: 0;
 	background-color: var(--bg-color);
 	color: var(--color);
-	//background-color: transparent;
-  }
-
-  
-
-  
-
-  .container {
+	user-select: none;
+	p,
+	h1,
+	h4 {
+		background-color: transparent;
+		user-select: none;
+		color: var(--color);
+		font-family: 'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif, Geneva, Verdana,
+			sans-serif;
+	}
+	font-weight: 700;
+	font-style: italic;
+}
+button > h4 {
+	text-decoration: underline;
+	text-decoration-color: var(--color);
+}
+.container {
 	max-width: 960px;
 	margin: 0 auto;
-  }  
-
+}
 
 * {
 	box-sizing: border-box;
@@ -44,19 +56,27 @@ a {
 	justify-content: space-around;
 	gap: 24px;
 }
+header {
+	color: var(--color);
+}
+header div {
+	background-color: var(--color);
+	border-bottom: 4px solid var(--color);
+}
 
 .classic-button {
 	padding: 10px 20px;
-	background-color: rgb(1, 1, 46);
-	&:hover {
-		background-color: rgb(0, 123, 139);
-	}
-	color: white;
+	background-color: #2d545e;
+	color: var(--color);
 	font-size: 10px;
-	border: none;
 	border-radius: 5px;
-	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+	border: 2px solid var(--color);
 	transition: all 0.2s ease-in-out;
+	&:hover {
+		font-size: 0.7em;
+		color: white;
+		background-color: var(--bg-color);
+	}
 }
 .loader {
 	border: 16px solid #f3f3f3;

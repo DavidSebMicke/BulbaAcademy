@@ -20,7 +20,7 @@
 	<div class="container">
 		<ul>
 			<li class="relative">
-				{#if currentTheme == 'light'}
+				{#if currentTheme === 'light'}
 					<a class="" href={'#'} on:click={() => setTheme('dark')}>
 						<iconify-icon icon="mdi:white-balance-sunny" />
 					</a>
@@ -36,11 +36,9 @@
 
 <style lang="less">
 	nav {
-		color: currentColor;
-		text-decoration: none;
-		text-align: right;
 		font-size: 20px;
-		justify-content: space-around;
+		margin-right: 1em;
+		float: right;
 		padding-right: 5px;
 	}
 

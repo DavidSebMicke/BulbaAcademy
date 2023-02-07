@@ -3,11 +3,9 @@
 	import 'iconify-icon';
 </script>
 
-<body>
-	<div class="StartCalendar">
-		<Calendar />
-	</div>
-</body>
+<div class="StartCalendar">
+	<Calendar />
+</div>
 
 <style lang="less">
 	@import 'public\less\variables.less';
