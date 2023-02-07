@@ -97,11 +97,8 @@
 			&:hover {
 				background-color: rgb(102, 102, 103);
 				color: white;
-				border: 2px solid #68f689;
 				transform: translateX(2em);
-				border-radius: 50%;
-				border-top: none;
-				border-left: none;
+				border-left: 2px solid #68f689;
 			}
 		}
 
@@ -113,9 +110,10 @@
 		}
 		.prevButton:hover {
 			transform: translateX(-2em);
-			border-right: none;
 			font-weight: 800;
-			border-left: 2px solid #68f689;
+			border-left: none;
+
+			border-right: 2px solid #68f689;
 		}
 	}
 	.profileCard {
