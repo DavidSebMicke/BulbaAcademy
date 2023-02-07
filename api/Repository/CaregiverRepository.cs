@@ -27,7 +27,6 @@ namespace BulbasaurAPI.Repository
         public async Task<Caregiver> Update(Caregiver caregiver)
         {
             var updatedEntity = _context.Caregivers.Update(caregiver).Entity;
-            await _context.SaveChangesAsync();
             return updatedEntity;
         }
 
@@ -35,7 +34,6 @@ namespace BulbasaurAPI.Repository
         {
             var caregiverDelete = _context.Caregivers.Where(x => x.Id == entity.Id).FirstOrDefault();
             _context.Caregivers.Remove(caregiverDelete);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Caregiver>> GetAll()
@@ -45,7 +43,7 @@ namespace BulbasaurAPI.Repository
 
         public async Task<Caregiver?> GetById(int id)
         {
-            return await _context.Caregivers.FindAsync(id);
+            return await _context.Caregivers.Include(c => c.HomeAddress).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<bool> EntityExists(int id)
@@ -69,6 +67,11 @@ namespace BulbasaurAPI.Repository
         public async Task<User?> RegisterUserWithPerson(Caregiver caregiver)
         {
             return await UserUtils.RegisterUserWithPerson(caregiver, RandomPassword.GenerateRandomPassword(), _context);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

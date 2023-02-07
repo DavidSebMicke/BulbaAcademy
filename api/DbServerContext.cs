@@ -6,15 +6,19 @@ namespace BulbasaurAPI
 {
     public class DbServerContext : DbContext
     {
-        //public readonly IConfiguration Configuration;
+        public readonly IConfiguration Configuration;
 
         //public DbServerContext(IConfiguration configuration)
         //{
         //    Configuration = configuration;
         //}
 
+        private DbContextOptions<DbServerContext> _options;
+
         public DbServerContext(DbContextOptions<DbServerContext> options) : base(options)
-        { }
+        {
+            _options = options;
+        }
 
         public DbServerContext()
         { }
@@ -40,14 +44,15 @@ namespace BulbasaurAPI
         //{
         //    services.AddControllers();
         //}
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connString = DotEnv.Read()["_connString"];
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(connString);
-            }
-        }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    var connString = Configuration.GetConnectionString("_connString");
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer(connString);
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

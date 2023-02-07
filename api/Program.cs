@@ -4,6 +4,7 @@ using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Utils;
+using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +37,10 @@ namespace BulbasaurAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<DbServerContext>();
+
+            var connString = builder.Configuration.GetConnectionString("_connString");
+            builder.Services.AddDbContext<DbServerContext>(options => options.UseSqlServer(connString));
+
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
