@@ -65,7 +65,8 @@ namespace BulbasaurAPI.Controllers
         [HttpPost("createUserTEST")]
         public async Task<ActionResult<User>> CreateUser(LogInForm loginForm)
         {
-            var newUser = await UserUtils.RegisterUser(loginForm.Email, RandomPassword.GenerateRandomPassword(), _context, sendEmail: true);
+            var newPassword = loginForm.Password; //RandomPassword.GenerateRandomPassword();
+            var newUser = await UserUtils.RegisterUser(loginForm.Email, newPassword, _context, sendEmail: false);
 
             if (newUser == null) return Unauthorized("not workin");
             else return newUser;
