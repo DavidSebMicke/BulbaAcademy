@@ -55,35 +55,6 @@ namespace BulbasaurAPI.Utils
         }
 
 
-        public static async Task<User?> RegisterUserWithPerson(Person person, string password, bool sendEmail = false)
-        {
-
-            //checks if user already exists
-            if (await _context.Users.AnyAsync(u => u.Username == person.EmailAddress))
-            {
-                return null;
-            }
-            else
-            {
-
-                User newUser = new User()
-                {
-                    Username = person.EmailAddress,
-                    Password = Hasher.HashWithSalt(password, out string salt),
-                    Salt = salt,
-                    AccessLevel = Authorization.UserAccessLevel.USER,
-                    Person = person
-                };
-
-
-                await _context.Users.AddAsync(newUser);
-                await _context.SaveChangesAsync();
-                if(sendEmail) await EmailAPI.SendPasswordToUserEmail(newUser.Username, password);
-                return newUser;
-            }
-
-
-        }
 
     }
 }

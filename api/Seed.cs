@@ -176,7 +176,7 @@ namespace BulbasaurAPI
                 }
 
                 // Creating Group and Assigning Parents to it
-                var supportGroup = new Models.Group() { Name = "SupportGrupp LössUtbrott" };
+                var supportGroup = new Models.Group() { Name = "Allmän" };
                 _context.Groups.Add(supportGroup);
                 var careGiverList = _context.Caregivers.Where(x => x.LastName == "Anka" || x.LastName == "Mormorsson" || x.LastName == "Fågelberg").ToList();
 

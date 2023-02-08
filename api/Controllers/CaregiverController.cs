@@ -14,12 +14,14 @@ namespace BulbasaurAPI.Controllers
         private readonly ICaregiverRepository _caregiver;
         private readonly IChildrenRepository _children;
         private readonly IGroupRepository _group;
+        private readonly IUserRepository _user;
 
-        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children, IGroupRepository groups)
+        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children, IGroupRepository groups, IUserRepository user)
         {
             _children = children;
             _caregiver = caregiver;
             _group = groups;    
+            _user = user;
         }
 
         // GET: api/GetAll
@@ -67,7 +69,7 @@ namespace BulbasaurAPI.Controllers
 
             var newCaregiver = await _caregiver.Create(createdCareGiver);
 
-            var newUser = await UserUtils.RegisterUserWithPerson(newCaregiver, RandomPassword.GenerateRandomPassword());
+            var newUser = await _user.RegisterUserWithPerson(newCaregiver, RandomPassword.GenerateRandomPassword());
 
             if (newUser != null)
             {
@@ -134,6 +136,9 @@ namespace BulbasaurAPI.Controllers
         public async Task<ActionResult<CaregiverChildOutDTO>> CreateCaregiversAndChild([FromBody] CaregiverChildDTO ccDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (_caregiver.CaregiverExists(ccDTO.Caregivers)) return BadRequest("Person är redan registrerad..");
+            if (await _children.ChildExists(ccDTO.Child)) return BadRequest("Barnet är redan registrerat");
+            
 
             var newChild = new Child(ccDTO);
 
@@ -149,12 +154,17 @@ namespace BulbasaurAPI.Controllers
             foreach (Caregiver c in caregivers)
 
             {
-                
-                caregiversOut.Add(await _caregiver.Create(c));
+                var newCg = await _caregiver.Create(c);
+                caregiversOut.Add(newCg);
                 c.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
-                await _caregiver.ConnectCaregiverAndChild(c, newChild);
-            }
+                await _caregiver.ConnectCaregiverAndChild(newCg, newChild);
 
+                
+                var user = await _user.RegisterUserWithPerson(c, RandomPassword.GenerateRandomPassword(), true);
+
+                if(user == null) return BadRequest("User can't be registered");
+            }
+            await _caregiver.SaveChanges();
             var outDTO = new CaregiverChildOutDTO(caregiversOut, child);
 
             return Ok(outDTO);

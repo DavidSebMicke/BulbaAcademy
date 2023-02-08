@@ -6,7 +6,9 @@ using System.Web.Http.ModelBinding;
 using BulbasaurAPI.Utils;
 using BulbasaurAPI.Services;
 using Microsoft.AspNet.Identity;
-
+using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using System.Linq;
+using BulbasaurAPI.DTOs.Caregiver;
 
 namespace BulbasaurAPI.Repository
 {
@@ -19,9 +21,12 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
+
+
         public async Task<Caregiver> Create(Caregiver caregiver)
         {
             var newCaregiver = (await _context.Caregivers.AddAsync(caregiver)).Entity;
+            
             return newCaregiver;
         }
 
@@ -60,12 +65,30 @@ namespace BulbasaurAPI.Repository
             child.Caregivers.Add(caregiver);
             await ConnectCaregiverToRoleId(caregiver);
             await _context.SaveChangesAsync();
-           
+
         }
 
         public async Task ConnectCaregiverToRoleId(Caregiver caregiver)
         {
             caregiver.Role = await _context.Roles.Where(x => x.Name == "Caregiver").FirstOrDefaultAsync();
+        }
+
+        public bool CaregiverExists(List<CaregiverDTO> caregiver)
+        {
+
+            foreach (var c in caregiver)
+            {
+
+                if (_context.Caregivers.Any(x => x.EmailAddress == c.EmailAddress)) return true;
+                if (_context.Caregivers.Any(x => x.SSN == c.SSN)) return true;
+            }
+            return false;
+        }
+
+        public async Task SaveChanges()
+        {
+            await _context.SaveChangesAsync();  
+            
         }
     }
 }
