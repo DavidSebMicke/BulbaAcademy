@@ -28,60 +28,33 @@
 				/>
 			{/if}
 		</button>
-
-		<ul>
-			<!-- <li>Bulba Academy</li> -->
-			<li>
-				<a href="/"><iconify-icon icon="mdi:home" /></a>{#if isExpanded}<a
-
 		{#if isExpanded}
 			<ul>
 				<!-- <li>Bulba Academy</li> -->
 				<li>
-					<a href="/"><iconify-icon icon="mdi:home" /></a>
-          <a
-						in:fade={fadeIn}		
-            out:fade={fadeOut}
-						href="/">Startsida</a
+					<a href="/" iconify-icon icon="mdi:home" in:fade={fadeIn} out:fade={fadeOut}>
+						Startsida
+					</a>
+				</li>
+
+				<li>
+					<a href="/profile"> <iconify-icon icon="healthicons:ui-user-profile" /> </a>
+					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile">Profil </a>
+				</li>
+
+				<li>
+					<a href="/staff"><iconify-icon icon="ic:baseline-work" /> </a>
+					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/staff">Personal </a>
+				</li>
+
+				<li>
+					<a href="/registration"><iconify-icon icon="material-symbols:forms-add-on" /></a
+					><a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/registration"
+						>Formulär</a
 					>
 				</li>
 				<li>
-					<a href="/">
-          <iconify-icon icon="healthicons:ui-user-profile"
-          </a>
-          <a
-						class="text"
-						in:fade={fadeIn}
-						out:fade={fadeOut}
-						href="/profile">Profil
-            </a>
-				</li>
-				<li>
-					<a href="/staff"><iconify-icon icon="ic:baseline-work" /></a><a
-						class="text"
-						in:fade={fadeIn}
-						out:fade={fadeOut}
-						href="/staff">Personal</a>
-       {/if}
-			</li>
-			<li>
-				{#if isExpanded}
-					<NoticeBoard />
-				{/if}
-			</li>
-		</ul>
-					>
-				</li>
-				<li>
-					<a href="/staff"><iconify-icon icon="material-symbols:forms-add-on" /></a><a
-						class="text"
-						in:fade={fadeIn}
-						out:fade={fadeOut}
-						href="/registration">Formulär</a
-					>
-				</li>
-				<li>
-					<a href="/staff"><iconify-icon icon="ic:sharp-grid-on" /></a><a
+					<a href="/"><iconify-icon icon="ic:sharp-grid-on" /></a><a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
@@ -89,17 +62,21 @@
 					>
 				</li>
 				<li>
-					<a href="/staff"><iconify-icon icon="mdi:file-document" /></a><a
+					<a href="/"><iconify-icon icon="mdi:file-document" /></a><a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/">Dokument
-            </a>
+						href="/"
+						>Dokument
+					</a>
+				</li>
+				<li>
+					<NoticeBoard />
 				</li>
 			</ul>
 		{:else}
 			<ul class="iconOnly">
-				<!-- <li>Bulba Academy</li> 
+				<!-- <li>Bulba Academy</li> -->
 				<li>
 					<a href="/"><iconify-icon icon="mdi:home" width="40" /></a>
 				</li>
@@ -111,8 +88,8 @@
 				</li>
 				<li>
 					<a href="/registration">
-          <iconify-icon icon="material-symbols:forms-add-on" width="40"/>
-           </a>
+						<iconify-icon icon="material-symbols:forms-add-on" width="40" />
+					</a>
 				</li>
 				<li>
 					<a href="/staff"><iconify-icon icon="ic:sharp-grid-on" width="40" /></a>

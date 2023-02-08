@@ -73,10 +73,15 @@
 				>
 				{#if i + 1 == messages.length}
 					<button class="closeCross" on:click={toggleBanner}>
-          <iconify-icon icon="material-symbols:close" width="30"/>
-          </button>
+						<iconify-icon icon="material-symbols:close" width="30" />
+					</button>
+				{/if}
+			</div>
+		{/each}
+	</div>
+{/if}
 
-<div class="noticeMe">
+<!-- <div class="noticeMe">
 	{#if !showBanner}
 		<div class="messageButton">
 			<button class="showMessage" on:click={toggleBanner}>Noticeboard</button>
@@ -94,7 +99,6 @@
 					</li>
 					<button on:click={openModal} on:click={() => setIndexValue(i)} class="showMore"
 						>Read more</button
-
 					>
 					{#if i + 1 == messages.length}
 						<button class="closeCross" on:click={toggleBanner}
@@ -108,8 +112,7 @@
 			{/each}
 		</div>
 	{/if}
-</div>
-
+</div> -->
 <style lang="less">
 	.noticeMe {
 		width: 80%;
