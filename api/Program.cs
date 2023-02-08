@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Middlewares;
 using BulbasaurAPI.Models;
