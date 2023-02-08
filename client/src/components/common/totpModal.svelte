@@ -50,7 +50,6 @@
 		}
 		CloseModal();
 	}
-
 </script>
 
 <div class="modal" use:ClickOutside on:click_outside={CloseModal}>
@@ -63,7 +62,7 @@
 			</div>
 			<div class="modal-content">
 				<div class="inputfield-container">
-					{#if qrCode != ""}
+					{#if qrCode != ''}
 						<div class="qr-image-container">
 							<img src={convertQrToImage(qrCode)} alt="" class="qr-image" />
 						</div>
@@ -74,10 +73,10 @@
 					{/if}
 
 					<input
+						maxlength="6"
 						name="inputField"
 						use:validators={[required]}
 						bind:value={fieldValue}
-						placeholder={fieldParams.placeholder}
 					/>
 				</div>
 			</div>
@@ -115,13 +114,13 @@
 		margin-right: 10px;
 	}
 
-	.qr-image-container{
+	.qr-image-container {
 		display: flex;
 		justify-content: center;
 		padding: 20px;
 	}
 
-	.qr-image{
+	.qr-image {
 		width: 12rem;
 		height: auto;
 	}
@@ -134,10 +133,12 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-
+		background-color: var(--flavour-color--3);
 		width: 80%;
 		max-width: 600px;
-
+		// border: 2px solid black;
+		border-radius: 10px;
+		box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.39);
 		z-index: 11;
 	}
 
@@ -155,8 +156,8 @@
 	.modal-header {
 		position: relative;
 		top: 0;
-		padding-top: 10px;
-		padding-bottom: 10px;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
 	}
 
 	.modal-footer {
@@ -180,10 +181,13 @@
 	}
 
 	.inputfield-container {
-		width: 100%;
+		width: 50%;
+		align-self: center;
 	}
 
 	input {
 		width: 100%;
+		font-size: 60px;
+		text-align: center;
 	}
 </style>
