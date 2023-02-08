@@ -1,7 +1,7 @@
-﻿using BulbasaurAPI.Models;
+using BulbasaurAPI.DTOs.Group;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace BulbasaurAPI.Repository
 {
@@ -14,51 +14,47 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
-        //public async Task<Group> CreateGroupAsync(Group group)
-        //{
-        //    return await _context.Groups.AddAsync(group);
-        //}
-
-        public async Task<bool> DeleteGroupAsync(int id)
+        public async Task<Group> Create(Group group)
         {
-            var delete = await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
-            _context.Remove(delete);
-            return await SaveAsync();
+            var newGroup = (await _context.Groups.AddAsync(group)).Entity;
+           
+            await _context.SaveChangesAsync();
+            return newGroup;
+
         }
 
-        public async Task<IEnumerable<Group>> GetAllGroupsAsync()
+        public Task Delete(Group entity)
+        {
+            throw new NotImplementedException();
+        }
+
+     
+        public Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        
+
+        public async Task<IEnumerable<Group>> GetAll()
         {
             return await _context.Groups.ToListAsync();
         }
 
-        public async Task<Group> GetGroupByIdAsync(int id)
-        {
-            return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
-        }
-
-        public async Task<IEnumerable<Group>> GetGroupsByPersonId(int id)
-        {
-            var person = await _context.Persons.Where(x => x.Id == id).FirstOrDefaultAsync();
-            var user = await _context.Users.Where(u => u.Person.Id == person.Id).FirstOrDefaultAsync();
-
-            var result = await _context.Groups
-                .Where<Group>(x => x.Users.Contains(user))
-                .Include(x => x.Users)
-                .ThenInclude(u => u.Person)
-                .ThenInclude(p => p.Role)
-                .ToListAsync();
-            return result;
-        }
-
-        public async Task<bool> SaveAsync()
-        {
-            var saved = await _context.SaveChangesAsync();
-            return saved > 0;
-        }
-
-        public Task UpdateGroupAsync(Group group)
+        public Task<Group?> GetById(int id)
         {
             throw new NotImplementedException();
+        }
+
+        
+        public Task<Group> Update(Group newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> EntityExists(int id)
+        {
+            return await _context.Groups.AnyAsync(c => c.Id == id);
         }
     }
 }

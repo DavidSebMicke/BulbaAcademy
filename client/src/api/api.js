@@ -1,17 +1,20 @@
 import axios from 'axios';
 
 // Base for api calls. Import this and call .get, .post, etc.
-export const api = () => {
-	configureDefaultRequestHeaders();
-
-	return axios.create({
-		baseURL: 'http://localhost:8000/api/'
+export const api = axios.create({
+		baseURL: 'http://localhost:8000/api/',
+		headers: {
+			'Content-type': 'application/json',
+			'Accept': 'application/json',
+		},
+		validateStatus: () => true
 	});
-};
+
+
 
 // Used for setting the Authorization header for all calls
 export const setAccessToken = (token) => {
-	axios.AxiosHeaders.common['Authorization'] = `Bearer ${token}`;
+	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
 
 const configureDefaultRequestHeaders = () => {

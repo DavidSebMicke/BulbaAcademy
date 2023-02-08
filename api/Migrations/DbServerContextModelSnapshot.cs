@@ -43,7 +43,8 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("TokenStr")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -53,6 +54,32 @@ namespace BulbasaurAPI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AccessTokens", (string)null);
+                });
+
+            modelBuilder.Entity("BulbasaurAPI.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PostalCode")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StreetAddress")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("BulbasaurAPI.Models.Chat", b =>
@@ -87,6 +114,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -106,7 +134,30 @@ namespace BulbasaurAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("DocumentTitle")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FolderPath")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UploadedById")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UploadedById");
 
                     b.ToTable("Documents", (string)null);
                 });
@@ -119,11 +170,17 @@ namespace BulbasaurAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("DocumentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DocumentId");
 
                     b.ToTable("Groups", (string)null);
                 });
@@ -138,16 +195,18 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("Action")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IpAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -170,15 +229,18 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("IpAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("LogInCountry")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("LoggedInDevice")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -201,36 +263,38 @@ namespace BulbasaurAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("DocumentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("EmailAddress")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("HomeAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("HomeAddressId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SSN")
-                        .HasColumnType("int");
+                    b.Property<string>("SSN")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DocumentId");
+                    b.HasIndex("HomeAddressId");
 
                     b.HasIndex("RoleId");
 
@@ -247,7 +311,8 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.HasKey("Id");
 
@@ -261,6 +326,16 @@ namespace BulbasaurAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<Guid>("Key")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Secret")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<long?>("TimeWindowUsed")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -288,7 +363,8 @@ namespace BulbasaurAPI.Migrations
 
                     b.Property<string>("TokenStr")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -314,23 +390,35 @@ namespace BulbasaurAPI.Migrations
                     b.Property<int?>("ChatId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("DocumentId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("GUID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("PersonId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
+
+                    b.HasIndex("DocumentId");
 
                     b.HasIndex("PersonId");
 
@@ -357,12 +445,12 @@ namespace BulbasaurAPI.Migrations
                     b.Property<int>("GroupsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonsId")
+                    b.Property<int>("PeopleId")
                         .HasColumnType("int");
 
-                    b.HasKey("GroupsId", "PersonsId");
+                    b.HasKey("GroupsId", "PeopleId");
 
-                    b.HasIndex("PersonsId");
+                    b.HasIndex("PeopleId");
 
                     b.ToTable("GroupPerson");
                 });
@@ -379,20 +467,6 @@ namespace BulbasaurAPI.Migrations
                     b.HasBaseType("BulbasaurAPI.Models.Person");
 
                     b.ToTable("Children", (string)null);
-                });
-
-            modelBuilder.Entity("BulbasaurAPI.Models.Personell", b =>
-                {
-                    b.HasBaseType("BulbasaurAPI.Models.Person");
-
-                    b.Property<string>("Employment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("FullTimeEmployment")
-                        .HasColumnType("bit");
-
-                    b.ToTable("Personells", (string)null);
                 });
 
             modelBuilder.Entity("BulbasaurAPI.Models.AccessToken", b =>
@@ -421,13 +495,29 @@ namespace BulbasaurAPI.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("BulbasaurAPI.Models.Document", b =>
+                {
+                    b.HasOne("BulbasaurAPI.Models.User", "UploadedBy")
+                        .WithMany()
+                        .HasForeignKey("UploadedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UploadedBy");
+                });
+
+            modelBuilder.Entity("BulbasaurAPI.Models.Group", b =>
+                {
+                    b.HasOne("BulbasaurAPI.Models.Document", null)
+                        .WithMany("EligibleGroups")
+                        .HasForeignKey("DocumentId");
+                });
+
             modelBuilder.Entity("BulbasaurAPI.Models.Logging", b =>
                 {
                     b.HasOne("BulbasaurAPI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -445,13 +535,15 @@ namespace BulbasaurAPI.Migrations
 
             modelBuilder.Entity("BulbasaurAPI.Models.Person", b =>
                 {
-                    b.HasOne("BulbasaurAPI.Models.Document", null)
-                        .WithMany("EligableList")
-                        .HasForeignKey("DocumentId");
+                    b.HasOne("BulbasaurAPI.Models.Address", "HomeAddress")
+                        .WithMany()
+                        .HasForeignKey("HomeAddressId");
 
                     b.HasOne("BulbasaurAPI.Models.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId");
+
+                    b.Navigation("HomeAddress");
 
                     b.Navigation("Role");
                 });
@@ -472,6 +564,10 @@ namespace BulbasaurAPI.Migrations
                     b.HasOne("BulbasaurAPI.Models.Chat", null)
                         .WithMany("InvolvedUsersList")
                         .HasForeignKey("ChatId");
+
+                    b.HasOne("BulbasaurAPI.Models.Document", null)
+                        .WithMany("EligibleList")
+                        .HasForeignKey("DocumentId");
 
                     b.HasOne("BulbasaurAPI.Models.Person", "Person")
                         .WithMany()
@@ -505,7 +601,7 @@ namespace BulbasaurAPI.Migrations
 
                     b.HasOne("BulbasaurAPI.Models.Person", null)
                         .WithMany()
-                        .HasForeignKey("PersonsId")
+                        .HasForeignKey("PeopleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -528,15 +624,6 @@ namespace BulbasaurAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BulbasaurAPI.Models.Personell", b =>
-                {
-                    b.HasOne("BulbasaurAPI.Models.Person", null)
-                        .WithOne()
-                        .HasForeignKey("BulbasaurAPI.Models.Personell", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BulbasaurAPI.Models.Chat", b =>
                 {
                     b.Navigation("ChatItemList");
@@ -546,7 +633,9 @@ namespace BulbasaurAPI.Migrations
 
             modelBuilder.Entity("BulbasaurAPI.Models.Document", b =>
                 {
-                    b.Navigation("EligableList");
+                    b.Navigation("EligibleGroups");
+
+                    b.Navigation("EligibleList");
                 });
 #pragma warning restore 612, 618
         }

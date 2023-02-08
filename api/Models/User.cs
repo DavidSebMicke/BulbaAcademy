@@ -1,4 +1,5 @@
 ﻿using BulbasaurAPI.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace BulbasaurAPI.Models
 {
@@ -8,9 +9,15 @@ namespace BulbasaurAPI.Models
 
         public Guid GUID { get; set; } = Guid.NewGuid();
 
+        [MaxLength(255)]
+        [EmailAddress]
         public string Username { get; set; }
 
+        [MaxLength(255)]
         public string Password { get; set; }
+
+        [MaxLength(255)]
+        public string Salt { get; set; }
 
         public Person? Person { get; set; }
 

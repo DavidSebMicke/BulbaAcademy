@@ -1,7 +1,9 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.DTOs.Caregiver;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
+using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -10,19 +12,24 @@ namespace BulbasaurAPI.Controllers
     public class CaregiverController : ControllerBase
     {
         private readonly ICaregiverRepository _caregiver;
+        private readonly IChildrenRepository _children;
+        private readonly IGroupRepository _group;
 
-        public CaregiverController(ICaregiverRepository context)
+        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children, IGroupRepository groups)
         {
-            _caregiver = context;
+            _children = children;
+            _caregiver = caregiver;
+            _group = groups;
         }
 
         // GET: api/GetAll
         [HttpGet]
+        [Route("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                return Ok(_caregiver.GetAll());
+                return Ok(await _caregiver.GetAll());
             }
             catch (Exception)
             {
@@ -37,7 +44,12 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-                return Ok(_caregiver.GetById(id));
+                if (!await _caregiver.EntityExists(id))
+                {
+                    return NotFound("Cant find the specified ID");
+                }
+
+                return Ok(await _caregiver.GetById(id));
             }
             catch (Exception)
             {
@@ -51,19 +63,21 @@ namespace BulbasaurAPI.Controllers
         {
             if (createdCareGiver == null) return BadRequest(ModelState);
 
-            var caregiverExists = await _caregiver.EntityExists(createdCareGiver.Id);
-
-            if (caregiverExists)
-            {
-                ModelState.AddModelError("", "Caregiver already exists");
-                return StatusCode(422, ModelState);
-            }
-
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _caregiver.Create(createdCareGiver);
+            var newCaregiver = await _caregiver.Create(createdCareGiver);
 
-            return Ok("Successfully created");
+            // Register the created caregiver to create a user for them
+            var newUser = await _caregiver.RegisterUserWithPerson(newCaregiver);
+
+            if (newUser != null)
+            {
+                return Ok("Successfully created");
+            }
+            else
+            {
+                return BadRequest("Email invalid");
+            }
         }
 
         //Delete
@@ -82,9 +96,11 @@ namespace BulbasaurAPI.Controllers
 
         //Put(Update)
         [HttpPut]
-        public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] Caregiver updateCaregiver)
+        public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] CaregiverDTO updateCaregiver)
         {
             if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             if (updateCaregiver == null)
                 return BadRequest(ModelState);
@@ -101,16 +117,45 @@ namespace BulbasaurAPI.Controllers
                 existingCaregiver.PhoneNumber = updateCaregiver.PhoneNumber;
                 existingCaregiver.HomeAddress = updateCaregiver.HomeAddress;
                 existingCaregiver.EmailAddress = updateCaregiver.EmailAddress;
-                //existingCaregiver.SSN = updateCaregiver.SSN;
 
                 await _caregiver.Update(existingCaregiver);
             }
             else
             {
-                NotFound();
+                NotFound("Cant find the specified ID");
             }
 
             return Ok("Successfully updated");
+        }
+
+        // Post
+        [HttpPost]
+        [Route("CreateCaregiversAndChild")]
+        public async Task<ActionResult<CaregiverChildOutDTO>> CreateCaregiversAndChild([FromBody] CaregiverChildDTO ccDTO)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var newChild = new Child(ccDTO);
+
+            var addGroup = await _group.GetAll();
+            newChild.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
+            var child = await _children.Create(newChild);
+
+            var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
+
+            var caregiversOut = new List<Caregiver>();
+
+            foreach (Caregiver c in caregivers)
+
+            {
+                caregiversOut.Add(await _caregiver.Create(c));
+                c.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
+                await _caregiver.ConnectCaregiverAndChild(c, newChild);
+            }
+
+            var outDTO = new CaregiverChildOutDTO(caregiversOut, child);
+
+            return Ok(outDTO);
         }
     }
 }

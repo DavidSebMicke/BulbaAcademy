@@ -2,13 +2,7 @@
 
 namespace BulbasaurAPI.Repository.Interface
 {
-    public interface IPersonRepository
+    public interface IPersonRepository : IBaseRepository<Person>
     {
-        Task<List<Person>> GetAllPersons();
-
-        Task<Person> GetPersonById(int id);
-
-
-
     }
 }

@@ -1,15 +1,15 @@
-<<<<<<< HEAD
 using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Middlewares;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using BulbasaurAPI.Repository.Interface;
+using BulbasaurAPI.Utils;
+using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json.Serialization;
 
-=======
->>>>>>> 05aedaf (New join classes to remove redundansies)
 namespace BulbasaurAPI
 {
     public class Program
@@ -28,16 +28,26 @@ namespace BulbasaurAPI
 
             // Add services to the container.
             builder.Services.AddControllers();
-           
+
+            builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+            builder.Services.AddTransient<Seed>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<DbServerContext>();
-            builder.Services.AddScoped<IPersonellRepository, PersonellRepository>();
+
+            var connString = builder.Configuration.GetConnectionString("_connString");
+            builder.Services.AddDbContext<DbServerContext>(options => options.UseSqlServer(connString));
+
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
-            
+            builder.Services.AddScoped<IChildrenRepository, ChildrenRepository>();
+            builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
+            builder.Services.AddScoped<IBaseRepository<Role>, RoleRepository>();
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -59,9 +69,8 @@ namespace BulbasaurAPI
                     service.SeedDataContext();
                 }
             }
-            app.UseCors("policyCors");  
+            app.UseCors("policyCors");
             app.UseHttpsRedirection();
-
 
             // Logging middleware
             //app.Use(async (context, next) =>
@@ -74,7 +83,7 @@ namespace BulbasaurAPI
             //app.UseMiddleware<AuthenticationMiddleware>();
 
             app.MapControllers();
-            
+
             app.Run();
         }
     }
