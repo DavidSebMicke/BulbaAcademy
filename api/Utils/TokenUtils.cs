@@ -163,9 +163,9 @@ namespace BulbasaurAPI.Utils
         }
 
         // Authenticates a two factor token. Returns a user if it is valid, null if it is not
-        public static async Task<User?> AuthenticateTwoFToken(string token, string ipAddress)
+        public static async Task<bool> AuthenticateTwoFToken(string token, string ipAddress)
         {
-            if (token == null) return null;
+            if (token == null) return false;
 
             using var db = new DbServerContext();
 
@@ -192,24 +192,24 @@ namespace BulbasaurAPI.Utils
             }
             catch
             {
-                return null;
+                return false;
             }
 
             // Check if dbtoken exists
-            if (dbToken == null) return null;
+            if (dbToken == null) return false;
 
             // Check if IP is the same as the token is issued to
-            if (ipAddress != dbToken.IpAddress) return null;
+            if (ipAddress != dbToken.IpAddress) return false;
 
             // Check if token is still valid
             TimeSpan issuedSpan = DateTime.Now - dbToken.IssuedDateTime;
-            if (issuedSpan.TotalMinutes >= AccessToken.MaximumSessionMinutes) return null;
+            if (issuedSpan.TotalMinutes >= AccessToken.MaximumSessionMinutes) return false;
 
             // Check if session is still valid
             TimeSpan lastUsedSpan = DateTime.Now - dbToken.LastUsedDateTime;
-            if (lastUsedSpan.TotalMinutes >= AccessToken.MaximumIdleMinutes) return null;
+            if (lastUsedSpan.TotalMinutes >= AccessToken.MaximumIdleMinutes) return false;
 
-            return dbToken.User;
+            return dbToken.User != null;
         }
 
         // HELP METHODS
