@@ -107,7 +107,8 @@
 	@import 'public\less\global.less';
 	nav {
 		cursor: pointer;
-		color: @dark-mode-text;
+		color: --color;
+		background-color: --bg-color;
 	}
 
 	ul {
@@ -124,7 +125,6 @@
 	}
 
 	a {
-		//color: currentColor;
 		text-decoration: none;
 		text-align: left;
 		font-size: 20px;
@@ -144,10 +144,21 @@
 
 		border-color: rgba(0, 0, 0, 0.233);
 		border-style: solid;
-		background-color: var(--primary-color);
-		height: 100%;
+	}
+
+	h2 {
+		display: flex;
+		justify-content: left;
+    	height: 100%;
 		position: fixed;
 		z-index: 1;
+		background-color: --bg-color;
+		text-decoration: none;
+		float: left;
+		padding: 10px;
+		overflow: hidden;
+		margin-bottom: 1%;
+		margin-right: 1%;
 	}
 
 	nav ul {

@@ -77,16 +77,10 @@
 	];
 </script>
 
-<body class="body">
-	<Header title="The Staff" />
-	<Profilecard {teachers} />
-</body>
+<Header title="The Staff" />
+<Profilecard {teachers} />
 
 <style lang="less">
-	.body {
-		background-image: linear-gradient(to right, #393f4d, #323642, #2b2e37, #24262c, #1d1e22);
-	}
-
 	.gallery {
 		display: grid;
 		grid-template-columns: 10% 11% 10% 11% 10% 11% 10% 11%;
