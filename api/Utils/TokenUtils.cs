@@ -2,6 +2,7 @@
 using BulbasaurAPI.Models;
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,12 +13,38 @@ namespace BulbasaurAPI.Utils
 {
     public class TokenUtils
     {
+        public static byte[]? TokenSecretOverride { get; set; } = null;
+
+        // Generates an Id token with user/person info
+        public static string GenerateIDToken(User user)
+        {
+            if (user == null) return "";
+
+            // Generate token through JwtSecurityTokenHandler
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] {
+                    new Claim("userID", user.Id.ToString()),
+                    new Claim("email", user.Username),
+                    new Claim("accessLevel", user.AccessLevel.ToString()),
+                    new Claim("name", user.Person != null ? user.Person?.FullName : ""),
+                    new Claim("role", user.Person != null ? user.Person?.Role.Name : ""),
+                }),
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            string idToken = tokenHandler.WriteToken(token);
+
+            return idToken;
+        }
+
         // Generate an access token, unique for each user and for each time it is issued
         public static async Task<string> GenerateAccessToken(User user, string ipAddress, DbServerContext db)
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = TokenSecretOverride ?? Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -49,33 +76,8 @@ namespace BulbasaurAPI.Utils
             return accessToken;
         }
 
-        public static string GenerateIDToken(User user)
-        {
-            if (user == null) return "";
-
-            // Generate token through JwtSecurityTokenHandler
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] {
-                    new Claim("userID", user.Id.ToString()),
-                    new Claim("email", user.Username),
-                    new Claim("accessLevel", user.AccessLevel.ToString()),
-                    new Claim("name", user.Person != null ? user.Person?.FullName : ""),
-                    new Claim("role", user.Person != null ? user.Person?.Role.Name : ""),
-                }),
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            string idToken = tokenHandler.WriteToken(token);
-
-            return idToken;
-        }
-
         // Authenticates an accesstoken. Returns a user if it is valid, null if it is not
-        public static async Task<User?> AuthenticateToken(string accessToken, string ipAddress)
+        public static async Task<User?> AuthenticateAccessToken(string accessToken, string ipAddress)
         {
             if (accessToken == null) return null;
 
@@ -129,7 +131,7 @@ namespace BulbasaurAPI.Utils
         {
             // Generate token through JwtSecurityTokenHandler
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = TokenSecretOverride ?? Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -171,7 +173,7 @@ namespace BulbasaurAPI.Utils
 
             TwoFToken dbToken;
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
+            var key = TokenSecretOverride ?? Encoding.UTF8.GetBytes(DotEnv.Read()["TOKEN_SECRET"]);
 
             try
             {
