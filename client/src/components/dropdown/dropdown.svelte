@@ -63,7 +63,7 @@
 
 <div class="overlay hidden" />
 
-<!-- <div class="navbar">
+<div class="navbar">
 	<a href="#home">Home</a>
 	<a href="#news">News</a>
 	<div class="dropdown">

@@ -1,4 +1,4 @@
-@import 'public\less\variables.less';
+@import 'public/less/variables.less';
 
 .test {
 	color: black;
@@ -9,10 +9,11 @@
 }
 
 [data-theme='light'] {
-	--primary-color: @dark-mode-flavour1;
+	--primary-color: @light-mode-flavour1;
 	--secondary-color: @dark-mode-flavour2;
 	--bg-color: @light-mode-background;
 	--color: @light-mode-text;
+	--image-grayscale: @image-grayscale-min;
 }
 
 [data-theme='dark'] {
@@ -21,6 +22,7 @@
 	--flavour-color--3: @dark-mode-flavour3;
 	--bg-color: @dark-mode-background;
 	--color: @dark-mode-text;
+	--image-grayscale: @image-grayscale-max;
 }
 
 body,
@@ -47,6 +49,7 @@ textarea,
 		font-style: normal;
 	}
 }
+
 button > h4 {
 	text-decoration: underline;
 	text-decoration-color: var(--color);
@@ -71,6 +74,9 @@ a {
 }
 header {
 	color: var(--color);
+	img {
+		filter: var(--image-grayscale);
+	}
 }
 header div {
 	background-color: var(--color);
@@ -84,16 +90,17 @@ header div {
 .ec-dayGridMonth,
 .subButton {
 	padding: 10px 20px !important;
-	background-color: #2d545e;
+	background-color: var(--bg-color);
 	color: var(--color);
-	font-size: 10px;
+	font-size: 1.1em;
+	font-weight: 800;
 	border-radius: 5px;
-	border: 2px solid var(--color);
+	border: 3px solid var(--color);
 	transition: all 0.2s ease-in-out;
+	cursor: pointer;
 
 	&:hover {
-		font-size: 0.7em;
-		color: white;
+		color: var(--primary-color);
 		background-color: var(--bg-color);
 	}
 }
