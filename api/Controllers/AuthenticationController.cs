@@ -6,6 +6,7 @@ using BulbasaurAPI.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Owin.Security.Provider;
 using OtpNet;
 using QRCoder;
 using System.Security.Cryptography;
@@ -76,8 +77,12 @@ namespace BulbasaurAPI.Controllers
         public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpIn)
         {
             var twoFEntity = await _context.TwoFTokens.Include(x => x.User).ThenInclude(x => x.Person).FirstOrDefaultAsync(x => x.TokenStr == totpIn.TwoFToken);
+            
+            if (twoFEntity == null || twoFEntity.User == null) return NotFound("User not found");
 
-            if (twoFEntity == null || twoFEntity.User == null) return BadRequest("Token not valid");
+            if (!(await TokenUtils.AuthenticateTwoFToken(totpIn.TwoFToken, HttpHelper.GetIpAddress(HttpContext)))) return BadRequest("Invalid Token");
+
+
 
             var tOTP = await _context.TOTPs.Where(x => x.Key == twoFEntity.User.GUID).FirstOrDefaultAsync();
 
