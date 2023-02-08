@@ -29,7 +29,7 @@ namespace BulbasaurAPI.Middlewares
 
                 string accessToken = authorizationHeader[0].Split(' ')[1];
 
-                User? user = await TokenUtils.AuthenticateToken(accessToken, ipAddress);
+                User? user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress);
 
                 if (user != null)
                 {
