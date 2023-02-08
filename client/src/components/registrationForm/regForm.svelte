@@ -74,8 +74,6 @@
 
 <main>
 	<form use:form on:submit|preventDefault={submitForm}>
-		<h1>Registrering</h1>
-
 		<div class="Child">
 			<h3>Barn</h3>
 			<label for="ChildFirstname">Förnamn</label>

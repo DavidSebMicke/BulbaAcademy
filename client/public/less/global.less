@@ -15,8 +15,7 @@
 	--color: @light-mode-text;
 }
 
-  
-  [data-theme="dark"] {
+[data-theme='dark'] {
 	--primary-color: @dark-mode-flavour1;
 	--secondary-color: @dark-mode-flavour2;
 	--flavour-color--3: @dark-mode-flavour3;
@@ -28,7 +27,8 @@ body,
 span,
 button,
 input,
-textarea, .drops {
+textarea,
+.drops {
 	margin: 0;
 	background-color: var(--bg-color);
 	color: var(--color);
@@ -38,7 +38,6 @@ textarea, .drops {
 	font-style: italic;
 	p,
 	h1,
-  a,
 	h4 {
 		background-color: transparent;
 		user-select: none;
@@ -68,7 +67,6 @@ a {
 	text-align: left;
 	font-size: 20px;
 	justify-content: space-around;
-	justify-content: space-around;
 	gap: 24px;
 }
 header {
@@ -79,9 +77,13 @@ header div {
 	border-bottom: 4px solid var(--color);
 }
 
-
-.classic-button, .ec-button, .ec-active, .ec-timeGridWeek, .ec-dayGridMonth, .subButton {
-	padding: 10px 20px!important;
+.classic-button,
+.ec-button,
+.ec-active,
+.ec-timeGridWeek,
+.ec-dayGridMonth,
+.subButton {
+	padding: 10px 20px !important;
 	background-color: #2d545e;
 	color: var(--color);
 	font-size: 10px;

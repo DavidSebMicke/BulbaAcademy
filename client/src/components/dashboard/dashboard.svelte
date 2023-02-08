@@ -32,8 +32,9 @@
 			<ul>
 				<!-- <li>Bulba Academy</li> -->
 				<li>
-					<a href="/" iconify-icon icon="mdi:home" in:fade={fadeIn} out:fade={fadeOut}>
-						Startsida
+					<a href="/profile"> <iconify-icon icon="mdi:home" /> </a>
+					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile"
+						>Startsida
 					</a>
 				</li>
 
@@ -54,11 +55,11 @@
 					>
 				</li>
 				<li>
-					<a href="/"><iconify-icon icon="ic:sharp-grid-on" /></a><a
+					<a href="/departments"><iconify-icon icon="ic:sharp-grid-on" /></a><a
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/">Avdelningar</a
+						href="/departments">Avdelningar</a
 					>
 				</li>
 				<li>
@@ -92,7 +93,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="/staff"><iconify-icon icon="ic:sharp-grid-on" width="40" /></a>
+					<a href="/departments"><iconify-icon icon="ic:sharp-grid-on" width="40" /></a>
 				</li>
 				<li>
 					<a href="/staff"><iconify-icon icon="mdi:file-document" width="40" /></a>
@@ -121,14 +122,14 @@
 	.text {
 		margin-right: 2px;
 		margin-left: 2px;
-		background-color: var(--primary-color);
+		background-color: transparent;
 	}
 
 	a {
 		text-decoration: none;
 		text-align: left;
 		font-size: 20px;
-		background-color: var(--primary-color);
+		background-color: transparent;
 		justify-content: center;
 	}
 
@@ -141,15 +142,15 @@
 		padding: 5px;
 		overflow: none;
 		margin-bottom: 1%;
-
+		height: 100vh;
 		border-color: rgba(0, 0, 0, 0.233);
 		border-style: solid;
+		border-bottom: none;
 	}
 
 	h2 {
 		display: flex;
 		justify-content: left;
-    	height: 100%;
 		position: fixed;
 		z-index: 1;
 		background-color: --bg-color;
@@ -165,6 +166,10 @@
 		list-style-type: none;
 		//color: currentColor;
 		text-decoration: none;
+	}
+	nav ul li {
+		margin: 8px;
+		margin-bottom: 4em;
 	}
 
 	button {
