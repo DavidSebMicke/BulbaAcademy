@@ -6,6 +6,9 @@ using System.Web.Http.ModelBinding;
 using BulbasaurAPI.Utils;
 using BulbasaurAPI.Services;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using System.Linq;
+using BulbasaurAPI.DTOs.Caregiver;
 
 namespace BulbasaurAPI.Repository
 {
@@ -18,15 +21,19 @@ namespace BulbasaurAPI.Repository
             _context = context;
         }
 
+
+
         public async Task<Caregiver> Create(Caregiver caregiver)
         {
             var newCaregiver = (await _context.Caregivers.AddAsync(caregiver)).Entity;
+            
             return newCaregiver;
         }
 
         public async Task<Caregiver> Update(Caregiver caregiver)
         {
             var updatedEntity = _context.Caregivers.Update(caregiver).Entity;
+            await _context.SaveChangesAsync();
             return updatedEntity;
         }
 
@@ -34,6 +41,7 @@ namespace BulbasaurAPI.Repository
         {
             var caregiverDelete = _context.Caregivers.Where(x => x.Id == entity.Id).FirstOrDefault();
             _context.Caregivers.Remove(caregiverDelete);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Caregiver>> GetAll()
@@ -43,7 +51,7 @@ namespace BulbasaurAPI.Repository
 
         public async Task<Caregiver?> GetById(int id)
         {
-            return await _context.Caregivers.Include(c => c.HomeAddress).FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Caregivers.FindAsync(id);
         }
 
         public async Task<bool> EntityExists(int id)
@@ -57,6 +65,7 @@ namespace BulbasaurAPI.Repository
             child.Caregivers.Add(caregiver);
             await ConnectCaregiverToRoleId(caregiver);
             await _context.SaveChangesAsync();
+
         }
 
         public async Task ConnectCaregiverToRoleId(Caregiver caregiver)
@@ -64,14 +73,22 @@ namespace BulbasaurAPI.Repository
             caregiver.Role = await _context.Roles.Where(x => x.Name == "Caregiver").FirstOrDefaultAsync();
         }
 
-        public async Task<User?> RegisterUserWithPerson(Caregiver caregiver)
+        public bool CaregiverExists(List<CaregiverDTO> caregiver)
         {
-            return await UserUtils.RegisterUserWithPerson(caregiver, RandomPassword.GenerateRandomPassword(), _context);
+
+            foreach (var c in caregiver)
+            {
+
+                if (_context.Caregivers.Any(x => x.EmailAddress == c.EmailAddress)) return true;
+                if (_context.Caregivers.Any(x => x.SSN == c.SSN)) return true;
+            }
+            return false;
         }
 
-        public async Task SaveChangesAsync()
+        public async Task SaveChanges()
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  
+            
         }
     }
 }

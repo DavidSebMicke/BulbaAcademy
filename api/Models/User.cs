@@ -1,4 +1,5 @@
 ﻿using BulbasaurAPI.Authorization;
+using BulbasaurAPI.DTOs.UserDTOs;
 using System.ComponentModel.DataAnnotations;
 
 namespace BulbasaurAPI.Models
@@ -22,5 +23,7 @@ namespace BulbasaurAPI.Models
         public Person? Person { get; set; }
 
         public UserAccessLevel AccessLevel { get; set; }
+
+        
     }
 }

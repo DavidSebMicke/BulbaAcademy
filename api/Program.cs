@@ -45,6 +45,7 @@ namespace BulbasaurAPI
             builder.Services.AddScoped<IChildrenRepository, ChildrenRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IBaseRepository<Role>, RoleRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = builder.Build();
 
