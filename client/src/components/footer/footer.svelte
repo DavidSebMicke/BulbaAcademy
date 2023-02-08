@@ -6,8 +6,6 @@
 	let hideFooter = false;
 
 	onMount(() => {
-		let footer = document.querySelector('.footer');
-
 		window.addEventListener('scroll', () => {
 			let currentScrollPosition = window.scrollY;
 			if (currentScrollPosition < lastScrollPosition) {

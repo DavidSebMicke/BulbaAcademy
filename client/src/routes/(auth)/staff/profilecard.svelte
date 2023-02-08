@@ -39,12 +39,12 @@
 <TeacherGallery {teachers} on:Teacher={selectTeacher} />
 <div class="profileCardContainer">
 	<div class="background-images">
-		<button on:click={nextSlide}>
-			<div class="arrow2">
+		<button class="prevButton" on:click={prevSlide}
+			>Previous
+			<div class="arrow">
 				<span />
 			</div>
-			Next</button
-		>
+		</button>
 		<div class="profileCard">
 			{#if showSpecificTeacher}
 				<li>
@@ -76,13 +76,12 @@
 				</li>
 			{/if}
 		</div>
-
-		<button class="prevButton" on:click={prevSlide}>
-			<div class="arrow">
+		<button on:click={nextSlide}>
+			Next
+			<div class="arrow2">
 				<span />
 			</div>
-			Previous</button
-		>
+		</button>
 	</div>
 </div>
 <div class="contactCardElement">
@@ -93,13 +92,13 @@
 	@import 'public/less/global.less';
 
 	.background-images {
-		background-image: url('public/img/pencils.jfif');
-		background-position: center;
-		height: 100vh;
-		width: 100%;
+		display: flex;
+		background-image: url('public/img/school.avif');
 		position: relative;
+		align-self: normal;
+		flex: auto;
+		margin-right: 0;
 		background-size: cover;
-		text-align: -webkit-center;
 	}
 	.arrow {
 		position: relative;
@@ -121,8 +120,8 @@
 		background-color: transparent;
 		color: var(--bg-color);
 		height: 1.5vw;
-		border-bottom: 5px solid var(--color);
-		border-right: 5px solid white;
+		border-bottom: 7px solid var(--color);
+		border-right: 7px solid white;
 		transform: rotate(45deg);
 	}
 	.arrow2 span {
@@ -131,24 +130,9 @@
 		background-color: transparent;
 		color: var(--bg-color);
 		height: 1.5vw;
-		border-bottom: 5px solid var(--color);
-		border-right: 5px solid white;
+		border-bottom: 7px solid var(--color);
+		border-right: 7px solid white;
 		transform: rotate(45deg);
-		margin: -20px;
-	}
-	.arrow span:nth-child(2) {
-		animation-delay: -0.6s;
-	}
-
-	.arrow span:nth-child(3) {
-		animation-delay: -0.8s;
-	}
-	.arrow2 span:nth-child(2) {
-		animation-delay: -0.2s;
-	}
-
-	.arrow2 span:nth-child(3) {
-		animation-delay: -1.6s;
 	}
 	@keyframes animate {
 		0% {
@@ -165,33 +149,29 @@
 	}
 	.profileCardContainer {
 		display: flex;
-		margin: 2rem;
-		justify-content: center;
-
 		button,
 		.prevButton {
 			.classic-button;
+			padding: 10px 20px;
+			background-color: #2d545e;
+			font-size: 10px;
+			border-radius: 5px;
+			transition: all 0.2s ease-in-out;
 			color: var(--color);
-			align-self: center;
 			width: 25%;
-			margin: 5px;
+			top: 45%;
+			position: relative;
 			font-weight: 800;
-			margin-left: 10%;
-			padding: none;
-
+			height: 10%;
 			font-size: 20px;
 			transition: all 1s;
-			border: 2px solid var(--color);
-			border-radius: none;
+			border: 1px solid var(--color);
 
 			&:hover {
-				background-color: var(--bg-color);
-				color: white;
+				background-color: transparent;
+				color: black;
 				transform: translateX(2em);
-				border-left: 5px solid #f3f6f4;
-				border-top: none;
-				border-bottom: none;
-				border-right: none;
+				border: none;
 				font-weight: 800;
 				font-size: 20px;
 			}
@@ -207,49 +187,31 @@
 			font-weight: 800;
 			font-size: 20px;
 			transform: translateX(-2em);
-			border-top: none;
-			border-bottom: none;
-			border-left: none;
-			border-right: 2px solid white;
+			background-color: transparent;
+			color: black;
+			border: none;
 		}
 	}
-	.profileCard {
-		display: flex;
-		margin-left: 10%;
-		flex-wrap: wrap;
-		justify-content: center;
-		width: 80vh;
-		background-color: transparent;
-	}
+
 	.profileCard > li {
-		text-align: center;
 		padding: 0.2em;
 		color: #2d545e;
 		list-style: none;
-		flex-basis: 800px;
 		position: relative;
+		width: fit-content;
 		cursor: pointer;
 	}
 	.profileCard > li img {
-		box-sizing: border-box;
-		padding: 0.2em;
 		object-fit: cover;
 		max-width: 100%;
 		height: auto;
-		border-radius: 50%;
 		vertical-align: middle;
 		border-radius: none;
-	}
-	.profileCard::after {
-		content: '';
-		flex-basis: 8 50px;
 	}
 	.overlay {
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		border-radius: 50%;
-
 		background: rgba(20, 20, 20, 0.502);
 		top: 0;
 		left: 0;

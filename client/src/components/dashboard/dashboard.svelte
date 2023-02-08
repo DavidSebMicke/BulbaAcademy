@@ -83,7 +83,7 @@
 	.nav-container {
 		display: flex;
 		justify-content: left;
-		height: 80rem;
+		height: 100rem;
 		text-decoration: none;
 		float: left;
 		padding: 5px;

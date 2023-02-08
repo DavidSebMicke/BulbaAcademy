@@ -1,9 +1,9 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 
-	let currentItem;
-	export let teachers;
 	const dispatch = createEventDispatcher();
+	export let teachers;
+	let currentItem;
 
 	function setIndexValue(indexNumber) {
 		currentItem = teachers[indexNumber];

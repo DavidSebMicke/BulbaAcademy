@@ -19,12 +19,17 @@
 	}
 	.background-div {
 		width: 100%;
-		background-color: var(--bg-color);
+		background-image: url('public/img/children.avif');
+		background-position: center;
+		width: 100%;
+		position: relative;
+		background-size: cover;
 	}
 
 	header h1 {
 		margin: 0;
 		font-weight: 700;
+		backdrop-filter: blur(2px) grayscale(70%);
 	}
 
 	header nav ul {

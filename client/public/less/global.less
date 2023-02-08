@@ -3,8 +3,8 @@
 [data-theme='light'] {
 	--primary-color: @dark-mode-flavour1;
 	--secondary-color: @dark-mode-flavour2;
-	--bg-color: @dark-mode-text;
-	--color: whitesmoke;
+	--bg-color: @light-mode-background;
+	--color: @light-mode-text;
 }
 
 [data-theme='dark'] {
@@ -23,17 +23,19 @@ textarea {
 	background-color: var(--bg-color);
 	color: var(--color);
 	user-select: none;
+	font-family: 'droid-serif', serif;
+	font-weight: 400;
+	font-style: italic;
 	p,
 	h1,
 	h4 {
 		background-color: transparent;
 		user-select: none;
 		color: var(--color);
-		font-family: 'Franklin Gothic medium', 'Arial Narrow', Arial, sans-serif, Geneva, Verdana,
-			sans-serif;
+		font-family: 'droid-serif', serif;
+		font-weight: 700;
+		font-style: normal;
 	}
-	font-weight: 700;
-	font-style: italic;
 }
 button > h4 {
 	text-decoration: underline;
