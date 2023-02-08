@@ -73,7 +73,6 @@ namespace BulbasaurAPI_test.UtilsTests
 
             Assert.NotNull(accessToken);
             Assert.IsType<string>(accessToken);
-            Assert.
         }
 
         [Fact]
