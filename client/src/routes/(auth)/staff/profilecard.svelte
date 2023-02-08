@@ -1,6 +1,8 @@
 <script>
 	import ContactCard from './contactCard.svelte';
 	import TeacherGallery from './teacherGallery.svelte';
+	let backgroundImage =
+		'public/img/back-school-background-with-school-supplies-copy-space_23-2148958973.avif';
 
 	export let teachers;
 	let showSpecificTeacher = false;
@@ -36,46 +38,51 @@
 
 <TeacherGallery {teachers} on:Teacher={selectTeacher} />
 <div class="profileCardContainer">
-	<button class="prevButton" on:click={prevSlide}>Previous</button>
-	<div class="profileCard">
-		{#if showSpecificTeacher}
-			<li>
-				<img src={person.id} alt={person.alt} class="slide" />
-				<div class="overlay">
-					<h1>{person.name}</h1>
-					<h4>( {person.profession} )</h4>
-					<div class="teacherInfo">
-						{person.info}
+	<div class="background-images">
+		<button class="prevButton" on:click={prevSlide}
+			>Previous
+			<div class="arrow">
+				<span />
+			</div>
+		</button>
+		<div class="profileCard">
+			{#if showSpecificTeacher}
+				<li>
+					<img src={person.id} alt={person.alt} class="slide" />
+					<div class="overlay">
+						<h1>{person.name}</h1>
+						<h4>( {person.profession} )</h4>
+						<div class="teacherInfo">
+							{person.info}
+						</div>
 					</div>
-				</div>
-			</li>
-		{/if}
-		{#if !showSpecificTeacher}
-			<li>
-				<img
-					src={teachers[currentIndex].id}
-					alt={teachers[currentIndex].alt}
-					class="slide"
-				/>
-				<div class="overlay">
-					<h1>{teachers[currentIndex].name}</h1>
-					<h4>( {teachers[currentIndex].profession} )</h4>
+				</li>
+			{/if}
+			{#if !showSpecificTeacher}
+				<li>
+					<img
+						src={teachers[currentIndex].id}
+						alt={teachers[currentIndex].alt}
+						class="slide"
+					/>
+					<div class="overlay">
+						<h1>{teachers[currentIndex].name}</h1>
+						<h4>( {teachers[currentIndex].profession} )</h4>
 
-					<div class="teacherInfo">
-						{teachers[currentIndex].info}
+						<div class="teacherInfo">
+							{teachers[currentIndex].info}
+						</div>
 					</div>
-				</div>
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"
-					><path
-						fill="#d4d4dc"
-						fill-opacity="0.4"
-						d="M0,320L0,96L55.4,96L55.4,288L110.8,288L110.8,192L166.2,192L166.2,256L221.5,256L221.5,96L276.9,96L276.9,0L332.3,0L332.3,192L387.7,192L387.7,224L443.1,224L443.1,96L498.5,96L498.5,224L553.8,224L553.8,288L609.2,288L609.2,224L664.6,224L664.6,96L720,96L720,192L775.4,192L775.4,128L830.8,128L830.8,192L886.2,192L886.2,128L941.5,128L941.5,64L996.9,64L996.9,96L1052.3,96L1052.3,320L1107.7,320L1107.7,160L1163.1,160L1163.1,224L1218.5,224L1218.5,192L1273.8,192L1273.8,160L1329.2,160L1329.2,96L1384.6,96L1384.6,128L1440,128L1440,320L1384.6,320L1384.6,320L1329.2,320L1329.2,320L1273.8,320L1273.8,320L1218.5,320L1218.5,320L1163.1,320L1163.1,320L1107.7,320L1107.7,320L1052.3,320L1052.3,320L996.9,320L996.9,320L941.5,320L941.5,320L886.2,320L886.2,320L830.8,320L830.8,320L775.4,320L775.4,320L720,320L720,320L664.6,320L664.6,320L609.2,320L609.2,320L553.8,320L553.8,320L498.5,320L498.5,320L443.1,320L443.1,320L387.7,320L387.7,320L332.3,320L332.3,320L276.9,320L276.9,320L221.5,320L221.5,320L166.2,320L166.2,320L110.8,320L110.8,320L55.4,320L55.4,320L0,320L0,320Z"
-					/></svg
-				>
-			</li>
-		{/if}
+				</li>
+			{/if}
+		</div>
+		<button on:click={nextSlide}>
+			Next
+			<div class="arrow2">
+				<span />
+			</div>
+		</button>
 	</div>
-	<button on:click={nextSlide}>Next</button>
 </div>
 <div class="contactCardElement">
 	<ContactCard {teachers} />
@@ -84,28 +91,89 @@
 <style lang="less">
 	@import 'public/less/global.less';
 
+	.background-images {
+		display: flex;
+		background-image: url('public/img/school.avif');
+		position: relative;
+		align-self: normal;
+		flex: auto;
+		margin-right: 0;
+		background-size: cover;
+	}
+	.arrow {
+		position: relative;
+		transform: rotate(90deg);
+		cursor: pointer;
+		float: left;
+	}
+
+	.arrow2 {
+		position: relative;
+		transform: rotate(-90deg);
+		cursor: pointer;
+		float: right;
+	}
+
+	.arrow span {
+		display: block;
+		width: 1.5vw;
+		background-color: transparent;
+		color: var(--bg-color);
+		height: 1.5vw;
+		border-bottom: 7px solid var(--color);
+		border-right: 7px solid white;
+		transform: rotate(45deg);
+	}
+	.arrow2 span {
+		display: block;
+		width: 1.5vw;
+		background-color: transparent;
+		color: var(--bg-color);
+		height: 1.5vw;
+		border-bottom: 7px solid var(--color);
+		border-right: 7px solid white;
+		transform: rotate(45deg);
+	}
+	@keyframes animate {
+		0% {
+			opacity: 0;
+			transform: rotate(45deg) translate(-20px, -20px);
+		}
+		50% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+			transform: rotate(45deg) translate(20px, 20px);
+		}
+	}
 	.profileCardContainer {
 		display: flex;
-		margin: 2rem;
-		justify-content: center;
-
 		button,
 		.prevButton {
+			.classic-button;
 			padding: 10px 20px;
-			background-color: white;
-			color: black;
-			align-self: center;
-			width: 7em;
-			font-weight: 700;
-			font-family: 'Times New Roman', Times, serif;
+			background-color: #2d545e;
+			font-size: 10px;
+			border-radius: 5px;
+			transition: all 0.2s ease-in-out;
+			color: var(--color);
+			width: 25%;
+			top: 45%;
+			position: relative;
+			font-weight: 800;
+			height: 10%;
+			font-size: 20px;
 			transition: all 1s;
-			border: 2px solid rgb(132, 130, 130);
+			border: 1px solid var(--color);
 
 			&:hover {
-				background-color: rgb(102, 102, 103);
-				color: white;
+				background-color: transparent;
+				color: black;
 				transform: translateX(2em);
-				border-left: 2px solid #68f689;
+				border: none;
+				font-weight: 800;
+				font-size: 20px;
 			}
 		}
 
@@ -116,42 +184,29 @@
 			transform: translateX(0);
 		}
 		.prevButton:hover {
-			transform: translateX(-2em);
 			font-weight: 800;
-			border-left: none;
-
-			border-right: 2px solid #68f689;
+			font-size: 20px;
+			transform: translateX(-2em);
+			background-color: transparent;
+			color: black;
+			border: none;
 		}
 	}
-	.profileCard {
-		padding: 0.2em;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 2em;
-		width: 80vh;
-	}
+
 	.profileCard > li {
-		text-align: center;
 		padding: 0.2em;
 		color: #2d545e;
 		list-style: none;
-		flex-basis: 800px;
 		position: relative;
+		width: fit-content;
 		cursor: pointer;
 	}
 	.profileCard > li img {
-		box-sizing: border-box;
-		padding: 0.2em;
 		object-fit: cover;
 		max-width: 100%;
 		height: auto;
 		vertical-align: middle;
 		border-radius: none;
-	}
-	.profileCard::after {
-		content: '';
-		flex-basis: 8 50px;
 	}
 	.overlay {
 		position: absolute;
@@ -163,7 +218,7 @@
 		box-sizing: border-box;
 		padding: 1rem;
 		transform: scale(0);
-		transition: all 0.5s 0.2s ease-in-out;
+		transition: all 0.8s 0.2s ease-in-out;
 		display: flex;
 		align-items: center;
 		justify-content: center;

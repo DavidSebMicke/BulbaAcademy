@@ -33,20 +33,19 @@
 	@import 'public\less\global.less';
 
 	.contactUs {
+		.classic-button;
 		padding: 10px 20px;
-		background-color: white;
-		color: black;
 		align-self: center;
 		width: 10em;
 		font-weight: 700;
 		font-size: x-large;
 		font-family: 'Times New Roman', Times, serif;
 		transition: all 1s;
-		border: 2px solid rgb(11, 11, 11);
 		&:hover {
 			cursor: pointer;
-			background-color: rgb(102, 102, 103);
+			background-color: var(--bg-color);
 			color: white;
+			size: 0;
 		}
 	}
 	.contact-card {
@@ -57,6 +56,7 @@
 		height: 100%;
 		background-color: rgba(0, 0, 0, 0.5);
 		z-index: 10;
+		background-color: none;
 	}
 	.contact-card-info {
 		position: fixed;
@@ -65,11 +65,12 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: #fff;
+		background-color: var(--bg-color);
 		width: 70%;
 		height: 80%;
 		max-width: 600px;
 		padding: 20px;
+		border: 3px dashed black;
 		z-index: 11;
 	}
 	.teacher {

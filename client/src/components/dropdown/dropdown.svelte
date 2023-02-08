@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
 	let user = { loggedIn: false };
 
 	function toggle() {

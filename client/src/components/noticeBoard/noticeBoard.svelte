@@ -73,42 +73,13 @@
 				>
 				{#if i + 1 == messages.length}
 					<button class="closeCross" on:click={toggleBanner}>
-          <iconify-icon icon="material-symbols:close" width="30"/>
-          </button>
-
-<div class="noticeMe">
-	{#if !showBanner}
-		<div class="messageButton">
-			<button class="showMessage" on:click={toggleBanner}>Noticeboard</button>
-		</div>
-	{:else}
-		<div class="crisis-banner">
-			{#each messages as message, i}
-				<div class="grid-items">
-					<h3 class="noticeTitle" style="grid-column:{i}">{message.title}</h3>
-					<li class="noticeMessage" style="grid-column:{i}">
-						{truncateText(message.text)}
-					</li>
-					<li class="noticeDate" style="grid-column:{i}">
-						{handleDateFormatting(message.date)} / {handleDateFormatting(message.date)}
-					</li>
-					<button on:click={openModal} on:click={() => setIndexValue(i)} class="showMore"
-						>Read more</button
-
-					>
-					{#if i + 1 == messages.length}
-						<button class="closeCross" on:click={toggleBanner}
-							><iconify-icon icon="material-symbols:close" width="30" /></button
-						>
-					{/if}
-					{#if showModal}
-						<NoticeModal {...currentItem} on:message={closeModal} />
-					{/if}
-				</div>
-			{/each}
-		</div>
-	{/if}
-</div>
+						<iconify-icon icon="material-symbols:close" width="30" />
+					</button>
+				{/if}
+			</div>
+		{/each}
+	</div>
+{/if}
 
 <style lang="less">
 	.noticeMe {
@@ -121,6 +92,7 @@
 
 	.crisis-banner {
 		position: absolute;
+		top: 0;
 		z-index: 99;
 		background-color: @crisis-message-background;
 		color: black;
@@ -128,7 +100,6 @@
 		display: flex;
 		border: 2px solid black;
 		align-items: self-end;
-		margin-left: 5em;
 	}
 	.grid-items {
 		border-right: 2px solid black;

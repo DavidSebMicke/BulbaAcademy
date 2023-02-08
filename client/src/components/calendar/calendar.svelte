@@ -26,3 +26,6 @@
 </script>
 
 <Calendar {plugins} {options} />
+
+<style>
+</style>
