@@ -34,7 +34,8 @@ namespace BulbasaurAPI.Utils
                 await context.Users.AddAsync(newUser);
                 await context.SaveChangesAsync();
 
-                await EmailAPI.SendPasswordToUserEmail(email, password);
+                if(sendEmail) await EmailAPI.SendPasswordToUserEmail(email, password);
+
 
                 return newUser;
             }
