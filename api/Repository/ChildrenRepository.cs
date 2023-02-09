@@ -1,5 +1,4 @@
-﻿using BulbasaurAPI.DTOs.Caregiver;
-using BulbasaurAPI.DTOs.Child;
+﻿using BulbasaurAPI.Database;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,7 @@ namespace BulbasaurAPI.Repository
 
             var newChild = (await _context.Children.AddAsync(child)).Entity;
             await ConnectChildToRole(newChild);
-            
+            await _context.SaveChangesAsync();
             return newChild;
         }
 
@@ -56,15 +55,6 @@ namespace BulbasaurAPI.Repository
         public async Task ConnectChildToRole(Child child)
         {
             child.Role = await _context.Roles.Where(x => x.Name == "Child").FirstOrDefaultAsync();
-        }
-
-        public async Task<bool> ChildExists(ChildDTO child)
-        {
-            
-                
-                if (await _context.Caregivers.AnyAsync(x => x.SSN == child.SSN)) return true;
-            
-            return false;
         }
     }
 }
