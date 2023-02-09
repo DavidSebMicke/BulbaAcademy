@@ -169,7 +169,7 @@ namespace BulbasaurAPI
                 // Creating Group and Assigning Children to it
                 var newClassGroup = new Models.Group() { Name = "Klass 5A" };
                 _context.Groups.Add(newClassGroup);
-                var childList = children.Where(x => x.SSN.ToString().StartsWith("21"));
+                var childList = children.Where(x => x.SSN.ToString().StartsWith("20"));
                 foreach (var c in childList)
                 {
                     c.Groups.Add(newClassGroup);
