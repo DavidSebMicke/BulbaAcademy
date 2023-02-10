@@ -14,6 +14,8 @@ namespace BulbasaurAPI.Models
         [MaxLength(255)]
         public string FileName { get; set; }
 
+        public Guid DocumentGuid { get; set; }
+
         [MaxLength(255)]
         public string DocumentTitle { get; set; }
 
@@ -23,13 +25,13 @@ namespace BulbasaurAPI.Models
         public DateTime UploadDate { get; set; } = DateTime.Now;
 
         [NotMapped]
-        public string FilePath => Path.Combine(FolderPath, FileName);
+        public string FilePath => Path.Combine(FolderPath, DocumentGuid.ToString());
 
         public Document()
         {
         }
 
-        public Document(IncomingDocumentDTO incomingDocument, string folderPath, List<User> eligibleList, List<Group> eligibleGroups, User uploadedBy)
+        public Document(IncomingDocumentDTO incomingDocument, string folderPath, List<User> eligibleList, List<Group> eligibleGroups, User uploadedBy, Guid documentGuid)
         {
             FileName = incomingDocument.DocumentFileName;
             DocumentTitle = incomingDocument.DocumentTitle;
@@ -38,6 +40,8 @@ namespace BulbasaurAPI.Models
             EligibleList = eligibleList;
             EligibleGroups = eligibleGroups;
             UploadedBy = uploadedBy;
+
+            DocumentGuid = documentGuid;
         }
     }
 }

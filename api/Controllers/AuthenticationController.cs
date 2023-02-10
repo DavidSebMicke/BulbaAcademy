@@ -1,5 +1,4 @@
-﻿using BulbasaurAPI.Database;
-using BulbasaurAPI.DTOs.Login;
+using BulbasaurAPI.Database;
 using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Models;
@@ -67,25 +66,30 @@ namespace BulbasaurAPI.Controllers
         [HttpPost("createUserTEST")]
         public async Task<ActionResult<User>> CreateUser(LogInForm loginForm)
         {
+
             var newPassword = loginForm.Password; //RandomPassword.GenerateRandomPassword();
             var newUser = await UserUtils.RegisterUser(loginForm.Email, newPassword, _context, sendEmail: false);
 
             if (newUser == null) return Unauthorized("not workin");
             else return newUser;
+
         }
 
         [HttpPost("login/totp")]
         public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpIn)
         {
+
             var twoFEntity = await _context.TwoFTokens.Include(x => x.User).ThenInclude(x => x.Person).FirstOrDefaultAsync(x => x.TokenStr == totpIn.TwoFToken);
 
             if (twoFEntity == null || twoFEntity.User == null) return NotFound("User not found");
+
 
             if (!(await TokenUtils.AuthenticateTwoFToken(totpIn.TwoFToken, HttpHelper.GetIpAddress(HttpContext), _context))) return BadRequest("Invalid Token");
 
             var tOTP = await _context.TOTPs.Where(x => x.Key == twoFEntity.User.GUID).FirstOrDefaultAsync();
 
             if (tOTP == null) return NotFound("Two factor validation unavailable");
+
 
             if (TOTPUtil.VerifyTOTP(tOTP, totpIn.Code))
             {

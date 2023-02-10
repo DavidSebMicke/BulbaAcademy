@@ -2,6 +2,7 @@
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Services;
+using BulbasaurAPI.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Repository
@@ -9,9 +10,10 @@ namespace BulbasaurAPI.Repository
     public class UserRepository : IUserRepository
     {
         private readonly DbServerContext _context;
+
         public UserRepository(DbServerContext context)
         {
-            _context = context; 
+            _context = context;
         }
 
         public void CombineUserAndPerson(Person person, User user)
@@ -23,8 +25,6 @@ namespace BulbasaurAPI.Repository
         {
             throw new NotImplementedException();
         }
-
-
 
         public Task Delete(User entity)
         {
@@ -54,17 +54,13 @@ namespace BulbasaurAPI.Repository
             }
             else
             {
-
                 User newUser = new User()
                 {
                     Username = person.EmailAddress,
                     Password = Hasher.HashWithSalt(password, out string salt),
                     Salt = salt,
                     AccessLevel = Authorization.UserAccessLevel.USER,
-
-
                 };
-
 
                 var newUserEntity = (await _context.Users.AddAsync(newUser)).Entity;
                 CombineUserAndPerson(person, newUserEntity);
