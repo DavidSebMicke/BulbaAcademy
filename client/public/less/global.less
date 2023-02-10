@@ -2,18 +2,20 @@
 
 
 [data-theme='light'] {
-	--primary-color: @dark-mode-flavour1;
+	--primary-color: @light-mode-flavour4;
 	--secondary-color: @dark-mode-flavour2;
 	--bg-color: @light-mode-background;
 	--color: @light-mode-text;
+	--flavour-color-4: @light-mode-flavour4;
 }
 
 [data-theme='dark'] {
 	--primary-color: @dark-mode-flavour1;
 	--secondary-color: @dark-mode-flavour2;
-	--flavour-color--3: @dark-mode-flavour3;
+	--flavour-color-3: @dark-mode-flavour3;
 	--bg-color: @dark-mode-background;
 	--color: @dark-mode-text;
+	--flavour-color-4: @dark-mode-flavour4;
 }
 
 body,
@@ -77,11 +79,11 @@ header div {
 .ec-dayGridMonth,
 .subButton {
 	padding: 10px 20px !important;
-	background-color: #2d545e;
-	color: var(--color);
+	background-color: #2d545e!important;
+	color: var(--color)!important;
 	font-size: 10px;
 	border-radius: 5px;
-	border: 2px solid var(--color);
+	border: 2px solid var(--color)!important;
 	transition: all 0.2s ease-in-out;
 
 	&:hover {

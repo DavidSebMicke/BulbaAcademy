@@ -165,6 +165,10 @@
 		color: #ffffff;
 	}
 
+	#step3:disabled {
+		display: none;
+	}
+
 	.bulben {
 		box-sizing: border-box;
 

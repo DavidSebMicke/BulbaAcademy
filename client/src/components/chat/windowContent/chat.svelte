@@ -192,9 +192,9 @@
 		width: 5rem;
 		margin-top: 0.5rem;
 		border: none;
-		border-left: 1px solid black;
+		border-left: 1px solid rgba(0, 0, 0, 0.205);
 		border-radius: 0 0.5rem 0.5rem 0;
-		background-color: white;
+		background-color: var(--flavour-color-4);
 
 		transition: all 0.3s ease;
 

@@ -32,10 +32,8 @@
 			<ul>
 				<!-- <li>Bulba Academy</li> -->
 				<li>
-					<a href="/profile"> <iconify-icon icon="mdi:home" /> </a>
-					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile"
-						>Startsida
-					</a>
+					<a href="/"> <iconify-icon icon="mdi:home" /> </a>
+					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/">Startsida </a>
 				</li>
 
 				<li>
