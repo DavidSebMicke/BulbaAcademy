@@ -4,6 +4,10 @@ using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using System.Web.Http.Results;
+
+
 namespace BulbasaurAPI.Repository
 {
     public class GroupRepository : IGroupRepository
@@ -42,9 +46,9 @@ namespace BulbasaurAPI.Repository
             return await _context.Groups.ToListAsync();
         }
 
-        public Task<Group?> GetById(int id)
+        public async Task<Group?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Groups.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         
@@ -56,6 +60,21 @@ namespace BulbasaurAPI.Repository
         public async Task<bool> EntityExists(int id)
         {
             return await _context.Groups.AnyAsync(c => c.Id == id);
+        }
+        public async Task SetGroupForPerson(Person person, List<Group> groups)
+        {
+            person.Groups.AddRange(groups);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Group> DeleteGroupById(int id)
+        {
+            var x = await _context.Groups.Where(z => z.Id == id).FirstOrDefaultAsync();
+            _context.Remove(x);
+            await _context.SaveChangesAsync();
+
+            return x;
+
         }
     }
 }

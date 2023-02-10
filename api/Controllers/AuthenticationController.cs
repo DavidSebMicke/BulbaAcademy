@@ -1,16 +1,17 @@
+
 using BulbasaurAPI.Database;
 using BulbasaurAPI.DTOs.Login;
 using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Owin.Security.Provider;
 using OtpNet;
 using QRCoder;
 using System.Security.Cryptography;
+
 
 namespace BulbasaurAPI.Controllers
 {
