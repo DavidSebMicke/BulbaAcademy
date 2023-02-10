@@ -1,8 +1,8 @@
+using BulbasaurAPI.Database;
 using BulbasaurAPI.DTOs.Group;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Web.Http.Results;
 
 namespace BulbasaurAPI.Repository
 {
@@ -17,10 +17,10 @@ namespace BulbasaurAPI.Repository
 
         public async Task<Group> Create(Group group)
         {
-            var newGroup = (await _context.Groups.AddAsync(group));
+            var newGroup = (await _context.Groups.AddAsync(group)).Entity;
            
             await _context.SaveChangesAsync();
-            return group;
+            return newGroup;
 
         }
 

@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.DTOs.UserDTOs;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Models;
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
@@ -77,11 +78,9 @@ namespace BulbasaurAPI.Utils
         }
 
         // Authenticates an accesstoken. Returns a user if it is valid, null if it is not
-        public static async Task<User?> AuthenticateAccessToken(string accessToken, string ipAddress)
+        public static async Task<User?> AuthenticateAccessToken(string accessToken, string ipAddress, DbServerContext db)
         {
             if (accessToken == null) return null;
-
-            using var db = new DbServerContext();
 
             AccessToken dbToken;
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -165,11 +164,9 @@ namespace BulbasaurAPI.Utils
         }
 
         // Authenticates a two factor token. Returns a user if it is valid, null if it is not
-        public static async Task<bool> AuthenticateTwoFToken(string token, string ipAddress)
+        public static async Task<bool> AuthenticateTwoFToken(string token, string ipAddress, DbServerContext db)
         {
             if (token == null) return false;
-
-            using var db = new DbServerContext();
 
             TwoFToken dbToken;
             var tokenHandler = new JwtSecurityTokenHandler();
