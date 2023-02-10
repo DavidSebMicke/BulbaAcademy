@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.DTOs.Chat;
+﻿using BulbasaurAPI.Authorization;
+using BulbasaurAPI.DTOs.Chat;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using BulbasaurAPI.Repository.Interface;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Controllers
 {
+    [Authorize(AccessLevel = UserAccessLevel.USER)]
     [Route("api/[controller]")]
     [ApiController]
     public class ChatController : ControllerBase

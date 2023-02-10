@@ -9,7 +9,15 @@ namespace BulbasaurAPI.Middlewares
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            if (context.Request.Path == "/api/Authentication/login" || context.Request.Path == "/api/Authentication/createUser")
+            string[] unAuthenticatedPaths = new string[]
+            {
+                "/api/Authentication/login",
+                "/api/Authentication/createUser",
+                "/api/Authentication/login/totp",
+                "/api/recaptcha"
+            };
+            // Skip unauthenticated paths
+            if (unAuthenticatedPaths.Any(s => s == context.Request.Path))
             {
                 await next(context);
                 return;
@@ -17,12 +25,18 @@ namespace BulbasaurAPI.Middlewares
 
             try
             {
+                if (!context.Request.Headers.Any(h => h.Key == "Authorization"))
+                {
+                    await ReturnErrorResponse(context, "Authorization header missing.");
+                    return;
+                }
+
                 var authorizationHeader = context.Request.Headers.Authorization;
                 var ipAddress = HttpHelper.GetIpAddress(context);
 
                 if (string.IsNullOrEmpty(authorizationHeader) || string.IsNullOrEmpty(ipAddress))
                 {
-                    await ReturnErrorResponse(context);
+                    await ReturnErrorResponse(context, "Empty Authorization header or invalid IP.");
                     return;
                 }
 
@@ -53,7 +67,7 @@ namespace BulbasaurAPI.Middlewares
         }
 
         //Returns errormessage for invalid access token
-        private async Task ReturnErrorResponse(HttpContext context)
+        private async Task ReturnErrorResponse(HttpContext context, string message = "Invalid access token.")
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;

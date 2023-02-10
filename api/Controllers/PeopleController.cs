@@ -1,8 +1,8 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Authorization;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace BulbasaurAPI.Controllers
 {
@@ -10,7 +10,6 @@ namespace BulbasaurAPI.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-
         private readonly IPersonRepository _person;
 
         public PeopleController(IPersonRepository context)
@@ -20,6 +19,7 @@ namespace BulbasaurAPI.Controllers
 
         // GET: api/GetAll
         [HttpGet]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -35,6 +35,7 @@ namespace BulbasaurAPI.Controllers
         // GET: api/1
         [HttpGet]
         [Route("{id}")]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> GetPersonById(int id)
         {
             try
@@ -42,19 +43,19 @@ namespace BulbasaurAPI.Controllers
                 if (!await _person.EntityExists(id))
                 {
                     return NotFound("Cant find the specified ID");
-                    
                 }
 
                 return Ok(await _person.GetById(id));
             }
             catch (Exception)
             {
-               throw;
+                throw;
             }
         }
 
         // Post
         [HttpPost]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> CreatePersonAsync([FromBody] Person createdPerson)
         {
             if (createdPerson == null) return BadRequest(ModelState);
@@ -74,9 +75,9 @@ namespace BulbasaurAPI.Controllers
             return Ok("Successfully created");
         }
 
-
         //Delete
         [HttpDelete]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> DeletePersonById(int id)
         {
             var personExists = await _person.EntityExists(id);
@@ -91,6 +92,7 @@ namespace BulbasaurAPI.Controllers
 
         //Put(Update)
         [HttpPut]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> UpdatePersonById(int personId, [FromBody] Person updatePerson)
         {
             if (_person.EntityExists(personId) == null) return BadRequest(ModelState);
@@ -110,7 +112,6 @@ namespace BulbasaurAPI.Controllers
                 existingPerson.PhoneNumber = updatePerson.PhoneNumber;
                 existingPerson.HomeAddress = updatePerson.HomeAddress;
                 existingPerson.EmailAddress = updatePerson.EmailAddress;
-               
 
                 await _person.Update(existingPerson);
             }
@@ -121,8 +122,5 @@ namespace BulbasaurAPI.Controllers
 
             return Ok("Successfully updated");
         }
-
-
-
     }
 }

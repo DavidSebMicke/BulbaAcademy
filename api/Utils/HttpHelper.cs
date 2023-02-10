@@ -15,7 +15,7 @@ namespace BulbasaurAPI.Utils
 
         public static User? GetRequestUser(HttpContext context)
         {
-            return (User)context.Items["User"];
+            return (User?)context.Items["User"];
         }
     }
 }
