@@ -1,10 +1,6 @@
-﻿using BulbasaurAPI.Authentication;
-using BulbasaurAPI.DTOs.Login;
+﻿using BulbasaurAPI.DTOs.Login;
 using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
-using BulbasaurAPI.Helpers;
-using BulbasaurAPI.Models;
-using BulbasaurAPI.TOTPUtils;
 using BulbasaurAPI.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -55,24 +51,28 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("login/totp")]
-        public async Task<ActionResult<UserToken>> TwoFactorLogin(string twoFToken, string code)
+        public async Task<ActionResult<UserToken>> TwoFactorLogin(TOTPIN totpin)
         {
-            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == twoFToken);
+            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == totpin.TwoFToken);
 
             
 
-            if(twoFEntity == null) return BadRequest("Token not valid");
+            if(twoFEntity == null) return NotFound("Two factor token not found");
+
+            if (twoFEntity.User == null) return NotFound("User not found");
+
+            if(!(await TokenUtils.AuthenticateTwoFToken(totpin.TwoFToken, totpin.Code))) return BadRequest("Token not valid");
 
             _context.TwoFTokens.Remove(twoFEntity);
             await _context.SaveChangesAsync();
 
-            var tOTP = await _context.TOTPs.Where(x => x.Id == twoFEntity.User.Id).FirstOrDefaultAsync();
+            var tOTP = await _context.TOTPs.Where(x => x.Key == twoFEntity.User.GUID).FirstOrDefaultAsync();
 
             if (tOTP == null) return NotFound("Two factor validation unavailable");
 
 
 
-            if (TOTPUtil.VerifyTOTP(tOTP, code))
+            if (TOTPUtil.VerifyTOTP(tOTP, totpin.Code))
             {
                 return new UserToken
                 {

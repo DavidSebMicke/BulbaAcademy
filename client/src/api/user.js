@@ -1,7 +1,6 @@
-import { redirect } from "@sveltejs/kit";
-import {StoreInSession}from "../Utils/SessionStore.js"
 import { api, setAccessToken } from "./api.js";
 import jwt_decode from "jwt-decode";
+import { setCookie } from "../Utils/CookieUtils.js";
 
 // Move this to a separate api file later if it will be used by other components
 export const getUsers = (filter = '') => {
@@ -100,14 +99,22 @@ export async function TOTPLogIn(twoFToken, code)
 		if(response.status == 200){
 			var data = response.data
 			setAccessToken(data.accessToken);
-
+			
 		
 			var loggedInUser = jwt_decode(data.idToken);
 
-			StoreInSession("IDToken", data.idToken);
-			StoreInSession("LoggedInUser", JSON.stringify(loggedInUser));
-
-			return loggedInUser;
+			//StoreInSession("IDToken", data.idToken);
+			//StoreInSession("LoggedInUser", JSON.stringify(loggedInUser));
+			//document.cookie = `IDToken=${data.idToken}; SameSite=None; Secure`;
+			//document.cookie = `LoggedInUser=${JSON.stringify(loggedInUser)}; SameSite=None; Secure`;
+		
+			if(!loggedInUser) return false;
+			else{
+				setCookie("IDToken", data.idToken, "/");
+				setCookie("LoggedInUser", JSON.stringify(loggedInUser), "/")
+				return true;
+			}
+			
 		}
 		else{
 			return false;
