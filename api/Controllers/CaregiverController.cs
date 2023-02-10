@@ -175,7 +175,7 @@ namespace BulbasaurAPI.Controllers
                 c.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
                 await _caregiver.ConnectCaregiverAndChild(newCg, newChild);
 
-                var user = await _user.RegisterUserWithPerson(c, RandomPassword.GenerateRandomPassword(), true);
+                var user = await _user.RegisterUserWithPerson(c, RandomPassword.GenerateRandomPassword(), false);
 
                 if (user == null) return BadRequest("User can't be registered");
             }
