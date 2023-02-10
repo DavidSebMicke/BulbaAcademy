@@ -9,6 +9,7 @@ namespace BulbasaurAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AccessLevel = UserAccessLevel.USER)]
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentRepository _document;

@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Authorization;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace BulbasaurAPI.Controllers
 
         // GET: api/GetAll
         [HttpGet]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -37,6 +39,7 @@ namespace BulbasaurAPI.Controllers
         // GET: api/1
         [HttpGet]
         [Route("{id}")]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> GetChildById(int id)
         {
             try
@@ -56,6 +59,7 @@ namespace BulbasaurAPI.Controllers
 
         // Post
         [HttpPost]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> CreateChildAsync([FromBody] Child createdChild)
         {
             if (createdChild == null) return BadRequest(ModelState);
@@ -77,6 +81,7 @@ namespace BulbasaurAPI.Controllers
 
         //Delete
         [HttpDelete]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> DeleteChildById(int id)
         {
             var childExists = await _children.EntityExists(id);
@@ -90,6 +95,7 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> UpdateChildById(int childId, [FromBody] Child updateChild)
         {
             if (_children.EntityExists(childId) == null) return BadRequest(ModelState);
