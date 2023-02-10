@@ -81,6 +81,7 @@ namespace BulbasaurAPI.Repository
 
                 if (_context.Caregivers.Any(x => x.EmailAddress == c.EmailAddress)) return true;
                 if (_context.Caregivers.Any(x => x.SSN == c.SSN)) return true;
+               
             }
             return false;
         }
@@ -89,6 +90,11 @@ namespace BulbasaurAPI.Repository
         {
             await _context.SaveChangesAsync();  
             
+        }
+
+        public Task<User?> RegisterUserWithPerson(Caregiver caregiver)
+        {
+            throw new NotImplementedException();
         }
     }
 }

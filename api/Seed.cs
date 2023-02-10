@@ -3,6 +3,7 @@ using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks.Dataflow;
 using System.Web.Http.Controllers;
+using System.Xml.Linq;
 
 namespace BulbasaurAPI
 {
@@ -174,6 +175,10 @@ namespace BulbasaurAPI
                 {
                     c.Groups.Add(newClassGroup);
                 }
+                new Models.Group() { Name = "Violen" };
+                new Models.Group() { Name = "Humlan" };
+                new Models.Group() { Name = "Hagen" };
+                new Models.Group() { Name = "Gullvivan" };
 
                 // Creating Group and Assigning Parents to it
                 var supportGroup = new Models.Group() { Name = "Allmän" };
