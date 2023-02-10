@@ -1,34 +1,20 @@
 <script>
 	import { onMount } from 'svelte';
-	import { getChat } from '../../../api/chat';
-	import { getUsers } from '../../../api/user';
+	import { getChatUsers } from '../../../api/user';
+	import { createChat, sendMessage } from '../../../api/chat';
 	import Select from 'svelte-select';
 	import ChatMessage from './chatContent/chatMessage.svelte';
 	import { formatUsersForSelect } from './chat';
 
 	// use this to fetch the chat data from the server
 	export let activeChat = {
-		chatId: '0001',
-		users: [
-			{
-				id: '0001',
-				firstName: 'John',
-				lastName: 'Doe'
-			}
-		]
+		chatId: undefined,
+		users: [],
+		messages: []
 	};
 
-	export let user = {
-		id: '1111',
-		firstName: 'Sender',
-		lastName: 'Doe'
-	};
+	export let user = {};
 
-	// Move this to onMount/some responsive thing later to fetch the data once the backend is implemented
-	activeChat = getChat();
-
-	let users = getUsers();
-	$: formattedUsers = formatUsersForSelect(users);
 	let selectedUsers = [];
 	let messageText;
 
@@ -46,15 +32,30 @@
 		chatContainer.scrollTop = chatContainer.scrollHeight;
 	});
 
-	const sendMessage = () => {
+	const handleSend = async () => {
+		let returnChat;
 		if (activeChat.messages.length > 0) {
-			activeChat = sendMessage(activeChat.chatId, messageText);
+			returnChat = await sendMessage(activeChat.chatId, messageText);
 		} else {
-			activeChat = createChat(
+			console.log(
+				'USER IDS',
+				selectedUsers.map((u) => u.value)
+			);
+			returnChat = await createChat(
 				selectedUsers.map((u) => u.value),
 				messageText
 			);
 		}
+		if (returnChat && typeof returnChat == 'object') {
+			activeChat = returnChat;
+			messageText = '';
+		}
+	};
+
+	const loadUsers = async (filterText) => {
+		const users = await getChatUsers(filterText);
+		if (!users) return [];
+		return formatUsersForSelect(users);
 	};
 </script>
 
@@ -67,9 +68,10 @@
 			<div class="headerScrollContainer">
 				<Select
 					placeholder="Add a user"
-					items={formattedUsers}
 					bind:value={selectedUsers}
 					multiple={true}
+					debounceWait={300}
+					loadOptions={loadUsers}
 				/>
 			</div>
 		</div>
@@ -94,7 +96,7 @@
 			placeholder="Type a message..."
 			maxlength="2000"
 		/>
-		<button class="sendButton" on:click={sendMessage}>
+		<button class="sendButton" on:click={handleSend}>
 			<iconify-icon icon="material-symbols:send-outline-rounded" width="auto" /></button
 		>
 	</div>
@@ -167,6 +169,7 @@
 		max-height: 2rem;
 		resize: none;
 		border: none;
+		border: 1px solid @light-mode-flavour1;
 		padding: 0.5rem;
 		padding-right: 6rem;
 		border-radius: 0.5rem;

@@ -6,7 +6,11 @@
 
 	export let closeChat;
 
-	let activeChat;
+	let activeChat = {
+		chatId: undefined,
+		users: [],
+		messages: []
+	};
 
 	let scaleOptions = {
 		duration: 100

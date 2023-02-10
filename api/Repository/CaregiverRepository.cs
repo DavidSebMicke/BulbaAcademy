@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -93,7 +93,6 @@ namespace BulbasaurAPI.Repository
         {
             throw new NotImplementedException();
         }
-
 
     }
 }

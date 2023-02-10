@@ -5,7 +5,8 @@
 	import { useForm, HintGroup, validators, Hint, required } from 'svelte-use-form';
 
 	import { GetFromLocal, RemoveFromLocal } from '../../Utils/LocalStore';
-	import { TOTPLogIn } from '../../api/user';
+	import { TOTPLogIn } from '../../api/login';
+
 
 	const dispatch = createEventDispatcher();
 	const form = useForm();
@@ -40,8 +41,7 @@
 
 			TOTPLogIn(twoFToken, fieldValue).then((idToken) => {
 				if (idToken) {
-		
-					document.location.href="/";
+					document.location.href = '/';
 				} else {
 					console.log('wrong code');
 				}

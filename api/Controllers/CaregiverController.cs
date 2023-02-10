@@ -146,8 +146,21 @@ namespace BulbasaurAPI.Controllers
 
             var newChild = new Child(ccDTO);
 
+           
+     
+
             var addGroup = await _group.GetAll();
             newChild.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
+
+            if(ccDTO.Child.EligebableGroups != null) 
+            { 
+            foreach (var item in ccDTO.Child.EligebableGroups)
+            {
+                var g = await _group.GetById(item);
+                if(g != null) newChild.Groups.Add(g);
+
+            }
+            }
             var child = await _children.Create(newChild);
 
             var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
@@ -162,7 +175,7 @@ namespace BulbasaurAPI.Controllers
                 c.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
                 await _caregiver.ConnectCaregiverAndChild(newCg, newChild);
 
-                var user = await _user.RegisterUserWithPerson(c, RandomPassword.GenerateRandomPassword(), true);
+                var user = await _user.RegisterUserWithPerson(c, RandomPassword.GenerateRandomPassword(), false);
 
                 if (user == null) return BadRequest("User can't be registered");
             }
