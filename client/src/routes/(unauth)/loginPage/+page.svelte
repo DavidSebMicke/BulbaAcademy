@@ -34,6 +34,7 @@
 
 			if (loginResp) {
 				StoreInSession('TwoFToken', loginResp.token);
+
 				qrCode = loginResp.qrCode;
 				openModal();
 			}

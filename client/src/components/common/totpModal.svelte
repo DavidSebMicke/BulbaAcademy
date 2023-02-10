@@ -40,7 +40,8 @@
 
 			TOTPLogIn(twoFToken, fieldValue).then((idToken) => {
 				if (idToken) {
-					console.log('IDToken: ', GetFromSession('LoggedInUser'));
+		
+					document.location.href="/";
 				} else {
 					console.log('wrong code');
 				}

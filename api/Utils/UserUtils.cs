@@ -1,4 +1,4 @@
-﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.Database;
 using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Services;
