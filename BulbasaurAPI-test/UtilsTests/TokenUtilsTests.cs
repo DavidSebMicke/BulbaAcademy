@@ -1,4 +1,4 @@
-﻿using BulbasaurAPI;
+﻿using BulbasaurAPI.Database;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
 using Microsoft.OpenApi.Any;
@@ -73,6 +73,7 @@ namespace BulbasaurAPI_test.UtilsTests
 
             Assert.NotNull(accessToken);
             Assert.IsType<string>(accessToken);
+            Assert.
         }
 
         [Fact]

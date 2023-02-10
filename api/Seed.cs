@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.Models;
 using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks.Dataflow;
@@ -169,14 +170,14 @@ namespace BulbasaurAPI
                 // Creating Group and Assigning Children to it
                 var newClassGroup = new Models.Group() { Name = "Klass 5A" };
                 _context.Groups.Add(newClassGroup);
-                var childList = children.Where(x => x.SSN.ToString().StartsWith("20"));
+                var childList = children.Where(x => x.SSN.ToString().StartsWith("21"));
                 foreach (var c in childList)
                 {
                     c.Groups.Add(newClassGroup);
                 }
 
                 // Creating Group and Assigning Parents to it
-                var supportGroup = new Models.Group() { Name = "Allmän" };
+                var supportGroup = new Models.Group() { Name = "SupportGrupp LössUtbrott" };
                 _context.Groups.Add(supportGroup);
                 var careGiverList = _context.Caregivers.Where(x => x.LastName == "Anka" || x.LastName == "Mormorsson" || x.LastName == "Fågelberg").ToList();
 

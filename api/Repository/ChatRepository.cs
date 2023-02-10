@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.DTOs.Chat;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.DTOs.Chat;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;

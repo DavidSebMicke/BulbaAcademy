@@ -1,3 +1,4 @@
+using BulbasaurAPI.Database;
 using BulbasaurAPI.ExternalAPIs;
 using BulbasaurAPI.Middlewares;
 using BulbasaurAPI.Models;
@@ -45,7 +46,6 @@ namespace BulbasaurAPI
             builder.Services.AddScoped<IChildrenRepository, ChildrenRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IBaseRepository<Role>, RoleRepository>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = builder.Build();
 
@@ -71,10 +71,10 @@ namespace BulbasaurAPI
             app.UseCors("policyCors");
             app.UseHttpsRedirection();
 
-            // Logging middleware
+            // Logging middleware, needs context when implemented
             //app.Use(async (context, next) =>
             //{
-            //    var loggingMiddleware = new LoggingMiddleware(new DbServerContext(builder.Configuration));
+            //    var loggingMiddleware = new LoggingMiddleware();
             //    await loggingMiddleware.InvokeAsync(context, next);
             //});
 
