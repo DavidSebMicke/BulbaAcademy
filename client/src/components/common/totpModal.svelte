@@ -83,7 +83,7 @@
 			</div>
 
 			<dev class="modal-footer">
-				<button class="buttondispatch" disabled={!$form.valid} type="submit"
+				<button class="buttondispatch" visibility: hidden={!$form.valid} type="submit"
 					>Send Code</button
 				>
 				{#if !noCloseButton}
@@ -102,7 +102,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(0, 0, 0, 0.699);
 		z-index: 10;
 	}
 	.buttondispatch {
@@ -134,7 +134,7 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: var(--flavour-color--3);
+		background-color: rgb(94, 97, 88);
 		width: 80%;
 		max-width: 600px;
 		// border: 2px solid black;
