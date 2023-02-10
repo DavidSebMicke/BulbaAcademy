@@ -1,6 +1,7 @@
 ﻿using BulbasaurAPI.DTOs.Login;
 using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,18 +43,16 @@ namespace BulbasaurAPI.Controllers
         [HttpPost("createUserTEST")]
         public async Task<ActionResult<NewUserDTO>> CreateUser(LogInForm loginForm)
         {
-
-            var newUser = await UserUtils.RegisterUser(loginForm.Email, RandomPassword.GenerateRandomPassword(), sendEmail:true);
+            var newUser = await UserUtils.RegisterUser(loginForm.Email, RandomPassword.GenerateRandomPassword(), sendEmail: true);
             var output = new NewUserDTO(newUser);
             if (newUser == null) return Unauthorized("not workin");
             else return output;
-            
         }
 
         [HttpPost("login/totp")]
         public async Task<ActionResult<UserToken>> TwoFactorLogin(TOTPIN totpin)
         {
-            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == totpin.TwoFToken);
+            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == twoFToken);
 
             
 
@@ -82,11 +81,8 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-                
                 return Forbid("Wrong code");
-            
             }
-
         }
     }
 }
