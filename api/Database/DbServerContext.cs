@@ -2,7 +2,7 @@
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 
-namespace BulbasaurAPI
+namespace BulbasaurAPI.Database
 {
     public class DbServerContext : DbContext
     {
@@ -58,7 +58,7 @@ namespace BulbasaurAPI
         {
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<Person>().ToTable("Persons")
-                .HasOne<Role>(c => c.Role);
+                .HasOne(c => c.Role);
             modelBuilder.Entity<Caregiver>().ToTable("Caregivers");
             modelBuilder.Entity<Child>().ToTable("Children");
 

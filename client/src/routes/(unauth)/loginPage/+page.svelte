@@ -34,6 +34,7 @@
 
 			if (loginResp) {
 				StoreInSession('TwoFToken', loginResp.token);
+
 				qrCode = loginResp.qrCode;
 				openModal();
 			}
@@ -163,6 +164,10 @@
 		align-items: center;
 		text-align: center;
 		color: #ffffff;
+	}
+
+	#step3:disabled {
+		display: none;
 	}
 
 	.bulben {

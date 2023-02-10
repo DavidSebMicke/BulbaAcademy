@@ -9,6 +9,7 @@ namespace BulbasaurAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AccessLevel = UserAccessLevel.USER)]
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentRepository _document;
@@ -33,7 +34,8 @@ namespace BulbasaurAPI.Controllers
 
                 if (document.UploadedBy.Id == user.Id ||
                     document.EligibleList.Contains(user) ||
-                    document.EligibleGroups.Any(g => g.People.Any(u => u.Id == user.Person.Id)))
+                    document.EligibleGroups.Any(g => g.People.Any(u => u.Id == user.Person.Id)) ||
+                    user.AccessLevel == UserAccessLevel.ADMIN)
                 {
                     var file = PDFUtils.GetFile(document);
                     if (file == null) return NotFound("The PDF file was not found.");
@@ -69,7 +71,8 @@ namespace BulbasaurAPI.Controllers
                 {
                     if (document.UploadedBy.Id == user.Id ||
                         document.EligibleList.Contains(user) ||
-                        document.EligibleGroups.Any(g => g.People.Any(u => u.Id == user.Person.Id)))
+                        document.EligibleGroups.Any(g => g.People.Any(u => u.Id == user.Person.Id)) ||
+                        user.AccessLevel == UserAccessLevel.ADMIN)
                     {
                         var file = PDFUtils.GetFile(document);
                         if (file == null) continue;
@@ -97,12 +100,13 @@ namespace BulbasaurAPI.Controllers
             {
                 if (!ModelState.IsValid) return BadRequest(ModelState);
                 var user = HttpHelper.GetRequestUser(HttpContext);
+                Guid documentGuid = new();
 
                 // Construct and get paths for file
                 string workingDirectory = Environment.CurrentDirectory;
                 string projectDirectory = Directory.GetParent(workingDirectory).Parent.FullName;
                 string folderPath = $"{projectDirectory}/{user.Id}";
-                string filePath = $"{folderPath}/{incomingDocument.DocumentFileName}";
+                string filePath = $"{folderPath}/{documentGuid}";
 
                 var successfullySaved = PDFUtils.SaveFile(incomingDocument.Document, filePath);
 
@@ -117,11 +121,11 @@ namespace BulbasaurAPI.Controllers
                 if (incomingDocument.EligibleGroupIds != null)
                     eligibleGroups = await _document.GetGroupsById(incomingDocument.EligibleGroupIds);
 
-                Document newDocument = new(incomingDocument, folderPath, eligibleUsers, eligibleGroups, user);
+                Document newDocument = new(incomingDocument, folderPath, eligibleUsers, eligibleGroups, user, documentGuid);
 
                 var returnDocument = await _document.Create(newDocument);
 
-                return Ok(new DocumentDTO(returnDocument,incomingDocument.Document));
+                return Ok(new DocumentDTO(returnDocument, incomingDocument.Document));
             }
             catch (Exception ex)
             {

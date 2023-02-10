@@ -41,14 +41,12 @@
 
 	.chatWindow {
 		position: relative;
-		background-color: rgb(240, 240, 240);
+		background-color: var(--bg-color);
 		border: 1px solid rgb(172, 161, 161);
 		width: 35rem;
 		height: 25rem;
-
 		border-radius: 1rem;
 		transition: all 0.5s ease-out;
-
 		display: flex;
 		align-items: flex-start;
 		flex-direction: column;

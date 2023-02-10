@@ -1,4 +1,4 @@
-﻿using BulbasaurAPI;
+﻿using BulbasaurAPI.Database;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
 using Microsoft.OpenApi.Any;

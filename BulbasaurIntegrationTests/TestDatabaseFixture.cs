@@ -1,4 +1,4 @@
-﻿using BulbasaurAPI;
+﻿using BulbasaurAPI.Database;
 using dotenv.net;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;

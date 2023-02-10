@@ -125,8 +125,8 @@
 		width: 10rem;
 		align-self: center;
 		margin: 0.8rem 0.8rem 0.4rem 0.4rem;
-		background-color: rgb(179, 219, 255);
-		border: 0;
+		background-color: var(--flavour-color-4);
+		border: 1;
 		border-radius: 1rem;
 
 		padding-left: 0;

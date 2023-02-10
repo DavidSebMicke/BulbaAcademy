@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Controllers
 {
+    // Recaptcha controllor for future use
     [Route("api/[controller]")]
     [ApiController]
     public class RecaptchaController : ControllerBase
