@@ -5,6 +5,7 @@
 
 	import 'iconify-icon';
 	import Dropdown from '$components/dropdown/dropdown.svelte';
+	import DropdownModal from '../../components/dropdown/dropdownModal.svelte';
 </script>
 
 <NoticeBoard />
