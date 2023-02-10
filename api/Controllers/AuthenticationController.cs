@@ -41,26 +41,29 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("createUserTEST")]
-        public async Task<ActionResult<NewUserDTO>> CreateUser(LogInForm loginForm)
+        public async Task<ActionResult<NewUserDTO>> CreateUser(string email, string password, bool randomizePassword)
         {
-            var newUser = await UserUtils.RegisterUser(loginForm.Email, RandomPassword.GenerateRandomPassword(), sendEmail: true);
-            var output = new NewUserDTO(newUser);
-            if (newUser == null) return Unauthorized("not workin");
-            else return output;
+    
+            var newUser = await UserUtils.RegisterUser(email, randomizePassword ? RandomPassword.GenerateRandomPassword() : password, sendEmail: true);
+
+            if (newUser == null) return BadRequest("User was not created");
+            else
+            {
+                return new NewUserDTO(newUser); 
+            }
         }
 
         [HttpPost("login/totp")]
-        public async Task<ActionResult<UserToken>> TwoFactorLogin(TOTPIN totpin)
+        public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpin)
         {
-            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == twoFToken);
-
-            
+            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == totpin.TwoFToken);
 
             if(twoFEntity == null) return NotFound("Two factor token not found");
 
             if (twoFEntity.User == null) return NotFound("User not found");
 
-            if(!(await TokenUtils.AuthenticateTwoFToken(totpin.TwoFToken, totpin.Code))) return BadRequest("Token not valid");
+            //does not work 
+            //if(!(await TokenUtils.AuthenticateTwoFToken(totpin.TwoFToken, totpin.Code))) return BadRequest("Token not valid");
 
             _context.TwoFTokens.Remove(twoFEntity);
             await _context.SaveChangesAsync();

@@ -90,5 +90,10 @@ namespace BulbasaurAPI.Repository
             await _context.SaveChangesAsync();  
             
         }
+
+        public Task<User?> RegisterUserWithPerson(Caregiver caregiver)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
