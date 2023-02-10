@@ -2,6 +2,7 @@
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using BulbasaurAPI.Repository.Interface;
+using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,13 +41,13 @@ namespace BulbasaurAPI.Controllers
         // GET: api/chat/list
         [HttpGet]
         [Route("list")]
-        public async Task<ActionResult<ICollection<ChatInfoDTO>?>> GetChats()
+        public async Task<ActionResult<ICollection<ChatInfoDTO>>> GetChats()
         {
             try
             {
                 var user = (User)HttpContext.Items["User"];
                 var chatList = await _chat.GetChats(user);
-                var chatDTOs = chatList.Select(chat => new ChatDTO(chat));
+                var chatDTOs = chatList.Select(chat => new ChatDTO(chat)).ToList();
 
                 return Ok(chatDTOs);
             }
@@ -61,29 +62,31 @@ namespace BulbasaurAPI.Controllers
         [Route("create")]
         public async Task<ActionResult<ChatDTO?>> CreateChat([FromBody] NewChatDTO newChatDTO)
         {
-            try
-            {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
-                var user = (User)HttpContext.Items["User"];
+            //try
+            //{
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var user = HttpHelper.GetRequestUser(HttpContext);
+            if (user == null) return Unauthorized("Missing user.");
 
-                var users = await _chat.GetUsersByIds(newChatDTO.Users);
-                users.Add(user);
+            var users = await _chat.GetUsersByIds(newChatDTO.Users);
+            users.Add(user);
 
-                var chatItems = new List<ChatItem>()
+            var chatItems = new List<ChatItem>()
                 {
                     new ChatItem() { Author = user, Message = newChatDTO.Message }
                 };
 
-                var newChat = new Chat(users, chatItems);
+            var newChat = new Chat(users, chatItems);
 
-                var newEntry = await _chat.CreateChat(newChat);
+            var newEntry = await _chat.CreateChat(newChat);
+            await _chat.SaveChangesAsync();
 
-                return Ok(new ChatDTO(newEntry));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(new ChatDTO(newEntry));
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
         }
 
         // POST: api/chat/send
@@ -100,6 +103,8 @@ namespace BulbasaurAPI.Controllers
 
             chat.ChatItemList.Add(new(chatMessage, user));
             var updatedChat = await _chat.UpdateChat(chat);
+            await _chat.SaveChangesAsync();
+
             return Ok(new ChatDTO(updatedChat));
         }
     }

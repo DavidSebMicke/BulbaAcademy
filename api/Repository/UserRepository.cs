@@ -36,9 +36,9 @@ namespace BulbasaurAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Users.Include(u => u.Person).ThenInclude(p => p.Role).ToListAsync();
         }
 
         public Task<User?> GetById(int id)

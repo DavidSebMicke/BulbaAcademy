@@ -1,18 +1,28 @@
 <script>
 	import dayjs from 'dayjs';
+	import { onMount } from 'svelte';
 	import { getAllChats } from '../../../api/chat';
 
 	// Move this to onMount when backend is implemented
-	let chatList = getAllChats();
+	let chatList = [];
 
 	export let openNewChat;
 	export let activeChat = chatList[0];
 
-	const handleChatClick = (e, chat) => {
+	const handleChatClick = async (e, chat) => {
 		if (e.key && e.key !== 'Enter') return;
 
-		activeChat = chat;
+		const fetchedChat = await getChat(chat.chatId);
+		if (chat != null) {
+			activeChat = chat;
+		}
 	};
+
+	onMount(async () => {
+		chatList = await getAllChats();
+	});
+
+	const loadChat = async (id) => {};
 </script>
 
 <div class="container">

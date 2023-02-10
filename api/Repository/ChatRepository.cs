@@ -42,22 +42,24 @@ namespace BulbasaurAPI.Repository
         public async Task<Chat?> CreateChat(Chat chat)
         {
             var dbChat = (await _context.Chats.AddAsync(chat)).Entity;
-            await _context.SaveChangesAsync();
-
             return dbChat;
         }
 
         public async Task<Chat?> UpdateChat(Chat chat)
         {
             var updatedChat = _context.Chats.Update(chat).Entity;
-            await _context.SaveChangesAsync();
             return updatedChat;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
 
         // Get users from int list
         public async Task<List<User>> GetUsersByIds(List<int> ids)
         {
-            return await _context.Users.Where(u => ids.Contains(u.Id)).ToListAsync();
+            return await _context.Users.Where(u => ids.Any(i => i == u.Id)).ToListAsync();
         }
     }
 }
