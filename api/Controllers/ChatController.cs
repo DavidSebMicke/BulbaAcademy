@@ -30,9 +30,9 @@ namespace BulbasaurAPI.Controllers
                 var user = (User)HttpContext.Items["User"];
                 var chat = await _chat.Get(id);
 
-                if (!chat.InvolvedUsersList.Contains(user)) return Unauthorized("Du har inte tillgång till denna chat.");
+                if (!chat.InvolvedUsersList.Any(u => u.Id == user.Id)) return Unauthorized("Du har inte tillgång till denna chat.");
 
-                return Ok(new ChatDTO(chat));
+                return Ok(new ChatDTO(chat, user));
             }
             catch (Exception ex)
             {
@@ -47,9 +47,9 @@ namespace BulbasaurAPI.Controllers
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = HttpHelper.GetRequestUser(HttpContext);
                 var chatList = await _chat.GetChats(user);
-                var chatDTOs = chatList.Select(chat => new ChatDTO(chat)).ToList();
+                var chatDTOs = chatList.Select(chat => new ChatInfoDTO(chat, user)).ToList();
 
                 return Ok(chatDTOs);
             }
@@ -73,17 +73,23 @@ namespace BulbasaurAPI.Controllers
             var users = await _chat.GetUsersByIds(newChatDTO.Users);
             users.Add(user);
 
-            var chatItems = new List<ChatItem>()
-                {
-                    new ChatItem() { Author = user, Message = newChatDTO.Message }
-                };
+            var newChat = await _chat.CreateChat(new());
 
-            var newChat = new Chat(users, chatItems);
-
-            var newEntry = await _chat.CreateChat(newChat);
+            var chatItem = new ChatItem() { Message = newChatDTO.Message };
+            var newChatItem = await _chat.CreateChatItem(chatItem);
+            newChatItem.Author = user;
             await _chat.SaveChangesAsync();
 
-            return Ok(new ChatDTO(newEntry));
+            newChat.InvolvedUsersList = users;
+            newChat.ChatItemList = new List<ChatItem> { newChatItem };
+
+            await _chat.UpdateChat(newChat);
+
+            await _chat.SaveChangesAsync();
+
+            var chatWithPersonData = await _chat.Get(newChat.Id);
+
+            return Ok(new ChatDTO(chatWithPersonData, user));
             //}
             //catch (Exception ex)
             //{
@@ -107,7 +113,9 @@ namespace BulbasaurAPI.Controllers
             var updatedChat = await _chat.UpdateChat(chat);
             await _chat.SaveChangesAsync();
 
-            return Ok(new ChatDTO(updatedChat));
+            var chatWithPersonData = await _chat.Get(updatedChat.Id);
+
+            return Ok(new ChatDTO(chatWithPersonData, user));
         }
     }
 }

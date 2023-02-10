@@ -21,6 +21,7 @@ namespace BulbasaurAPI.Controllers
         // GET: api/user/getall
         [HttpGet]
         [Route("getallchatusers")]
+        [Authorize( AccessLevel = UserAccessLevel.USER)]
         public async Task<ActionResult<IEnumerable<ChatUserDTO>>> GetAllAsChatUser(string? filter)
         {
             var user = HttpHelper.GetRequestUser(HttpContext);

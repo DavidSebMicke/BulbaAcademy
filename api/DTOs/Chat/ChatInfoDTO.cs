@@ -1,4 +1,6 @@
-﻿namespace BulbasaurAPI.DTOs.Chat
+﻿using BulbasaurAPI.Models;
+
+namespace BulbasaurAPI.DTOs.Chat
 {
     public class ChatInfoDTO
     {
@@ -6,11 +8,16 @@
         public List<ChatUserDTO> Users { get; set; }
         public ChatMessageDTO LastMessage { get; set; }
 
-        public ChatInfoDTO(Models.Chat chat)
+        public ChatInfoDTO(Models.Chat chat, User user)
         {
             ChatId = chat.Id;
-            Users = (List<ChatUserDTO>)chat.InvolvedUsersList.Select(u => new ChatUserDTO(u));
+            Users = new();
             LastMessage = new ChatMessageDTO(chat.ChatItemList.Last());
+
+            chat.InvolvedUsersList.ForEach(u =>
+            {
+                if (u.Id != user.Id) Users.Add(new ChatUserDTO(u));
+            });
         }
     }
 }

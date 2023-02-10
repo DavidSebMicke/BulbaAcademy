@@ -112,17 +112,35 @@ namespace BulbasaurAPI.Utils
             if (dbToken == null) return null;
 
             // Check if IP is the same as the token is issued to
-            if (ipAddress != dbToken.IpAddress) return null;
+            if (ipAddress != dbToken.IpAddress)
+            {
+                await RemoveAccessToken(dbToken, db);
+                return null;
+            }
 
             // Check if token is still valid
             TimeSpan issuedSpan = DateTime.Now - dbToken.IssuedDateTime;
-            if (issuedSpan.TotalMinutes >= AccessToken.MaximumSessionMinutes) return null;
+            if (issuedSpan.TotalMinutes >= AccessToken.MaximumSessionMinutes)
+            {
+                await RemoveAccessToken(dbToken, db);
+                return null;
+            }
 
             // Check if session is still valid
             TimeSpan lastUsedSpan = DateTime.Now - dbToken.LastUsedDateTime;
-            if (lastUsedSpan.TotalMinutes >= AccessToken.MaximumIdleMinutes) return null;
+            if (lastUsedSpan.TotalMinutes >= AccessToken.MaximumIdleMinutes)
+            {
+                await RemoveAccessToken(dbToken, db);
+                return null;
+            }
 
             return dbToken.User;
+        }
+
+        private static async Task RemoveAccessToken(AccessToken token, DbServerContext db)
+        {
+            db.Remove(token);
+            await db.SaveChangesAsync();
         }
 
         // Generate an Two F token, unique for each user and for each time it is issued

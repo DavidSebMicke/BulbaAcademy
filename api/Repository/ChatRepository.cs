@@ -23,8 +23,9 @@ namespace BulbasaurAPI.Repository
             return await _context.Chats
             .Include(c => c.InvolvedUsersList)
             .ThenInclude(u => u.Person)
+            .ThenInclude(p => p.Role)
             .Include(c => c.ChatItemList)
-            .AsNoTracking()
+            .ThenInclude(ci => ci.Author)
             .FirstAsync(c => c.Id == chatId);
         }
 
@@ -33,9 +34,9 @@ namespace BulbasaurAPI.Repository
             return await _context.Chats
                         .Include(c => c.InvolvedUsersList)
                         .ThenInclude(u => u.Person)
+                        .ThenInclude(p => p.Role)
                         .Include(c => c.ChatItemList)
                         .Where(c => c.InvolvedUsersList.Contains(user))
-                        .AsNoTracking()
                         .ToListAsync();
         }
 
@@ -54,6 +55,12 @@ namespace BulbasaurAPI.Repository
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<ChatItem> CreateChatItem(ChatItem chatItem)
+        {
+            var dbItem = (await _context.ChatItems.AddAsync(chatItem)).Entity;
+            return dbItem;
         }
 
         // Get users from int list

@@ -11,6 +11,8 @@ namespace BulbasaurAPI.Repository.Interface
 
         Task<Chat?> CreateChat(Chat chat);
 
+        Task<ChatItem?> CreateChatItem(ChatItem chatItem);
+
         Task<Chat?> UpdateChat(Chat chat);
 
         Task<List<User>> GetUsersByIds(List<int> ids);

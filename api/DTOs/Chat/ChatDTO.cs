@@ -1,4 +1,7 @@
-﻿namespace BulbasaurAPI.DTOs.Chat
+﻿using BulbasaurAPI.Models;
+using System.Reflection.Metadata.Ecma335;
+
+namespace BulbasaurAPI.DTOs.Chat
 {
     public class ChatDTO
     {
@@ -6,15 +9,15 @@
         public List<ChatUserDTO> Users { get; set; }
         public List<ChatMessageDTO> Messages { get; set; }
 
-        public ChatDTO(Models.Chat chat)
+        public ChatDTO(Models.Chat chat, User user)
         {
             ChatId = chat.Id;
             Users = new();
             Messages = new();
 
-            chat.InvolvedUsersList.ForEach(user =>
+            chat.InvolvedUsersList.ForEach(u =>
             {
-                Users.Add(new ChatUserDTO(user));
+                if (u.Id != user.Id) Users.Add(new ChatUserDTO(u));
             });
 
             chat.ChatItemList.ForEach(chatItem =>

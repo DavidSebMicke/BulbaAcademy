@@ -60,6 +60,7 @@ namespace BulbasaurAPI.Repository
                     Password = Hasher.HashWithSalt(password, out string salt),
                     Salt = salt,
                     AccessLevel = Authorization.UserAccessLevel.USER,
+                    GUID = Guid.NewGuid(),
                 };
 
                 var newUserEntity = (await _context.Users.AddAsync(newUser)).Entity;

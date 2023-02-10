@@ -19,9 +19,9 @@ namespace BulbasaurAPI.DTOs.Chat
         public ChatUserDTO(User user)
         {
             Id = user.Id;
-            FirstName = user.Person.FirstName;
-            LastName = user.Person.LastName;
-            Role = user.Person.Role.Name;
+            FirstName = user.Person != null ? user.Person.FirstName : "";
+            LastName = user.Person != null ? user.Person.LastName : "";
+            Role = user.Person != null ? user.Person.Role != null ? user.Person.Role.Name : "" : "";
         }
     }
 }
