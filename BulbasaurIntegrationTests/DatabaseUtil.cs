@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using BulbasaurAPI;
+using BulbasaurAPI.Database;
 using BulbasaurAPI.Models;
 using System;
 using System.Collections.Generic;

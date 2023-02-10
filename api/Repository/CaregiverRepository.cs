@@ -6,6 +6,7 @@ using System.Web.Http.ModelBinding;
 using BulbasaurAPI.Utils;
 using BulbasaurAPI.Services;
 using Microsoft.AspNet.Identity;
+using BulbasaurAPI.Database;
 
 namespace BulbasaurAPI.Repository
 {

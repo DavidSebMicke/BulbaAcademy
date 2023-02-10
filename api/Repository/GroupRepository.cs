@@ -1,3 +1,4 @@
+using BulbasaurAPI.Database;
 using BulbasaurAPI.DTOs.Group;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;

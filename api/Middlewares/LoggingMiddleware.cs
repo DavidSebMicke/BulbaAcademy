@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
 
 namespace BulbasaurAPI.Middlewares
