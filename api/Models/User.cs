@@ -8,7 +8,7 @@ namespace BulbasaurAPI.Models
     {
         public int Id { get; set; }
 
-        public Guid GUID { get; set; } = Guid.NewGuid();
+        public Guid GUID { get; set; }
 
         [MaxLength(255)]
         [EmailAddress]

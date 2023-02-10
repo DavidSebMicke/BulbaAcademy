@@ -46,6 +46,8 @@ namespace BulbasaurAPI
             builder.Services.AddScoped<IChildrenRepository, ChildrenRepository>();
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IBaseRepository<Role>, RoleRepository>();
+            builder.Services.AddScoped<IChatRepository, ChatRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             //Add middlewares
             builder.Services.AddTransient<LoggingMiddleware>();

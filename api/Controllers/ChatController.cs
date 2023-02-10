@@ -3,6 +3,7 @@ using BulbasaurAPI.DTOs.Chat;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository;
 using BulbasaurAPI.Repository.Interface;
+using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,9 +30,9 @@ namespace BulbasaurAPI.Controllers
                 var user = (User)HttpContext.Items["User"];
                 var chat = await _chat.Get(id);
 
-                if (!chat.InvolvedUsersList.Contains(user)) return Unauthorized("Du har inte tillgång till denna chat.");
+                if (!chat.InvolvedUsersList.Any(u => u.Id == user.Id)) return Unauthorized("Du har inte tillgång till denna chat.");
 
-                return Ok(new ChatDTO(chat));
+                return Ok(new ChatDTO(chat, user));
             }
             catch (Exception ex)
             {
@@ -42,13 +43,13 @@ namespace BulbasaurAPI.Controllers
         // GET: api/chat/list
         [HttpGet]
         [Route("list")]
-        public async Task<ActionResult<ICollection<ChatInfoDTO>?>> GetChats()
+        public async Task<ActionResult<ICollection<ChatInfoDTO>>> GetChats()
         {
             try
             {
-                var user = (User)HttpContext.Items["User"];
+                var user = HttpHelper.GetRequestUser(HttpContext);
                 var chatList = await _chat.GetChats(user);
-                var chatDTOs = chatList.Select(chat => new ChatDTO(chat));
+                var chatDTOs = chatList.Select(chat => new ChatInfoDTO(chat, user)).ToList();
 
                 return Ok(chatDTOs);
             }
@@ -63,29 +64,37 @@ namespace BulbasaurAPI.Controllers
         [Route("create")]
         public async Task<ActionResult<ChatDTO?>> CreateChat([FromBody] NewChatDTO newChatDTO)
         {
-            try
-            {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
-                var user = (User)HttpContext.Items["User"];
+            //try
+            //{
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var user = HttpHelper.GetRequestUser(HttpContext);
+            if (user == null) return Unauthorized("Missing user.");
 
-                var users = await _chat.GetUsersByIds(newChatDTO.Users);
-                users.Add(user);
+            var users = await _chat.GetUsersByIds(newChatDTO.Users);
+            users.Add(user);
 
-                var chatItems = new List<ChatItem>()
-                {
-                    new ChatItem() { Author = user, Message = newChatDTO.Message }
-                };
+            var newChat = await _chat.CreateChat(new());
 
-                var newChat = new Chat(users, chatItems);
+            var chatItem = new ChatItem() { Message = newChatDTO.Message };
+            var newChatItem = await _chat.CreateChatItem(chatItem);
+            newChatItem.Author = user;
+            await _chat.SaveChangesAsync();
 
-                var newEntry = await _chat.CreateChat(newChat);
+            newChat.InvolvedUsersList = users;
+            newChat.ChatItemList = new List<ChatItem> { newChatItem };
 
-                return Ok(new ChatDTO(newEntry));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            await _chat.UpdateChat(newChat);
+
+            await _chat.SaveChangesAsync();
+
+            var chatWithPersonData = await _chat.Get(newChat.Id);
+
+            return Ok(new ChatDTO(chatWithPersonData, user));
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
         }
 
         // POST: api/chat/send
@@ -102,7 +111,11 @@ namespace BulbasaurAPI.Controllers
 
             chat.ChatItemList.Add(new(chatMessage, user));
             var updatedChat = await _chat.UpdateChat(chat);
-            return Ok(new ChatDTO(updatedChat));
+            await _chat.SaveChangesAsync();
+
+            var chatWithPersonData = await _chat.Get(updatedChat.Id);
+
+            return Ok(new ChatDTO(chatWithPersonData, user));
         }
     }
 }

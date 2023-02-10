@@ -23,8 +23,8 @@ namespace BulbasaurAPI.Middlewares
                 return;
             }
 
-            try
-            {
+            //try
+            //{
                 if (!context.Request.Headers.Any(h => h.Key == "Authorization"))
                 {
                     await ReturnErrorResponse(context, "Authorization header missing.");
@@ -42,6 +42,8 @@ namespace BulbasaurAPI.Middlewares
 
                 string accessToken = authorizationHeader[0].Split(' ')[1];
 
+                Console.WriteLine("accesstoken:" + accessToken);
+
                 using var db = new ContextFactory().CreateContext();
 
                 User? user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress, db);
@@ -57,13 +59,13 @@ namespace BulbasaurAPI.Middlewares
                     await ReturnErrorResponse(context);
                     return;
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error in AuthenticationMiddleware: ", ex.Message);
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                await context.Response.WriteAsync("Error when authenticating user.");
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Error in AuthenticationMiddleware: ", ex);
+            //    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            //    await context.Response.WriteAsync("Error when authenticating user.");
+            //}
         }
 
         //Returns errormessage for invalid access token
@@ -71,7 +73,7 @@ namespace BulbasaurAPI.Middlewares
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            await context.Response.WriteAsync("Invalid access token.");
+            await context.Response.WriteAsync(message);
         }
     }
 }

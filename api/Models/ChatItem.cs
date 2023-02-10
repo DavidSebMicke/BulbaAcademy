@@ -18,7 +18,7 @@ namespace BulbasaurAPI.Models
         public ChatItem(ChatMessageDTO chatMessage, User user)
         {
             Author = user;
-            Message = chatMessage.Content;
+            Message = chatMessage.Message;
         }
     }
 }
