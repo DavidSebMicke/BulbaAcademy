@@ -12,8 +12,11 @@ namespace BulbasaurAPI.Models
         [MaxLength(100)]
         public string City { get; set; }
 
-        [Range(10000,99999)]
+        [Range(10000, 99999)]
         public int PostalCode { get; set; }
+
+        public Address()
+        { }
 
         public Address(string streetAddress, string city, int postalCode)
         {

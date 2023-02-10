@@ -2,19 +2,23 @@
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 
-namespace BulbasaurAPI
+namespace BulbasaurAPI.Database
 {
     public class DbServerContext : DbContext
     {
-        //public readonly IConfiguration Configuration;
+        public readonly IConfiguration Configuration;
 
         //public DbServerContext(IConfiguration configuration)
         //{
         //    Configuration = configuration;
         //}
 
+        private DbContextOptions<DbServerContext> _options;
+
         public DbServerContext(DbContextOptions<DbServerContext> options) : base(options)
-        { }
+        {
+            _options = options;
+        }
 
         public DbServerContext()
         { }
@@ -40,20 +44,21 @@ namespace BulbasaurAPI
         //{
         //    services.AddControllers();
         //}
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connString = DotEnv.Read()["_connString"];
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(connString);
-            }
-        }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    var connString = Configuration.GetConnectionString("_connString");
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer(connString);
+        //    }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<Person>().ToTable("Persons")
-                .HasOne<Role>(c => c.Role);
+                .HasOne(c => c.Role);
             modelBuilder.Entity<Caregiver>().ToTable("Caregivers");
             modelBuilder.Entity<Child>().ToTable("Children");
 

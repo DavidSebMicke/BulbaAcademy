@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
 
 namespace BulbasaurAPI.Middlewares
@@ -22,7 +23,7 @@ namespace BulbasaurAPI.Middlewares
 
             if (!string.IsNullOrEmpty(accessToken))
             {
-                user = await TokenUtils.AuthenticateToken(accessToken, ipAddress);
+                user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress, _context);
             }
 
             var logging = new Logging()

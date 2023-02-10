@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
 using System.Net;
 
@@ -8,8 +9,6 @@ namespace BulbasaurAPI.Middlewares
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var path = context.Request.Path;
-
             if (context.Request.Path == "/api/Authentication/login" || context.Request.Path == "/api/Authentication/createUser")
             {
                 await next(context);
@@ -29,7 +28,9 @@ namespace BulbasaurAPI.Middlewares
 
                 string accessToken = authorizationHeader[0].Split(' ')[1];
 
-                User? user = await TokenUtils.AuthenticateToken(accessToken, ipAddress);
+                using var db = new ContextFactory().CreateContext();
+
+                User? user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress, db);
 
                 if (user != null)
                 {

@@ -1,4 +1,4 @@
-﻿using BulbasaurAPI;
+﻿using BulbasaurAPI.Database;
 using dotenv.net;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -22,12 +23,17 @@ namespace BulbasaurIntegrationTests
     {
         public DbConnection Connection { get; }
 
+        private IConfigurationRoot _configuration;
         private static readonly object _lock = new object();
-        private static bool _databaseInitialized;
+        private static bool _databaseInitialized = false;
 
         public TestDatabaseFixture()
         {
-            Connection = new SqlConnection(DotEnv.Read()["_testDbConnString"]);
+            ConfigurationBuilder configBuilder = new ConfigurationBuilder();
+            _configuration = configBuilder.AddJsonFile("appsettings.Test.json").Build();
+
+            // Set your own connection string for testing here
+            Connection = new SqlConnection(_configuration.GetConnectionString("_connString"));
 
             Seed();
 
@@ -37,9 +43,8 @@ namespace BulbasaurIntegrationTests
         // Get a new db context for the given test server
         public DbServerContext CreateContext(DbTransaction? transaction = null)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<DbServerContext>().UseSqlServer(Connection.ConnectionString);
-            var context = new DbServerContext(optionsBuilder.Options);
-
+            var builder = new DbContextOptionsBuilder<DbServerContext>().UseSqlServer(Connection);
+            var context = new DbServerContext(builder.Options);
             if (transaction != null)
             {
                 context.Database.UseTransaction(transaction);

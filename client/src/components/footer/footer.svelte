@@ -1,12 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
+
 	let lastScrollPosition = 0;
 	let hideFooter = false;
 
 	onMount(() => {
-		let footer = document.querySelector('.footer');
-
 		window.addEventListener('scroll', () => {
 			let currentScrollPosition = window.scrollY;
 			if (currentScrollPosition < lastScrollPosition) {
@@ -20,7 +19,7 @@
 </script>
 
 {#if hideFooter}
-	<div class="footer" transition:fly={{ y: 200, duration: 1000 }}>
+	<div class="footer" transition:fly={{ y: 200, duration: 2000 }}>
 		<p>Copyright Bulbasaur Academy - Pro group of developers</p>
 		<a href="https://letmegooglethat.com/?q=Pro+developers" target="_blank" rel="noreferrer">
 			Find us here!</a
@@ -29,21 +28,24 @@
 {/if}
 
 <style lang="less">
+	@import 'public/less/global.less';
 	.footer {
 		position: fixed;
 		bottom: 0;
 		width: 100%;
-		background-color: #333;
-		color: #fff;
-		padding: 10px;
+		background-color: var(--color);
+		color: var(--bg-color);
+		background-image: url('public/img/pencils.jfif');
+		background-size: cover;
+		padding: 5px;
 		text-align: center;
-	}
-	a {
-		color: #fff;
-		text-decoration: none;
-	}
-	p {
-		color: #fff;
-		text-decoration: none;
+		a {
+			text-decoration: none;
+			color: var(--bg-color);
+		}
+		p {
+			text-decoration: none;
+			color: var(--bg-color);
+		}
 	}
 </style>

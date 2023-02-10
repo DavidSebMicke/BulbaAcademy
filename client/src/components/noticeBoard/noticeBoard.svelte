@@ -1,17 +1,18 @@
 <script>
-	import { once } from 'svelte/internal';
 	import { truncateText, handleDateFormatting } from './noticeBoard';
 	import NoticeModal from './noticeModal.svelte';
+	import { fly } from 'svelte/transition';
+
 	let messages = [
 		{
 			date: new Date('2023-01-04'),
 			title: 'First',
-			text: 'Dependent certainty off discovery him his tolerably offending</h2><p>Do greatest at in learning steepest. Breakfast extremity suffering one who all otherwise suspected. He at no nothing forbade up moments. Wholly uneasy at missed be of pretty whence. John way sir high than law who week. Surrounded prosperous introduced it if is up dispatched.'
+			text: 'Dependent certainty off discovery him his tolerably offending. Do greatest at in learning steepest. Breakfast extremity suffering one who all otherwise suspected. He at no nothing forbade up moments. Wholly uneasy at missed be of pretty whence. John way sir high than law who week. Surrounded prosperous introduced it if is up dispatched.'
 		},
 		{
 			date: new Date('2023-01-14'),
 			title: 'Second',
-			text: 'Improved so strictly produced answered elegance is.</p><p>Give lady of they such they sure it. Me contained explained my education. Vulgar as hearts by garret. Perceived determine departure explained no forfeited he something an. Contrasted dissimilar get joy you instrument out reasonably.'
+			text: 'Improved so strictly produced answered elegance is.Give lady of they such they sure it. Me contained explained my education. Vulgar as hearts by garret. Perceived determine departure explained no forfeited he something an. Contrasted dissimilar get joy you instrument out reasonably.'
 		},
 		{
 			date: new Date('2023-01-16'),
@@ -21,7 +22,7 @@
 		{
 			date: new Date('2023-01-20'),
 			title: 'Fourth',
-			text: 'Gay direction neglected but supported yet her.</p><p>Kept in sent gave feel will oh it we. Has pleasure procured men laughing shutters nay. Old insipidity motionless continuing law shy partiality.'
+			text: 'Gay direction neglected but supported yet her.Kept in sent gave feel will oh it we. Has pleasure procured men laughing shutters nay. Old insipidity motionless continuing law shy partiality.'
 		},
 		{
 			date: new Date('2023-01-24'),
@@ -31,8 +32,7 @@
 	];
 	let currentItem = null;
 	let showModal = false;
-	let showBanner = true;
-	let modal;
+	let showBanner = false;
 
 	function openModal() {
 		showModal = true;
@@ -50,38 +50,36 @@
 	}
 </script>
 
-<div class="noticeMe">
-	{#if !showBanner}
-		<div class="messageButton">
-			<button class="showMessage" on:click={toggleBanner}>Noticeboard</button>
-		</div>
-	{:else}
-		<div class="crisis-banner">
-			{#each messages as message, i}
-				<div class="grid-items">
-					<h3 class="noticeTitle" style="grid-column:{i}">{message.title}</h3>
-					<li class="noticeMessage" style="grid-column:{i}">
-						{truncateText(message.text)}
-					</li>
-					<li class="noticeDate" style="grid-column:{i}">
-						{handleDateFormatting(message.date)} / {handleDateFormatting(message.date)}
-					</li>
-					<button on:click={openModal} on:click={() => setIndexValue(i)} class="showMore"
-						>Read more</button
-					>
-					{#if i + 1 == messages.length}
-						<button class="closeCross" on:click={toggleBanner}
-							><iconify-icon icon="material-symbols:close" width="30" /></button
-						>
-					{/if}
-					{#if showModal}
-						<NoticeModal {...currentItem} on:message={closeModal} />
-					{/if}
-				</div>
-			{/each}
-		</div>
-	{/if}
-</div>
+{#if !showBanner}
+	<div class="messageButton">
+		<button class="showMessage" on:click={toggleBanner}>Noticeboard</button>
+	</div>
+{:else}
+	<div class="crisis-banner" transition:fly={{ x: -1000, duration: 800 }}>
+		{#each messages as message, i}
+			<div class="grid-items">
+				<h3 class="noticeTitle" style="grid-column:{i}">{message.title}</h3>
+				<li class="noticeMessage" style="grid-column:{i}">
+					{truncateText(message.text)}
+				</li>
+				<li class="noticeDate" style="grid-column:{i}">
+					{handleDateFormatting(message.date)}
+				</li>
+				<li class="noticeDate" style="grid-column:{i}">
+					{handleDateFormatting(message.date)}
+				</li>
+				<button on:click={openModal} on:click={() => setIndexValue(i)} class="showMore"
+					>Read more</button
+				>
+				{#if i + 1 == messages.length}
+					<button class="closeCross" on:click={toggleBanner}>
+						<iconify-icon icon="material-symbols:close" width="30" />
+					</button>
+				{/if}
+			</div>
+		{/each}
+	</div>
+{/if}
 
 <style lang="less">
 	.noticeMe {
@@ -93,15 +91,15 @@
 	@import 'public\less\global.less';
 
 	.crisis-banner {
+		position: absolute;
+		top: 0;
+		z-index: 99;
 		background-color: @crisis-message-background;
 		color: black;
 		list-style: none;
-		display: inline-flex;
+		display: flex;
 		border: 2px solid black;
-		margin: 2em;
-		text-align: center;
-		padding-left: 0;
-		border-right: none;
+		align-items: self-end;
 	}
 	.grid-items {
 		border-right: 2px solid black;
@@ -109,25 +107,27 @@
 
 	.noticeTitle {
 		margin: 0.5rem;
-		text-indent: 0.5rem;
 		font-size: 1.2rem;
-		text-align: center;
-		white-space: nowrap;
+		font-weight: 700;
 		text-overflow: ellipsis;
 		border-bottom: 1px solid @light-mode-flavour1;
 	}
 	.showMore {
-		justify-content: center;
+		position: relative;
+		padding: 10px 20px;
+		text-decoration: underline;
 		.classic-button;
+		box-shadow: none;
+		border-radius: 1px;
+		margin: 3px;
 	}
 	.noticeMessage {
 		text-align: center;
 	}
 	.closeCross {
-		position: absolute;
 		border: none;
-		top: 9em;
-		right: 2.5em;
+		display: inline-flex;
+		float: right;
 
 		&:hover {
 			cursor: pointer;
@@ -140,5 +140,10 @@
 	.showMessage {
 		padding: 0.2em;
 		.classic-button;
+	}
+	.noticeDate {
+		font-weight: 600;
+		margin-top: 0.2em;
+		text-align: center;
 	}
 </style>

@@ -1,18 +1,17 @@
 <script>
 	import { PasswordLogIn } from '../../../api/user';
 	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
-	import { emailCheck } from '../../../Utils/Validation'
+	import { emailCheck } from '../../../Utils/Validation';
 	import { onMount } from 'svelte';
 	import TotpModal from '../../../components/common/totpModal.svelte';
-	import {StoreInSession} from '../../../Utils/SessionStore'
-
+	import { StoreInSession } from '../../../Utils/SessionStore';
 
 	const form = useForm();
 	let logInForm = {
-		email : "",
-		password : ""
+		email: '',
+		password: ''
 	};
-	let qrCode = "";
+	let qrCode = '';
 	let pwLoginInvalidResponse = false;
 
 	let showTOTPmodal = false;
@@ -21,36 +20,26 @@
 		showTOTPmodal = true;
 	}
 
-
-	
 	function closeModal(event) {
-		
-		if(event.detail.closeModal){
+		if (event.detail.closeModal) {
 			showTOTPmodal = false;
 		}
-
-		
 	}
-
-
 
 	function handleLoginClick() {
 		pwLoginInvalidResponse = false;
 
 		PasswordLogIn(logInForm).then((loginResp) => {
-			
 			pwLoginInvalidResponse = !loginResp;
-			
-			if(loginResp){
-				
-				StoreInSession("TwoFToken", loginResp.token);
+
+			if (loginResp) {
+				StoreInSession('TwoFToken', loginResp.token);
+
 				qrCode = loginResp.qrCode;
 				openModal();
 			}
-			
 		});
 	}
-
 </script>
 
 <img class="logga" src="public\img\logo3.png" alt="gfdk" />
@@ -70,7 +59,8 @@
 				/>
 				<HintGroup for="email">
 					<Hint on="required">* You need to enter your email</Hint>
-					<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint>
+					<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint
+					>
 				</HintGroup>
 			</div>
 
@@ -99,15 +89,10 @@
 	</div>
 
 	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
-
 </body>
 
-
 {#if showTOTPmodal}
-	
-	<TotpModal title={"Engångskod"} {qrCode} noCloseButton={true}  on:message={closeModal} /> 
-
-
+	<TotpModal title={'Engångskod'} {qrCode} noCloseButton={true} on:message={closeModal} />
 {/if}
 
 <style lang="less">
@@ -130,14 +115,12 @@
 		height: 88px;
 		left: 128px;
 		top: 90px;
-
 		font-family: 'Poiret One';
 		font-style: normal;
 		font-weight: 600;
 		font-size: 40px;
 		line-height: 75px;
 		display: grid;
-
 		align-items: center;
 		letter-spacing: 0.04em;
 	}
@@ -148,7 +131,6 @@
 		height: 39px;
 		left: 128px;
 		top: 200px;
-
 		font-family: 'Plus Jakarta Sans';
 		font-style: normal;
 		font-weight: 500;
@@ -157,9 +139,8 @@
 		display: grid;
 		align-items: center;
 		letter-spacing: 0.04em;
-
-		color: #000000;
-		background-color: white;
+		color: var(--color);
+		background-color: var(--bg-color);
 	}
 	.loginp {
 		background-color: white;
@@ -170,7 +151,7 @@
 		width: 333px;
 		height: 50px;
 		position: absolute;
-		background-color: blue;
+		background-color: var(--bg-color);
 		display: grid;
 		top: 200px;
 
@@ -183,6 +164,10 @@
 		align-items: center;
 		text-align: center;
 		color: #ffffff;
+	}
+
+	#step3:disabled {
+		display: none;
 	}
 
 	.bulben {

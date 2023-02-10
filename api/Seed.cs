@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.Models;
 using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks.Dataflow;
