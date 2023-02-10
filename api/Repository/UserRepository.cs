@@ -1,6 +1,7 @@
 ﻿using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Services;
+using BulbasaurAPI.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Repository

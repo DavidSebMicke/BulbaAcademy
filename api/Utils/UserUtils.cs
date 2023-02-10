@@ -1,8 +1,5 @@
-﻿using BulbasaurAPI.DTOs.UserDTOs;
-using BulbasaurAPI.Helpers;
-using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Models;
 using BulbasaurAPI.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulbasaurAPI.Utils
