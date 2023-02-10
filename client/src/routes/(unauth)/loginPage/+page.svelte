@@ -4,7 +4,7 @@
 	import { emailCheck } from '../../../Utils/Validation';
 	import { onMount } from 'svelte';
 	import TotpModal from '../../../components/common/totpModal.svelte';
-	import { StoreInSession } from '../../../Utils/SessionStore';
+	import { StoreInLocal } from '../../../Utils/LocalStore';
 
 	const form = useForm();
 	let logInForm = {
@@ -33,7 +33,7 @@
 			pwLoginInvalidResponse = !loginResp;
 
 			if (loginResp) {
-				StoreInSession('TwoFToken', loginResp.token);
+				StoreInLocal('TwoFToken', loginResp.token);
 
 				qrCode = loginResp.qrCode;
 				openModal();

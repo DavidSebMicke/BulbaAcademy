@@ -1,16 +1,17 @@
 import  { redirect } from '@sveltejs/kit';
 
 
+
+
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle = async ({ event, resolve }) => {
   const theme = event.cookies.get("siteTheme");
-  const idToken = event.cookies.get("IDToken");
-  const user = event.cookies.get("LoggedInUser");
+  const loggedIn = event.cookies.get("LoggedIn");
 
-  if(event.route.id.startsWith("/(auth)") && !idToken && !user){
+  if(event.route.id.startsWith("/(auth)") && !loggedIn){
     throw redirect(302, "/loginPage");
   }
-  else if(event.route.id.includes("/loginPage") && idToken && user){
+  else if(event.route.id.includes("/loginPage") && loggedIn){
 
     throw redirect(302, "/");
   }
