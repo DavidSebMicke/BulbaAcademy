@@ -65,7 +65,7 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("createUserTEST")]
-        public async Task<ActionResult<NewUserDTO>> CreateUser(LogInForm loginForm)
+        public async Task<ActionResult<NewUserDTO>> CreateUser([FromBody]LogInForm loginForm)
         {
             var newUser = await UserUtils.RegisterUser(loginForm.Email, loginForm.Password, _context, sendEmail: false);
 
@@ -77,7 +77,7 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("login/totp")]
-        public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpin)
+        public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody]TOTPIN totpin)
         {
             var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == totpin.TwoFToken);
 
