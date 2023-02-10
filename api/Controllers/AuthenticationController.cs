@@ -1,15 +1,9 @@
-﻿using BulbasaurAPI.Authentication;
-using BulbasaurAPI.DTOs.Login;
+﻿using BulbasaurAPI.DTOs.Login;
 using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
-using BulbasaurAPI.Helpers;
-using BulbasaurAPI.Models;
-using BulbasaurAPI.TOTPUtils;
 using BulbasaurAPI.Utils;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace BulbasaurAPI.Controllers
 {
