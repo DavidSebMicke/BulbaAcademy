@@ -1,4 +1,5 @@
 using BulbasaurAPI.Database;
+using BulbasaurAPI.DTOs.Login;
 using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Models;
@@ -64,9 +65,9 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("createUserTEST")]
-        public async Task<ActionResult<User>> CreateUser(LogInForm loginForm)
+        public async Task<ActionResult<NewUserDTO>> CreateUser(LogInForm loginForm)
         {
-            var newUser = await UserUtils.RegisterUser(loginForm.Email, loginFrom.Password, sendEmail: false);
+            var newUser = await UserUtils.RegisterUser(loginForm.Email, loginForm.Password, _context, sendEmail: false);
 
             if (newUser == null) return Unauthorized("not workin");
             else

@@ -7,6 +7,7 @@ using BulbasaurAPI.Utils;
 using BulbasaurAPI.Services;
 using Microsoft.AspNet.Identity;
 using BulbasaurAPI.Database;
+using BulbasaurAPI.DTOs.Caregiver;
 
 namespace BulbasaurAPI.Repository
 {
@@ -75,7 +76,13 @@ namespace BulbasaurAPI.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task<User?> RegisterUserWithPerson(Caregiver caregiver)
+
+        public bool CaregiverExists(List<CaregiverDTO> caregiver)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SaveChanges()
         {
             throw new NotImplementedException();
         }

@@ -23,7 +23,7 @@ namespace BulbasaurAPI.Middlewares
 
             if (!string.IsNullOrEmpty(accessToken))
             {
-                user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress);
+                user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress, _context);
             }
 
             var logging = new Logging()
