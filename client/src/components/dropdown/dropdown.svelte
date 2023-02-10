@@ -1,16 +1,34 @@
-<!-- <script>
-	let user = { loggedIn: false };
+<script>
+	import DropdownModal from './dropdownModal.svelte';
 
-	function toggle() {
-		user.loggedIn = !user.loggedIn;
+	// let user = { loggedIn: false };
+
+	// function toggle() {
+	// 	user.loggedIn = !user.loggedIn;
+	// }
+	let showModal = false;
+
+	function toggleModal() {
+		showModal = !showModal;
+
+		console.log(showModal);
 	}
 </script>
 
-{#if user.loggedIn}
+<!-- {#if user.loggedIn}
 	<button on:click={toggle}>Log out</button>
-{/if}
+{/if} -->
+
+<!-- {#if !showBar}
+	<div class="settingsButton">
+		<button class="showSetting" on:click={toggleBar}>Ändra profil</button>
+	</div>
+{/if} -->
 
 <div class="navbar">
+	{#if showModal}
+		<DropdownModal bind:showModal />
+	{/if}
 	<a href="#home">Home</a>
 	<a href="#news">News</a>
 	<div class="dropdown">
@@ -19,51 +37,17 @@
 			<i class="fa fa-caret-down" />
 		</button>
 		<div class="dropdown-content">
-			<a href="#">Ändra profil</a>
-			<a href="http://127.0.0.1:3000/loginPage">Logga ut</a><button
-				id="logouts"
-				on:click={toggle}>Logga ut</button
-			>
+			<!-- <button id="choices" >Ändra profil</button> -->
+			<option value="changepro" id="logouts" on:click={toggleModal}>Ändra profil</option>
+			<option value="fdfd" id="logouts">Logga ut</option>
+			<!-- <option value="logouts">Logga ut</option>
+			<button id="logouts" on:click={toggle}>Logga ut</button> -->
 		</div>
 	</div>
 </div>
 
-<section class="modal hidden" />
-<div class="overlay hidden" />
-
-<section class="modal hidden">
-	<div class="flex">
-		<img class="logga" src="public\img\bulbi.png" width="50px" height="50px" alt="gfdk" />
-		<button class="btn-close">⨉</button>
-	</div>
-	<div>
-		<h3>Ändra lösenord</h3>
-		<p>Fyll i din epostadress för att ändra lösenord.</p>
-	</div>
-
-	<input type="email" id="email" placeholder="brendaneich@js.com" />
-	<button class="btn">Bekräfta</button>
-	<br /><br />
-	<div>
-		<h3>Ändra epostadress</h3>
-		<p>Fyll i din nya epostadress för att ändra.</p>
-	</div>
-	<input type="email" id="email" placeholder="brendaneich@js.com" />
-	<button class="btn">Bekräfta</button>
-	<br /><br />
-	<div>
-		<h3>Ändra epostadress</h3>
-		<p>Skriv in din nya gatuadress för att ändra.</p>
-	</div>
-	<input type="address" id="address" placeholder="Bulbagatan 4" />
-	<input type="postalno" id="postalno" placeholder="444 44" />
-	<input type="postaladd" id="postaladd" placeholder="Göteborg" />
-	<button class="btn">Bekräfta</button>
-</section>
-
-<div class="overlay hidden" />
-
 <!-- <div class="navbar">
+	<DropdownModal />
 	<a href="#home">Home</a>
 	<a href="#news">News</a>
 	<div class="dropdown">
@@ -166,85 +150,5 @@
 		overflow: hidden;
 		margin: 20px;
 		border-radius: 100px;
-	}
-
-	* {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-		font-family: 'Inter', sans-serif;
-	}
-
-	body {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		color: #222;
-		position: relative;
-		min-height: 100vh;
-	}
-
-	.modal {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		gap: 0.4rem;
-		width: 450px;
-		padding: 1.3rem;
-		min-height: 250px;
-		position: absolute;
-		top: 20%;
-		background-color: white;
-		border: 1px solid #ddd;
-		border-radius: 15px;
-	}
-
-	.modal .flex {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.modal input {
-		padding: 0.7rem 1rem;
-		border: 1px solid #ddd;
-		border-radius: 5px;
-		font-size: 0.9em;
-	}
-
-	.modal p {
-		font-size: 0.9rem;
-		color: #777;
-		margin: 0.4rem 0 0.2rem;
-	}
-
-	button {
-		cursor: pointer;
-		border: none;
-		font-weight: 600;
-	}
-
-	.btn {
-		display: inline-block;
-		padding: 0.6rem 1.4rem;
-		font-weight: 600;
-		background-color: black;
-		color: white;
-		border-radius: 5px;
-		text-align: center;
-		font-size: 1em;
-	}
-
-	.btn-open {
-		position: absolute;
-		bottom: 150px;
-	}
-
-	.btn-close {
-		transform: translate(10px, -20px);
-		padding: 0.5rem 0.7rem;
-		background: #eee;
-		border-radius: 50%;
 	}
 </style>

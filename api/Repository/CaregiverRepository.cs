@@ -76,13 +76,25 @@ namespace BulbasaurAPI.Repository
             await _context.SaveChangesAsync();
         }
 
-
         public bool CaregiverExists(List<CaregiverDTO> caregiver)
+        {
+
+            foreach (var c in caregiver)
+            {
+
+                if (_context.Caregivers.Any(x => x.EmailAddress == c.EmailAddress)) return true;
+                if (_context.Caregivers.Any(x => x.SSN == c.SSN)) return true;
+               
+            }
+            return false;
+        }
+
+        public Task SaveChanges()
         {
             throw new NotImplementedException();
         }
 
-        public Task SaveChanges()
+        public Task<User?> RegisterUserWithPerson(Caregiver caregiver)
         {
             throw new NotImplementedException();
         }
