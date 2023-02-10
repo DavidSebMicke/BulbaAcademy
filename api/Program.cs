@@ -47,6 +47,10 @@ namespace BulbasaurAPI
             builder.Services.AddScoped<IDocumentRepository, DocumentRepository>();
             builder.Services.AddScoped<IBaseRepository<Role>, RoleRepository>();
 
+            //Add middlewares
+            builder.Services.AddTransient<LoggingMiddleware>();
+            builder.Services.AddTransient<AuthenticationMiddleware>();
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -72,14 +76,14 @@ namespace BulbasaurAPI
             app.UseHttpsRedirection();
 
             // Logging middleware, needs context when implemented
-            //app.Use(async (context, next) =>
-            //{
-            //    var loggingMiddleware = new LoggingMiddleware();
-            //    await loggingMiddleware.InvokeAsync(context, next);
-            //});
+            app.Use(async (context, next) =>
+            {
+                var loggingMiddleware = new LoggingMiddleware();
+                await loggingMiddleware.InvokeAsync(context, next);
+            });
 
-            // Add custom authentication and authorization middlewares here     UNCOMMENT THIS PART ONCE LOGIN IS IMPLEMENTED
-            //app.UseMiddleware<AuthenticationMiddleware>();
+            // Add custom authentication and authorization middlewares here
+            app.UseMiddleware<AuthenticationMiddleware>();
 
             app.MapControllers();
 
