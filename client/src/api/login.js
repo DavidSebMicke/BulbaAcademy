@@ -1,7 +1,7 @@
 import { api, setAccessToken } from './api.js';
 import jwt_decode from 'jwt-decode';
 import { setCookie } from '../Utils/CookieUtils';
-import { StoreInSession } from '../Utils/SessionStore';
+import { StoreInLocal } from '../Utils/LocalStore';
 
 export async function PasswordLogIn(loginForm) {
 	const endpoint = 'Authentication/login';
@@ -33,7 +33,7 @@ export async function TOTPLogIn(twoFToken, code) {
 		if (response.status == 200) {
 			var data = response.data;
 
-			localStorage.setItem('AccessToken', data.accessToken);
+			StoreInLocal('AccessToken', data.accessToken);
 
 			var loggedInUser = jwt_decode(data.idToken);
 

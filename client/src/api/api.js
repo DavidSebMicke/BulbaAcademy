@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GetFromSession } from '../Utils/SessionStore';
+import { GetFromLocal } from '../Utils/LocalStore';
 
 // Base for api calls. Import this and call .get, .post, etc.
 export const api = axios.create({
@@ -9,7 +9,7 @@ export const api = axios.create({
 
 api.interceptors.request.use(
 	function (config) {
-		const token = localStorage.getItem('AccessToken');
+		const token = GetFromLocal('AccessToken');
 		if (token) {
 			config.headers['Authorization'] = 'Bearer ' + token;
 		}
