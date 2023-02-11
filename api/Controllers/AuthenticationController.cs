@@ -12,12 +12,10 @@ using OtpNet;
 using QRCoder;
 using System.Security.Cryptography;
 
-
 namespace BulbasaurAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(UnAuthorized = true)]
     public class AuthenticationController : ControllerBase
     {
         private readonly DbServerContext _context;
