@@ -12,19 +12,19 @@ namespace BulbasaurAPI.Middlewares
             string[] unAuthenticatedPaths = new string[]
             {
                 "/api/Authentication/login",
-                "/api/Authentication/createUser",
+                "/api/Authentication/createUserTEST",
                 "/api/Authentication/login/totp",
                 "/api/recaptcha"
             };
             // Skip unauthenticated paths
-            if (unAuthenticatedPaths.Any(s => s == context.Request.Path))
+            if (unAuthenticatedPaths.Any(s => s.ToLower() == context.Request.Path.ToString().ToLower()))
             {
                 await next(context);
                 return;
             }
 
-            //try
-            //{
+            try
+            {
                 if (!context.Request.Headers.Any(h => h.Key == "Authorization"))
                 {
                     await ReturnErrorResponse(context, "Authorization header missing.");
@@ -59,13 +59,13 @@ namespace BulbasaurAPI.Middlewares
                     await ReturnErrorResponse(context);
                     return;
                 }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Error in AuthenticationMiddleware: ", ex);
-            //    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            //    await context.Response.WriteAsync("Error when authenticating user.");
-            //}
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in AuthenticationMiddleware: ", ex);
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                await context.Response.WriteAsync("Error when authenticating user.");
+            }
         }
 
         //Returns errormessage for invalid access token
