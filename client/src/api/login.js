@@ -2,6 +2,7 @@ import { api, setAccessToken } from './api.js';
 import jwt_decode from 'jwt-decode';
 import { setCookie } from '../Utils/CookieUtils';
 import { StoreInLocal } from '../Utils/LocalStore';
+import { logIn } from '../app';
 
 export async function PasswordLogIn(loginForm) {
 	const endpoint = 'Authentication/login';
@@ -33,20 +34,12 @@ export async function TOTPLogIn(twoFToken, code) {
 		if (response.status == 200) {
 			var data = response.data;
 
-			StoreInLocal('AccessToken', data.accessToken);
-
 			var loggedInUser = jwt_decode(data.idToken);
 
-			//StoreInSession("IDToken", data.idToken);
-			//StoreInSession("LoggedInUser", JSON.stringify(loggedInUser));
-			//document.cookie = `IDToken=${data.idToken}; SameSite=None; Secure`;
-			//document.cookie = `LoggedInUser=${JSON.stringify(loggedInUser)}; SameSite=None; Secure`;
-
-			if (!loggedInUser) return false;
-			else {
-				setCookie('IDToken', data.idToken, '/');
-				setCookie('LoggedInUser', JSON.stringify(loggedInUser), '/');
-				return true;
+			if(!loggedInUser) return false;
+			else{
+				
+				return logIn({idToken: data.idToken, accessToken: data.accessToken, loggedInUser:loggedInUser});
 			}
 		} else {
 			return false;
