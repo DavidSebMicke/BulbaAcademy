@@ -14,8 +14,6 @@ export function logOut(){
 
 export function logIn(logInData){
 
-
-    
     if(!logInData.accessToken || !logInData.idToken || !logInData.loggedInUser) return false;
 
     StoreInLocal("IDToken", logInData.idToken);

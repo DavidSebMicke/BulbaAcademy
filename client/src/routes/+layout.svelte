@@ -6,7 +6,6 @@
 	import { CheckUserData } from '../app';
 
 
-
 </script>
 
 <Themetoggle />
