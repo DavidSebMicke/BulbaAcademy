@@ -34,7 +34,10 @@ export function CheckUserData(){
 
     if(!accessToken || !idToken || !loggedInUser){
         logOut();
+        return null;
     }
+
+    return JSON.parse(loggedInUser);
 
 	
 }

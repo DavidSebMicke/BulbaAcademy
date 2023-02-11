@@ -1,6 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import NoticeBoard from '../noticeBoard/noticeBoard.svelte';
+	import { user } from '../../stores/userStores';
 	const fadeIn = {
 		delay: 100,
 		duration: 200
@@ -12,6 +13,7 @@
 	};
 
 	let isExpanded = true;
+	console.log($user);
 </script>
 
 <div class="nav-container">
@@ -45,13 +47,15 @@
 					<a href="/staff"><iconify-icon icon="ic:baseline-work" /> </a>
 					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/staff">Personal </a>
 				</li>
-
-				<li>
-					<a href="/registration"><iconify-icon icon="material-symbols:forms-add-on" /></a
-					><a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/registration"
-						>Formulär</a
-					>
-				</li>
+				{#if $user && ($user.accessLevel == 'SEMIADMIN' || $user.accessLevel == 'ADMIN')}
+					<li>
+						<a href="/registration"
+							><iconify-icon icon="material-symbols:forms-add-on" /></a
+						><a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/registration"
+							>Formulär</a
+						>
+					</li>
+				{/if}
 				<li>
 					<a href="/departments"><iconify-icon icon="ic:sharp-grid-on" /></a><a
 						class="text"
@@ -85,11 +89,13 @@
 				<li>
 					<a href="/staff"><iconify-icon icon="ic:baseline-work" width="40" /></a>
 				</li>
-				<li>
-					<a href="/registration">
-						<iconify-icon icon="material-symbols:forms-add-on" width="40" />
-					</a>
-				</li>
+				{#if $user && ($user.accessLevel == 'SEMIADMIN' || $user.accessLevel == 'ADMIN')}
+					<li>
+						<a href="/registration">
+							<iconify-icon icon="material-symbols:forms-add-on" width="40" />
+						</a>
+					</li>
+				{/if}
 				<li>
 					<a href="/departments"><iconify-icon icon="ic:sharp-grid-on" width="40" /></a>
 				</li>
