@@ -4,8 +4,9 @@
 	import ClickOutside from '../../Utils/ClickOutside';
 	import { useForm, HintGroup, validators, Hint, required } from 'svelte-use-form';
 
-	import { GetFromSession, RemoveFromSession, StoreInSession } from '../../Utils/SessionStore';
+	import { GetFromLocal, RemoveFromLocal } from '../../Utils/LocalStore';
 	import { TOTPLogIn } from '../../api/login';
+
 
 	const dispatch = createEventDispatcher();
 	const form = useForm();
@@ -32,8 +33,8 @@
 	export let qrCode = '';
 
 	function onSendClick() {
-		var twoFToken = GetFromSession('TwoFToken');
-		RemoveFromSession('TwoFToken');
+		var twoFToken = GetFromLocal('TwoFToken');
+		RemoveFromLocal('TwoFToken');
 
 		if (twoFToken) {
 			console.log('Sending');

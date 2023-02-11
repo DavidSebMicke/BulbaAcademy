@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
