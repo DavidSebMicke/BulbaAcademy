@@ -103,7 +103,7 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-                return Forbid("Wrong code");
+                return BadRequest("Wrong code");
             }
         }
     }
