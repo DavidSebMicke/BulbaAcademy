@@ -1,16 +1,8 @@
 <script>
+	import Dropdown from './dropdown.svelte';
 	import ClickOutside from '../../Utils/ClickOutside';
-	// const modal = document.querySelector('.modal');
-	// const overlay = document.querySelector('.overlay');
-	// const openModalBtn = document.querySelector('.btn-open');
-	// const closeModalBtn = document.querySelector('.btn-close');
-
 	export let showModal = false;
 </script>
-
-<section class="modal" />
-<!-- <div class="overlay hidden" /> -->
-<button class="btn btn-open">Open Modal</button>
 
 <section class="modal" use:ClickOutside on:click_outside={() => (showModal = false)}>
 	<div class="flex">
@@ -24,7 +16,7 @@
 					<p>Fyll i din epostadress för att ändra lösenord.</p>
 				</div>
 
-				<input type="email" id="email" placeholder="brendaneich@js.com" />
+				<input type="email" id="email" placeholder="Lösenord" />
 				<button class="btn">Bekräfta</button>
 			</div>
 
@@ -33,25 +25,24 @@
 					<h3>Ändra epostadress</h3>
 					<p>Fyll i din nya epostadress för att ändra.</p>
 				</div>
-				<input type="email" id="email" placeholder="brendaneich@js.com" />
+				<input type="email" id="email" placeholder="welcome@bulbaacademy.com" />
 				<button class="btn">Bekräfta</button>
 			</div>
 		</div>
 
 		<div class="modalitem">
 			<div>
-				<h3>Ändra epostadress</h3>
+				<h3>Ändra gatuadress</h3>
 				<p>Skriv in din nya gatuadress för att ändra.</p>
 			</div>
-			<input type="address" id="address" placeholder="Bulbagatan 4" />
-			<input type="postalno" id="postalno" placeholder="444 44" />
-			<input type="postaladd" id="postaladd" placeholder="Göteborg" />
+			<input type="address" id="address" placeholder="Gata" />
+			<input type="postalno" id="postalno" placeholder="Postnummer" />
+			<input type="postaladd" id="postaladd" placeholder="Postadress" />
 			<button class="btn">Bekräfta</button>
 		</div>
 	</div>
 </section>
 
-<!-- <div class="overlay hidden" /> -->
 <style lang="less">
 	@import 'public\less\variables.less';
 	@import 'public\less\global.less';
@@ -64,7 +55,6 @@
 		box-sizing: border-box;
 		font-family: 'Inter', sans-serif;
 	}
-
 	body {
 		display: flex;
 		flex-direction: column;
@@ -115,37 +105,30 @@
 		flex-direction: column;
 		gap: 0.5rem;
 	}
-
 	.modal .flex {
 		align-self: end;
 		width: fit-content;
 		position: relative;
 		top: 10px;
 		right: 10px;
-		// margin-top: 10px;
-		// margin-right: 10px;
 	}
-
 	.modal input {
 		padding: 0.7rem 1rem;
 		border: 1px solid #ddd;
 		border-radius: 5px;
 		font-size: 0.9em;
 	}
-
 	.modal p {
 		font-size: 0.9rem;
 		color: #777;
 		margin: 0.4rem 0 0.2rem;
 	}
-
 	button {
 		cursor: pointer;
 		border: none;
 		font-weight: 600;
 	}
-
-	.btn {
+	.btn .dropdown .dropbtn {
 		display: inline-block;
 		padding: 0.6rem 1.4rem;
 		font-weight: 600;
@@ -160,30 +143,14 @@
 		position: absolute;
 		bottom: 150px;
 	}
-
 	.btn-close {
 		padding: 0.5rem 0.7rem;
 		background: #eee;
 		border-radius: 50%;
 	}
-
-	// .overlay {
-	// 	position: fixed;
-	// 	top: 0;
-	// 	bottom: 0;
-	// 	left: 0;
-	// 	right: 0;
-	// 	width: 100%;
-	// 	height: 100%;
-	// 	background: rgba(0, 0, 0, 0.5);
-	// 	backdrop-filter: blur(3px);
-	// 	z-index: 1;
-	// }
-
 	.modal {
 		z-index: 2;
 	}
-
 	.hidden {
 		display: none;
 	}
