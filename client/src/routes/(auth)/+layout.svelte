@@ -17,5 +17,4 @@
 
 <Dashboard />
 <ChatBubble />
-<Dropdown />
 <slot />
