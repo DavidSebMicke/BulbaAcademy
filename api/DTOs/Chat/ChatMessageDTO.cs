@@ -12,14 +12,14 @@ namespace BulbasaurAPI.DTOs.Chat
 
         [MaxLength(10000, ErrorMessage = "Chattmeddelandet är för långt.")]
         [Required(ErrorMessage = "Chattmeddelanden kan inte vara tomma.")]
-        public string Content { get; set; }
+        public string Message { get; set; }
 
         public DateTime Timestamp { get; set; }
 
         public ChatMessageDTO(ChatItem chatItem)
         {
             Sender = new ChatUserDTO(chatItem.Author);
-            Content = chatItem.Message;
+            Message = chatItem.Message;
             Timestamp = chatItem.DateTime;
         }
     }

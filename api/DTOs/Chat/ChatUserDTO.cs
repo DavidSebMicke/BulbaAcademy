@@ -13,11 +13,15 @@ namespace BulbasaurAPI.DTOs.Chat
         [MaxLength(100)]
         public string LastName { get; set; }
 
+        [MaxLength(100)]
+        public string Role { get; set; }
+
         public ChatUserDTO(User user)
         {
             Id = user.Id;
-            FirstName = user.Person.FirstName;
-            LastName = user.Person.LastName;
+            FirstName = user.Person != null ? user.Person.FirstName : "";
+            LastName = user.Person != null ? user.Person.LastName : "";
+            Role = user.Person != null ? user.Person.Role != null ? user.Person.Role.Name : "" : "";
         }
     }
 }

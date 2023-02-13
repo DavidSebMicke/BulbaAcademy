@@ -47,7 +47,6 @@
 	</div>
 </div>
 
-<<<<<<< HEAD
 <section class="modal hidden" />
 <div class="overlay hidden" />
 
@@ -84,10 +83,8 @@
 <div class="overlay hidden" />
 
 <div class="navbar">
-=======
-<!-- <div class="navbar">
+
 	<DropdownModal />
->>>>>>> c0a497a58c98eb14c9dffcc79bd34ba73d77b1f1
 	<a href="#home">Home</a>
 	<a href="#news">News</a>
 	<div class="dropdown">

@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +6,8 @@ using System.Web.Http.ModelBinding;
 using BulbasaurAPI.Utils;
 using BulbasaurAPI.Services;
 using Microsoft.AspNet.Identity;
+using BulbasaurAPI.Database;
+using BulbasaurAPI.DTOs.Caregiver;
 
 namespace BulbasaurAPI.Repository
 {
@@ -73,5 +75,24 @@ namespace BulbasaurAPI.Repository
         {
             await _context.SaveChangesAsync();
         }
+
+        public bool CaregiverExists(List<CaregiverDTO> caregiver)
+        {
+
+            foreach (var c in caregiver)
+            {
+
+                if (_context.Caregivers.Any(x => x.EmailAddress == c.EmailAddress)) return true;
+                if (_context.Caregivers.Any(x => x.SSN == c.SSN)) return true;
+               
+            }
+            return false;
+        }
+
+        public Task SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

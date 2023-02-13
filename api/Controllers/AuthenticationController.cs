@@ -1,11 +1,13 @@
-﻿using BulbasaurAPI.DTOs.Login;
+using BulbasaurAPI.Authorization;
+using BulbasaurAPI.Database;
+using BulbasaurAPI.DTOs.Login;
 using BulbasaurAPI.DTOs.Tokens;
 using BulbasaurAPI.DTOs.UserDTOs;
 using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Owin.Security.Provider;
 using OtpNet;
 using QRCoder;
 using System.Security.Cryptography;
@@ -63,27 +65,35 @@ namespace BulbasaurAPI.Controllers
         }
 
         [HttpPost("createUserTEST")]
-        public async Task<ActionResult<User>> CreateUser(LogInForm loginForm)
+        public async Task<ActionResult<NewUserDTO>> CreateUser([FromBody] LogInForm loginForm)
         {
-            var newPassword = loginForm.Password; //RandomPassword.GenerateRandomPassword();
-            var newUser = await UserUtils.RegisterUser(loginForm.Email, newPassword, _context, sendEmail: false);
+            var newUser = await UserUtils.RegisterUser(loginForm.Email, loginForm.Password, _context, sendEmail: false);
 
             if (newUser == null) return Unauthorized("not workin");
-            else return newUser;
+            else
+            {
+                return new NewUserDTO(newUser);
+            }
         }
 
         [HttpPost("login/totp")]
-        public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpIn)
+        public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpin)
         {
-            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).ThenInclude(x => x.Person).FirstOrDefaultAsync(x => x.TokenStr == totpIn.TwoFToken);
+            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == totpin.TwoFToken);
 
-            if (twoFEntity == null || twoFEntity.User == null) return BadRequest("Token not valid");
+            if (twoFEntity == null) return NotFound("Two factor token not found");
+
+            if (twoFEntity.User == null) return NotFound("User not found");
+
+            if (!(await TokenUtils.AuthenticateTwoFToken(totpin.TwoFToken, HttpHelper.GetIpAddress(HttpContext), _context))) return BadRequest("Invalid Token");
+            _context.TwoFTokens.Remove(twoFEntity);
+            await _context.SaveChangesAsync();
 
             var tOTP = await _context.TOTPs.Where(x => x.Key == twoFEntity.User.GUID).FirstOrDefaultAsync();
 
             if (tOTP == null) return NotFound("Two factor validation unavailable");
 
-            if (TOTPUtil.VerifyTOTP(tOTP, totpIn.Code))
+            if (TOTPUtil.VerifyTOTP(tOTP, totpin.Code))
             {
                 return new UserToken
                 {
@@ -93,7 +103,7 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-                return Forbid("Wrong code");
+                return BadRequest("Wrong code");
             }
         }
     }

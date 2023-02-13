@@ -1,4 +1,6 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.DTOs.Child;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,6 +56,11 @@ namespace BulbasaurAPI.Repository
         public async Task ConnectChildToRole(Child child)
         {
             child.Role = await _context.Roles.Where(x => x.Name == "Child").FirstOrDefaultAsync();
+        }
+
+        public Task<bool> ChildExists(ChildDTO child)
+        {
+            throw new NotImplementedException();
         }
     }
 }

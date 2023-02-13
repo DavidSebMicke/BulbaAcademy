@@ -1,17 +1,11 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.Database;
+using BulbasaurAPI.Models;
 using BulbasaurAPI.Utils;
 
 namespace BulbasaurAPI.Middlewares
 {
     public class LoggingMiddleware : IMiddleware
     {
-        private DbServerContext _context;
-
-        public LoggingMiddleware(DbServerContext context)
-        {
-            _context = context;
-        }
-
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             var path = context.Request.Path;
@@ -20,9 +14,11 @@ namespace BulbasaurAPI.Middlewares
             var accessToken = context.Response.Headers.Authorization;
             User? user = null;
 
+            using var db = new ContextFactory().CreateContext();
+
             if (!string.IsNullOrEmpty(accessToken))
             {
-                user = await TokenUtils.AuthenticateToken(accessToken, ipAddress);
+                user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress, db);
             }
 
             var logging = new Logging()
@@ -32,8 +28,9 @@ namespace BulbasaurAPI.Middlewares
                 IpAddress = ipAddress,
             };
 
-            _context.Loggs.Add(logging);
-            await _context.SaveChangesAsync();
+            await db.Loggs.AddAsync(logging);
+            await db.SaveChangesAsync();
+            await next.Invoke(context);
         }
     }
 }

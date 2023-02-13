@@ -5,6 +5,7 @@ namespace BulbasaurAPI.Utils
 {
     public class PDFUtils
     {
+        // Test all of these once implementation is ready
         public static byte[]? GetFile(Document document)
         {
             try

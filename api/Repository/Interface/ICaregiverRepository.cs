@@ -1,4 +1,5 @@
-﻿using BulbasaurAPI.Models;
+﻿using BulbasaurAPI.DTOs.Caregiver;
+using BulbasaurAPI.Models;
 
 namespace BulbasaurAPI.Repository.Interface
 {
@@ -9,5 +10,12 @@ namespace BulbasaurAPI.Repository.Interface
         Task ConnectCaregiverAndChild(Caregiver caregiver, Child child);
 
         Task ConnectCaregiverToRoleId(Caregiver caregiver);
+
+        bool CaregiverExists(List<CaregiverDTO> caregiver);
+
+        Task SaveChangesAsync();
+
+
+
     }
 }

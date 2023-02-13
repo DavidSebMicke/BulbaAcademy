@@ -3,7 +3,7 @@ using BulbasaurAPI.Models;
 using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using BulbasaurAPI.Authorization;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -14,17 +14,20 @@ namespace BulbasaurAPI.Controllers
         private readonly ICaregiverRepository _caregiver;
         private readonly IChildrenRepository _children;
         private readonly IGroupRepository _group;
+        private readonly IUserRepository _user;
 
-        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children, IGroupRepository groups)
+        public CaregiverController(ICaregiverRepository caregiver, IChildrenRepository children, IGroupRepository groups, IUserRepository user)
         {
             _children = children;
             _caregiver = caregiver;
             _group = groups;
+            _user = user;
         }
 
         // GET: api/GetAll
         [HttpGet]
         [Route("GetAll")]
+        [Authorize(AccessLevel = UserAccessLevel.ADMIN)]
         public async Task<IActionResult> GetAll()
         {
             try
@@ -40,6 +43,7 @@ namespace BulbasaurAPI.Controllers
         // GET: api/1
         [HttpGet]
         [Route("{id}")]
+        [Authorize(AccessLevel = UserAccessLevel.ADMIN)]
         public async Task<IActionResult> GetCareGiverById(int id)
         {
             try
@@ -59,6 +63,7 @@ namespace BulbasaurAPI.Controllers
 
         // Post
         [HttpPost]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> CreateCaregiverAsync([FromBody] Caregiver createdCareGiver)
         {
             if (createdCareGiver == null) return BadRequest(ModelState);
@@ -67,8 +72,7 @@ namespace BulbasaurAPI.Controllers
 
             var newCaregiver = await _caregiver.Create(createdCareGiver);
 
-            // Register the created caregiver to create a user for them
-            var newUser = await _caregiver.RegisterUserWithPerson(newCaregiver);
+            var newUser = await _user.RegisterUserWithPerson(newCaregiver, RandomPassword.GenerateRandomPassword());
 
             if (newUser != null)
             {
@@ -82,6 +86,7 @@ namespace BulbasaurAPI.Controllers
 
         //Delete
         [HttpDelete]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> DeleteCaregiverById(int id)
         {
             var caregiverExists = await _caregiver.EntityExists(id);
@@ -96,6 +101,7 @@ namespace BulbasaurAPI.Controllers
 
         //Put(Update)
         [HttpPut]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<IActionResult> UpdateCaregiverById(int caregiverId, [FromBody] CaregiverDTO updateCaregiver)
         {
             if (_caregiver.EntityExists(caregiverId) == null) return BadRequest(ModelState);
@@ -131,14 +137,30 @@ namespace BulbasaurAPI.Controllers
         // Post
         [HttpPost]
         [Route("CreateCaregiversAndChild")]
+        [Authorize(AccessLevel = UserAccessLevel.SEMIADMIN)]
         public async Task<ActionResult<CaregiverChildOutDTO>> CreateCaregiversAndChild([FromBody] CaregiverChildDTO ccDTO)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (_caregiver.CaregiverExists(ccDTO.Caregivers)) return BadRequest("Person är redan registrerad..");
+            if (await _children.ChildExists(ccDTO.Child)) return BadRequest("Barnet är redan registrerat");
 
             var newChild = new Child(ccDTO);
 
+           
+     
+
             var addGroup = await _group.GetAll();
             newChild.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
+
+            if(ccDTO.Child.EligebableGroups != null) 
+            { 
+            foreach (var item in ccDTO.Child.EligebableGroups)
+            {
+                var g = await _group.GetById(item);
+                if(g != null) newChild.Groups.Add(g);
+
+            }
+            }
             var child = await _children.Create(newChild);
 
             var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
@@ -148,11 +170,16 @@ namespace BulbasaurAPI.Controllers
             foreach (Caregiver c in caregivers)
 
             {
-                caregiversOut.Add(await _caregiver.Create(c));
+                var newCg = await _caregiver.Create(c);
+                caregiversOut.Add(newCg);
                 c.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
-                await _caregiver.ConnectCaregiverAndChild(c, newChild);
-            }
+                await _caregiver.ConnectCaregiverAndChild(newCg, newChild);
 
+                var user = await _user.RegisterUserWithPerson(c, RandomPassword.GenerateRandomPassword(), false);
+
+                if (user == null) return BadRequest("User can't be registered");
+            }
+            await _caregiver.SaveChangesAsync();
             var outDTO = new CaregiverChildOutDTO(caregiversOut, child);
 
             return Ok(outDTO);

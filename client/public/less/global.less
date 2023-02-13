@@ -6,12 +6,15 @@
 	--bg-color: @light-mode-background;
 	--color: @light-mode-text;
 	--image-grayscale: @image-grayscale-min;
-}
+  	--flavour-color-4: @light-mode-flavour4;
+
 
 [data-theme='dark'] {
 	--primary-color: @dark-mode-flavour1;
 	--secondary-color: @dark-mode-flavour2;
 	--flavour-color-3: @dark-mode-flavour3;
+  	--flavour-color-4: @dark-mode-flavour4;
+
 	--bg-color: @dark-mode-background;
 	--color: @dark-mode-text;
 	--image-grayscale: @image-grayscale-max;
@@ -97,6 +100,7 @@ header div {
 	font-weight: 800;
 	border-radius: 5px;
 	border: 3px solid var(--color);
+
 	transition: all 0.2s ease-in-out;
 	cursor: pointer;
 
