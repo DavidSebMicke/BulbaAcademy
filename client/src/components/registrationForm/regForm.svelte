@@ -10,13 +10,17 @@
 		postCodeCheck
 	} from '$Utils/Validation';
 	import { RegisterChildWithCaregivers } from '../../api/forms';
+	import { onMount } from 'svelte';
+	import { GetAllGroups } from '../../api/groups';
+
 	const form = useForm();
 
 	let formValues = {
 		child: {
 			sSN: '',
 			firstName: '',
-			lastName: ''
+			lastName: '',
+			eligebableGroups: []
 		},
 		caregivers: [
 			{
@@ -30,19 +34,19 @@
 				},
 				phoneNumber: '',
 				emailAddress: ''
-			},
-			{
-				sSN: '',
-				firstName: '',
-				lastName: '',
-				homeAddress: {
-					streetAddress: '',
-					city: '',
-					postalCode: null
-				},
-				phoneNumber: '',
-				emailAddress: ''
 			}
+			// {
+			// 	sSN: '',
+			// 	firstName: '',
+			// 	lastName: '',
+			// 	homeAddress: {
+			// 		streetAddress: '',
+			// 		city: '',
+			// 		postalCode: null
+			// 	},
+			// 	phoneNumber: '',
+			// 	emailAddress: ''
+			// }
 		]
 	};
 
@@ -52,24 +56,16 @@
 		});
 	}
 
-	let groups = [
-		{
-			id: 1,
-			name: `Myran`
-		},
-		{
-			id: 2,
-			name: `Humlan`
-		},
-		{
-			id: 3,
-			name: `Fjärillen`
-		},
-		{
-			id: 4,
-			name: `Nyckelpigan`
-		}
-	];
+	export let groups = [];
+
+	onMount(async () => {
+		GetAllGroups().then((data) => {
+			if (data) {
+				groups = data;
+				console.log(groups);
+			}
+		});
+	});
 </script>
 
 <main>
@@ -110,13 +106,15 @@
 		</div>
 		<div class="form">
 			<label for="group">Avdelning</label>
-			<select class="drops" bind:value={formValues.child.group}>
-				{#each groups as group}
-					<option class="optDrop" value={group}>
-						{group.name}
-					</option>
-				{/each}
-			</select>
+			{#if groups.length > 0}
+				<select class="drops" bind:value={formValues.child.eligebableGroups[0]}>
+					{#each groups as group}
+						<option class="optDrop" value={group.id}>
+							{group.name}
+						</option>
+					{/each}
+				</select>
+			{/if}
 		</div>
 
 		<div class="CareGiver1">
@@ -225,7 +223,7 @@
 			</HintGroup>
 		</div>
 
-		<div class="CareGiver2">
+		<!-- <div class="CareGiver2">
 			<h3>Vårdnadshavare 2</h3>
 
 			<label for="phonenumber">Telefonnummer</label>
@@ -329,7 +327,7 @@
 					{$form.stad.errors.invalidPostCode}
 				</Hint>
 			</HintGroup>
-		</div>
+		</div> -->
 
 		<button class="subButton" type="submit" disabled={!$form.valid}> Registrera </button>
 	</form>
