@@ -20,7 +20,7 @@
 			sSN: '',
 			firstName: '',
 			lastName: '',
-			eligableGroups: []
+			eligebableGroups: []
 		},
 		caregivers: [
 			{
@@ -107,7 +107,7 @@
 		<div class="form">
 			<label for="group">Avdelning</label>
 			{#if groups.length > 0}
-				<select class="drops" bind:value={formValues.child.eligableGroups[0]}>
+				<select class="drops" bind:value={formValues.child.eligebableGroups[0]}>
 					{#each groups as group}
 						<option class="optDrop" value={group.id}>
 							{group.name}
