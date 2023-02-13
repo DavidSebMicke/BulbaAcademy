@@ -69,7 +69,6 @@
 	}
 
 	const handleKeyPress = (event) => {
-		console.log(event.key);
 		if (fieldValue.length == 6 && event.key != 'Enter') {
 			sixNumbers = true;
 			return false;

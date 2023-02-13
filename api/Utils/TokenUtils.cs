@@ -30,7 +30,7 @@ namespace BulbasaurAPI.Utils
                     new Claim("email", user.Username),
                     new Claim("accessLevel", user.AccessLevel.ToString()),
                     new Claim("name", user.Person != null ? user.Person?.FullName : ""),
-                    new Claim("role", user.Person != null ? user.Person?.Role.Name : ""),
+                    new Claim("role", user.Person != null ? user.Person?.Role != null ? user.Person?.Role?.Name : "" : ""),
                 }),
             };
 

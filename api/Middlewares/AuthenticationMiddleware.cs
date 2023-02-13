@@ -19,52 +19,45 @@ namespace BulbasaurAPI.Middlewares
             // Skip unauthenticated paths
             if (unAuthenticatedPaths.Any(s => s.ToLower() == context.Request.Path.ToString().ToLower()))
             {
-                await next(context);
+                if (next != null) await next(context);
                 return;
             }
 
-            try
+            if (!context.Request.Headers.Any(h => h.Key == "Authorization"))
             {
-                if (!context.Request.Headers.Any(h => h.Key == "Authorization"))
-                {
-                    await ReturnErrorResponse(context, "Authorization header missing.");
-                    return;
-                }
-
-                var authorizationHeader = context.Request.Headers.Authorization;
-                var ipAddress = HttpHelper.GetIpAddress(context);
-
-                if (string.IsNullOrEmpty(authorizationHeader) || string.IsNullOrEmpty(ipAddress))
-                {
-                    await ReturnErrorResponse(context, "Empty Authorization header or invalid IP.");
-                    return;
-                }
-
-                string accessToken = authorizationHeader[0].Split(' ')[1];
-
-                Console.WriteLine("accesstoken:" + accessToken);
-
-                using var db = new ContextFactory().CreateContext();
-
-                User? user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress, db);
-
-                if (user != null)
-                {
-                    // Attaches user to the request-context, making it possible to use it for authorization later on
-                    context.Items["User"] = user;
-                    await next.Invoke(context);
-                }
-                else
-                {
-                    await ReturnErrorResponse(context);
-                    return;
-                }
+                await ReturnErrorResponse(context, "Authorization header missing.");
+                return;
             }
-            catch (Exception ex)
+
+            var authorizationHeader = context.Request.Headers.Authorization;
+            var ipAddress = HttpHelper.GetIpAddress(context);
+
+            if (string.IsNullOrEmpty(authorizationHeader) || string.IsNullOrEmpty(ipAddress))
             {
-                Console.WriteLine("Error in AuthenticationMiddleware: ", ex);
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                await context.Response.WriteAsync("Error when authenticating user.");
+                await ReturnErrorResponse(context, "Empty Authorization header or invalid IP.");
+                return;
+            }
+
+            Console.WriteLine("Authorization header: " + authorizationHeader[0]);
+
+            string accessToken = authorizationHeader[0].Split(' ')[1];
+
+            Console.WriteLine("accesstoken:" + accessToken);
+
+            using var db = new ContextFactory().CreateContext();
+
+            User? user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress, db);
+
+            if (user != null)
+            {
+                // Attaches user to the request-context, making it possible to use it for authorization later on
+                context.Items["User"] = user;
+                if (next != null) await next.Invoke(context);
+            }
+            else
+            {
+                await ReturnErrorResponse(context);
+                return;
             }
         }
 

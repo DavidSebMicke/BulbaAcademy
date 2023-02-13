@@ -79,7 +79,7 @@ namespace BulbasaurAPI.Controllers
         [HttpPost("login/totp")]
         public async Task<ActionResult<UserToken>> TwoFactorLogin([FromBody] TOTPIN totpin)
         {
-            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).FirstAsync(x => x.TokenStr == totpin.TwoFToken);
+            var twoFEntity = await _context.TwoFTokens.Include(x => x.User).ThenInclude(u => u.Person).ThenInclude(p => p.Role).FirstAsync(x => x.TokenStr == totpin.TwoFToken);
 
             if (twoFEntity == null) return NotFound("Two factor token not found");
 
