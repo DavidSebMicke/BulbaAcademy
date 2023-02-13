@@ -4,6 +4,7 @@ using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Utils;
 using Microsoft.AspNetCore.Mvc;
 using BulbasaurAPI.Authorization;
+using BulbasaurAPI.Services;
 
 namespace BulbasaurAPI.Controllers
 {
@@ -146,26 +147,24 @@ namespace BulbasaurAPI.Controllers
 
             var newChild = new Child(ccDTO);
 
-           
-     
-
             var addGroup = await _group.GetAll();
             newChild.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
 
-            if(ccDTO.Child.EligebableGroups != null) 
-            { 
-            foreach (var item in ccDTO.Child.EligebableGroups)
+            if (ccDTO.Child.EligebableGroups != null)
             {
-                var g = await _group.GetById(item);
-                if(g != null) newChild.Groups.Add(g);
-
-            }
+                foreach (var item in ccDTO.Child.EligebableGroups)
+                {
+                    var g = await _group.GetById(item);
+                    if (g != null) newChild.Groups.Add(g);
+                }
             }
             var child = await _children.Create(newChild);
 
             var caregivers = (ccDTO.Caregivers.Select(i => new Caregiver(i))).ToList();
 
             var caregiversOut = new List<Caregiver>();
+
+            List<string> passwords = new();
 
             foreach (Caregiver c in caregivers)
 
@@ -175,12 +174,19 @@ namespace BulbasaurAPI.Controllers
                 c.Groups.AddRange(addGroup.Where(item => item.Name == "Allmän"));
                 await _caregiver.ConnectCaregiverAndChild(newCg, newChild);
 
-                var user = await _user.RegisterUserWithPerson(c, RandomPassword.GenerateRandomPassword(), false);
+                var password = RandomPassword.GenerateRandomPassword();
+                var newUser = await _user.RegisterUserWithPerson(c, password, false);
 
-                if (user == null) return BadRequest("User can't be registered");
+                if (newUser == null) return BadRequest("User can't be registered");
+
+                passwords.Add(password);
             }
             await _caregiver.SaveChangesAsync();
             var outDTO = new CaregiverChildOutDTO(caregiversOut, child);
+
+            // Send emails with passwords
+            for (int i = 0; i < caregiversOut.Count; i++)
+                await EmailAPI.SendPasswordToUserEmail(caregiversOut[i].EmailAddress, passwords[i]);
 
             return Ok(outDTO);
         }
