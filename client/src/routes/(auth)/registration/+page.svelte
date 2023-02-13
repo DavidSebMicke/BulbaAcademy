@@ -3,6 +3,8 @@
 	import RegForm from '../../../components/registrationForm/regForm.svelte';
 	import { user } from '../../../stores/userStores'
 	import { onMount } from 'svelte';
+	import { GetAllGroups } from '../../../api/groups';
+
 
 	onMount(async () => {
 
