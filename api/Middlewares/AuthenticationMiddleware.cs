@@ -12,12 +12,12 @@ namespace BulbasaurAPI.Middlewares
             string[] unAuthenticatedPaths = new string[]
             {
                 "/api/Authentication/login",
-                "/api/Authentication/createUser",
+                "/api/Authentication/createUserTEST",
                 "/api/Authentication/login/totp",
                 "/api/recaptcha"
             };
             // Skip unauthenticated paths
-            if (unAuthenticatedPaths.Any(s => s == context.Request.Path))
+            if (unAuthenticatedPaths.Any(s => s.ToLower() == context.Request.Path.ToString().ToLower()))
             {
                 await next(context);
                 return;
@@ -42,6 +42,8 @@ namespace BulbasaurAPI.Middlewares
 
                 string accessToken = authorizationHeader[0].Split(' ')[1];
 
+                Console.WriteLine("accesstoken:" + accessToken);
+
                 using var db = new ContextFactory().CreateContext();
 
                 User? user = await TokenUtils.AuthenticateAccessToken(accessToken, ipAddress, db);
@@ -60,7 +62,7 @@ namespace BulbasaurAPI.Middlewares
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in AuthenticationMiddleware: ", ex.Message);
+                Console.WriteLine("Error in AuthenticationMiddleware: ", ex);
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsync("Error when authenticating user.");
             }
@@ -71,7 +73,7 @@ namespace BulbasaurAPI.Middlewares
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            await context.Response.WriteAsync("Invalid access token.");
+            await context.Response.WriteAsync(message);
         }
     }
 }

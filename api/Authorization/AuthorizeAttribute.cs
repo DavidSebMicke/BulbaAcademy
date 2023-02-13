@@ -8,10 +8,13 @@ namespace BulbasaurAPI.Authorization
     public class Authorize : Attribute, IAuthorizationFilter
     {
         // Lowest access level
-        public UserAccessLevel AccessLevel { get; set; } = UserAccessLevel.USER;
+        public UserAccessLevel AccessLevel { get; set; }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            // No set accesslevel = anything passes
+            if (AccessLevel == null) return;
+
             var user = (User?)context.HttpContext.Items["User"];
 
             if (user == null || (int)user.AccessLevel < (int)AccessLevel)

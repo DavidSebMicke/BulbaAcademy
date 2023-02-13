@@ -1,4 +1,4 @@
-
+using BulbasaurAPI.Authorization;
 using BulbasaurAPI.Database;
 using BulbasaurAPI.DTOs.Login;
 using BulbasaurAPI.DTOs.Tokens;
@@ -11,7 +11,6 @@ using Microsoft.Owin.Security.Provider;
 using OtpNet;
 using QRCoder;
 using System.Security.Cryptography;
-
 
 namespace BulbasaurAPI.Controllers
 {
@@ -104,7 +103,7 @@ namespace BulbasaurAPI.Controllers
             }
             else
             {
-                return Forbid("Wrong code");
+                return BadRequest("Wrong code");
             }
         }
     }

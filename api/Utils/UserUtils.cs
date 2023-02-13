@@ -28,7 +28,8 @@ namespace BulbasaurAPI.Utils
                     Username = email,
                     Password = Hasher.HashWithSalt(password, out string salt),
                     Salt = salt,
-                    AccessLevel = Authorization.UserAccessLevel.USER
+                    AccessLevel = Authorization.UserAccessLevel.USER,
+                    GUID = Guid.NewGuid(),
                 };
 
                 await context.Users.AddAsync(newUser);
@@ -55,7 +56,8 @@ namespace BulbasaurAPI.Utils
                     Password = Hasher.HashWithSalt(password, out string salt),
                     Salt = salt,
                     AccessLevel = Authorization.UserAccessLevel.USER,
-                    Person = person
+                    Person = person,
+                    GUID = Guid.NewGuid(),
                 };
 
                 await context.Users.AddAsync(newUser);

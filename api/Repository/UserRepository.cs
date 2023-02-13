@@ -36,9 +36,9 @@ namespace BulbasaurAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Users.Include(u => u.Person).ThenInclude(p => p.Role).ToListAsync();
         }
 
         public Task<User?> GetById(int id)
@@ -60,6 +60,7 @@ namespace BulbasaurAPI.Repository
                     Password = Hasher.HashWithSalt(password, out string salt),
                     Salt = salt,
                     AccessLevel = Authorization.UserAccessLevel.USER,
+                    GUID = Guid.NewGuid(),
                 };
 
                 var newUserEntity = (await _context.Users.AddAsync(newUser)).Entity;

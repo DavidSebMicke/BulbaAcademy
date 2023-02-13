@@ -1,4 +1,5 @@
 <script>
+	import { logOut } from '../../app';
 	import DropdownModal from './dropdownModal.svelte';
 
 	// let user = { loggedIn: false };
@@ -39,7 +40,7 @@
 		<div class="dropdown-content">
 			<!-- <button id="choices" >Ändra profil</button> -->
 			<option value="changepro" id="logouts" on:click={toggleModal}>Ändra profil</option>
-			<option value="fdfd" id="logouts">Logga ut</option>
+			<option value="fdfd" id="logouts" on:click={logOut}>Logga ut</option>
 			<!-- <option value="logouts">Logga ut</option>
 			<button id="logouts" on:click={toggle}>Logga ut</button> -->
 		</div>

@@ -1,67 +1,18 @@
-import { api, setAccessToken } from "./api.js";
+import { api } from "./api";
 import jwt_decode from "jwt-decode";
-import { setCookie } from "../Utils/CookieUtils.js";
+import { logIn } from "../app.js";
+
 
 // Move this to a separate api file later if it will be used by other components
-export const getUsers = (filter = '') => {
-	return [
-		{
-			id: '0001',
-			firstName: 'John',
-			lastName: 'Doe'
-		},
-		{
-			id: '0002',
-			firstName: 'Jane',
-			lastName: 'Doe'
-		},
-		{
-			id: '0003',
-			firstName: 'Johnathan',
-			lastName: 'Doeathan'
-		},
-		{
-			id: '0004',
-			firstName: 'John',
-			lastName: 'Doe'
-		},
-		{
-			id: '0005',
-			firstName: 'Jane',
-			lastName: 'Doe'
-		},
-		{
-			id: '0006',
-			firstName: 'Johnathan',
-			lastName: 'Doeathan'
-		},
-		{
-			id: '0007',
-			firstName: 'John',
-			lastName: 'Doe'
-		},
-		{
-			id: '0008',
-			firstName: 'Jane',
-			lastName: 'Doe'
-		},
-		{
-			id: '0009',
-			firstName: 'Johnathan',
-			lastName: 'Doeathan'
-		}
-	].filter(
-		(user) =>
-			user.firstName.toLowerCase().includes(filter.toLowerCase()) ||
-			user.lastName.toLowerCase().includes(filter.toLowerCase())
-	);
-	// Filter should be done in backend later
+export const getChatUsers = async (filter = '') => {
+	const response = await api
+		.get('/user/getallchatusers', { params: { filter } })
+		.catch((error) => {
+			console.log(error.message);
+		});
 
-	
+	return response.data;
 };
-
-
-
 
 export async function PasswordLogIn(loginForm)
 {
@@ -97,24 +48,17 @@ export async function TOTPLogIn(twoFToken, code)
 			code : code
 		});		
 		if(response.status == 200){
-			var data = response.data
-			setAccessToken(data.accessToken);
-			
+    
+			var data = response.data;
 		
 			var loggedInUser = jwt_decode(data.idToken);
-
-			//StoreInSession("IDToken", data.idToken);
-			//StoreInSession("LoggedInUser", JSON.stringify(loggedInUser));
-			//document.cookie = `IDToken=${data.idToken}; SameSite=None; Secure`;
-			//document.cookie = `LoggedInUser=${JSON.stringify(loggedInUser)}; SameSite=None; Secure`;
 		
 			if(!loggedInUser) return false;
 			else{
-				setCookie("IDToken", data.idToken, "/");
-				setCookie("LoggedInUser", JSON.stringify(loggedInUser), "/")
-				return true;
+				
+				return logIn({idToken: data.idToken, accessToken: data.accessToken, loggedInUser:loggedInUser});
 			}
-			
+
 		}
 		else{
 			return false;
@@ -127,3 +71,4 @@ export async function TOTPLogIn(twoFToken, code)
 	}
 
 }
+
