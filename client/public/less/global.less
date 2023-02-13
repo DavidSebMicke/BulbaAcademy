@@ -10,7 +10,7 @@
 
 [data-theme='light'] {
 	--primary-color: @light-mode-flavour1;
-	--secondary-color: @dark-mode-flavour2;
+	--secondary-color: @light-mode-flavour2;
 	--bg-color: @light-mode-background;
 	--color: @light-mode-text;
 	--image-grayscale: @image-grayscale-min;
@@ -38,8 +38,8 @@ textarea,
 	font-family: 'droid-serif', serif;
 	font-weight: 400;
 	font-style: italic;
+
 	p,
-	h1,
 	h4 {
 		background-color: transparent;
 		user-select: none;
@@ -47,6 +47,15 @@ textarea,
 		font-family: 'droid-serif', serif;
 		font-weight: 700;
 		font-style: normal;
+	}
+	h1 {
+		user-select: none;
+		color: var(--secondary-color);
+		font-family: 'droid-serif', serif;
+		font-weight: 700;
+		font-style: normal;
+		text-shadow: 1px 1px var(--primary-color);
+		backdrop-filter: var(--image-grayscale);
 	}
 }
 
@@ -105,8 +114,8 @@ header div {
 	}
 }
 .loader {
-	border: 16px solid #f3f3f3;
-	border-top: 16px solid #3498db;
+	border: 16px solid var(--color);
+	border-top: 16px solid var(--bg-color);
 	border-radius: 50%;
 	width: 120px;
 	height: 120px;

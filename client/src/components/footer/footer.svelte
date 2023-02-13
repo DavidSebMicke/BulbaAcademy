@@ -41,11 +41,11 @@
 		text-align: center;
 		a {
 			text-decoration: none;
-			color: var(--bg-color);
+			color: var(--color);
 		}
 		p {
 			text-decoration: none;
-			color: var(--bg-color);
+			color: var(--color);
 		}
 	}
 </style>

@@ -2,6 +2,7 @@
 	import { truncateText, handleDateFormatting } from './noticeBoard';
 	import NoticeModal from './noticeModal.svelte';
 	import { fly } from 'svelte/transition';
+	import { current_component } from 'svelte/internal';
 
 	let messages = [
 		{
@@ -71,6 +72,9 @@
 				<button on:click={openModal} on:click={() => setIndexValue(i)} class="showMore"
 					>Read more</button
 				>
+				{#if showModal}
+					<NoticeModal {...currentItem} on:message={closeModal} />
+				{/if}
 				{#if i + 1 == messages.length}
 					<button class="closeCross" on:click={toggleBanner}>
 						<iconify-icon icon="material-symbols:close" width="30" />

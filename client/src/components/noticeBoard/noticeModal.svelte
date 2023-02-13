@@ -1,9 +1,6 @@
 <script>
-	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import { handleDateFormatting } from './noticeBoard';
 	import ClickOutside from '../../Utils/ClickOutside';
-
 	export let title;
 	export let date;
 	export let text;
