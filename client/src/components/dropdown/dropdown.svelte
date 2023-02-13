@@ -131,7 +131,7 @@
 
 	/* Dropdown knappen */
 	.dropdown .dropbtn {
-		font-size: 30px;
+		font-size: 16px;
 		border: none;
 		outline: none;
 		color: white;

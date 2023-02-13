@@ -1,5 +1,4 @@
 <script>
-	import Dropdown from './dropdown.svelte';
 	import ClickOutside from '../../Utils/ClickOutside';
 	export let showModal = false;
 </script>
