@@ -1,7 +1,5 @@
-import { api, setAccessToken } from './api.js';
+import { api } from './api.js';
 import jwt_decode from 'jwt-decode';
-import { setCookie } from '../Utils/CookieUtils';
-import { StoreInLocal } from '../Utils/LocalStore';
 import { logIn } from '../app';
 
 export async function PasswordLogIn(loginForm) {
