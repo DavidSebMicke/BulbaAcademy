@@ -94,9 +94,6 @@ namespace BulbasaurAPI.Repository
             throw new NotImplementedException();
         }
 
-        public Task<User?> RegisterUserWithPerson(Caregiver caregiver)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
