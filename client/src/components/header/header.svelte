@@ -29,7 +29,6 @@
 	header h1 {
 		margin: 0;
 		font-weight: 700;
-		backdrop-filter: blur(2px) grayscale(70%);
 	}
 
 	header nav ul {

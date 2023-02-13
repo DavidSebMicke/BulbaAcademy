@@ -1,21 +1,23 @@
-@import 'public\less\variables.less';
-
+@import 'public/less/variables.less';
 
 [data-theme='light'] {
-	--primary-color: @light-mode-flavour4;
-	--secondary-color: @dark-mode-flavour2;
+	--primary-color: @light-mode-flavour1;
+	--secondary-color: @light-mode-flavour2;
 	--bg-color: @light-mode-background;
 	--color: @light-mode-text;
-	--flavour-color-4: @light-mode-flavour4;
-}
+	--image-grayscale: @image-grayscale-min;
+  	--flavour-color-4: @light-mode-flavour4;
+
 
 [data-theme='dark'] {
 	--primary-color: @dark-mode-flavour1;
 	--secondary-color: @dark-mode-flavour2;
 	--flavour-color-3: @dark-mode-flavour3;
+  	--flavour-color-4: @dark-mode-flavour4;
+
 	--bg-color: @dark-mode-background;
 	--color: @dark-mode-text;
-	--flavour-color-4: @dark-mode-flavour4;
+	--image-grayscale: @image-grayscale-max;
 }
 
 body,
@@ -31,8 +33,8 @@ textarea,
 	font-family: 'droid-serif', serif;
 	font-weight: 400;
 	font-style: italic;
+
 	p,
-	h1,
 	h4 {
 		background-color: transparent;
 		user-select: none;
@@ -41,7 +43,17 @@ textarea,
 		font-weight: 700;
 		font-style: normal;
 	}
+	h1 {
+		user-select: none;
+		color: var(--secondary-color);
+		font-family: 'droid-serif', serif;
+		font-weight: 700;
+		font-style: normal;
+		text-shadow: 1px 1px var(--primary-color);
+		backdrop-filter: var(--image-grayscale);
+	}
 }
+
 button > h4 {
 	text-decoration: underline;
 	text-decoration-color: var(--color);
@@ -66,6 +78,9 @@ a {
 }
 header {
 	color: var(--color);
+	img {
+		filter: var(--image-grayscale);
+	}
 }
 header div {
 	background-color: var(--color);
@@ -79,22 +94,24 @@ header div {
 .ec-dayGridMonth,
 .subButton {
 	padding: 10px 20px !important;
-	background-color: #2d545e!important;
-	color: var(--color)!important;
-	font-size: 10px;
+	background-color: var(--bg-color);
+	color: var(--color);
+	font-size: 1.1em;
+	font-weight: 800;
 	border-radius: 5px;
-	border: 2px solid var(--color)!important;
+	border: 3px solid var(--color);
+
 	transition: all 0.2s ease-in-out;
+	cursor: pointer;
 
 	&:hover {
-		font-size: 0.7em;
-		color: white;
+		color: var(--primary-color);
 		background-color: var(--bg-color);
 	}
 }
 .loader {
-	border: 16px solid #f3f3f3;
-	border-top: 16px solid #3498db;
+	border: 16px solid var(--color);
+	border-top: 16px solid var(--bg-color);
 	border-radius: 50%;
 	width: 120px;
 	height: 120px;

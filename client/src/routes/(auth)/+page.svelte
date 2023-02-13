@@ -8,8 +8,8 @@
 </div>
 
 <style lang="less">
-	@import 'public\less\variables.less';
-	@import 'public\less\global.less';
+	@import 'public/less/variables.less';
+	@import 'public/less/global.less';
 
 	.StartCalendar {
 		height: 90dvh;

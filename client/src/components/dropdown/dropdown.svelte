@@ -47,7 +47,43 @@
 	</div>
 </div>
 
-<!-- <div class="navbar">
+<section class="modal hidden" />
+<div class="overlay hidden" />
+
+<section class="modal hidden">
+	<div class="flex">
+		<img class="logga" src="public\img\bulbi.png" width="50px" height="50px" alt="gfdk" />
+		<button class="btn-close">⨉</button>
+	</div>
+	<div>
+		<h3>Ändra lösenord</h3>
+		<p>Fyll i din epostadress för att ändra lösenord.</p>
+	</div>
+
+	<input type="email" id="email" placeholder="brendaneich@js.com" />
+	<button class="btn">Bekräfta</button>
+	<br /><br />
+	<div>
+		<h3>Ändra epostadress</h3>
+		<p>Fyll i din nya epostadress för att ändra.</p>
+	</div>
+	<input type="email" id="email" placeholder="brendaneich@js.com" />
+	<button class="btn">Bekräfta</button>
+	<br /><br />
+	<div>
+		<h3>Ändra epostadress</h3>
+		<p>Skriv in din nya gatuadress för att ändra.</p>
+	</div>
+	<input type="address" id="address" placeholder="Bulbagatan 4" />
+	<input type="postalno" id="postalno" placeholder="444 44" />
+	<input type="postaladd" id="postaladd" placeholder="Göteborg" />
+	<button class="btn">Bekräfta</button>
+</section>
+
+<div class="overlay hidden" />
+
+<div class="navbar">
+
 	<DropdownModal />
 	<a href="#home">Home</a>
 	<a href="#news">News</a>
