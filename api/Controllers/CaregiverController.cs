@@ -179,7 +179,7 @@ namespace BulbasaurAPI.Controllers
 
                 if (user == null) return BadRequest("User can't be registered");
             }
-            await _caregiver.SaveChanges();
+            await _caregiver.SaveChangesAsync();
             var outDTO = new CaregiverChildOutDTO(caregiversOut, child);
 
             return Ok(outDTO);
