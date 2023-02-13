@@ -39,8 +39,12 @@
 				</li>
 
 				<li>
-					<a href="/profile"> <iconify-icon icon="healthicons:ui-user-profile" /> </a>
-					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile">Profil </a>
+					<a href="/registerUserForm">
+						<iconify-icon icon="healthicons:ui-user-profile" />
+					</a>
+					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/registerUserForm"
+						>Profil
+					</a>
 				</li>
 
 				<li>
