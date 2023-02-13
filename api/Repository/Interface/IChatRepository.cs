@@ -6,6 +6,7 @@ namespace BulbasaurAPI.Repository.Interface
     public interface IChatRepository
     {
         Task<Chat?> Get(int chatId);
+        Task<Chat?> Get(int chatId, User user);
 
         Task<ICollection<Chat>?> GetChats(User user);
 

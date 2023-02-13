@@ -1,10 +1,11 @@
 <script>
 	export let message;
 	export let senders;
+	export let user;
 
-	$: sender = senders.find((sender) => sender.id === message.sender);
+	$: otherSenders = senders.filter((sender) => sender.id !== user.id);
 
-	console.log(senders);
+	$: sender = otherSenders.find((sender) => sender.id === message.sender.id);
 </script>
 
 <div class="container" class:userMessage={!sender}>

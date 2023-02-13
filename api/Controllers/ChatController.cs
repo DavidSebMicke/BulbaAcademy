@@ -100,14 +100,14 @@ namespace BulbasaurAPI.Controllers
         // POST: api/chat/send
         [HttpPost]
         [Route("send")]
-        public async Task<ActionResult<ChatDTO?>> SendMessage(ChatMessageDTO chatMessage)
+        public async Task<ActionResult<ChatDTO?>> SendMessage([FromBody] ChatMessageDTO chatMessage)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var user = (User)HttpContext.Items["User"];
 
-            var chat = await _chat.Get(chatMessage.ChatId);
+            var chat = await _chat.Get(chatMessage.ChatId, user);
 
-            if (!chat.InvolvedUsersList.Contains(user)) return Unauthorized("Du har inte tillgång till denna chatt.");
+            if (chat == null) return Unauthorized("Du har inte tillgång till denna chatt.");
 
             chat.ChatItemList.Add(new(chatMessage, user));
             var updatedChat = await _chat.UpdateChat(chat);
