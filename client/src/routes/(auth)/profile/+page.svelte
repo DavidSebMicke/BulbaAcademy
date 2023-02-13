@@ -1,5 +1,9 @@
 <script>
+	import { onMount } from 'svelte';
 	import Header from '../../../components/header/header.svelte';
+	import { user } from '../../../stores/userStores';
+
+
 	import DropdownModal from '../../../components/dropdown/dropdownModal.svelte';
 
 	let showModal = false;
@@ -9,12 +13,21 @@
 
 		console.log(showModal);
 	}
+
 </script>
 
 <Header title="Profile" />
 {#if showModal}
 	<DropdownModal bind:showModal />
 {/if}
+
+
+
+<div>Epost: {$user?.email}</div>
+<div>
+	 Namn: {#if $user?.name}{$user?.name}{:else}Ej Registrerad{/if}	{#if $user?.role}({$user?.role}){/if}
+</div>
+<div></div>
 
 <button class="btn" on:click={toggleModal}>Ändra profil</button>
 
