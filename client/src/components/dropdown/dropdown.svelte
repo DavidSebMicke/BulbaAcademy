@@ -7,13 +7,13 @@
 	// function toggle() {
 	// 	user.loggedIn = !user.loggedIn;
 	// }
-	let showModal = false;
+	// let showModal = false;
 
-	function toggleModal() {
-		showModal = !showModal;
+	// function toggleModal() {
+	// 	showModal = !showModal;
 
-		console.log(showModal);
-	}
+	// 	console.log(showModal);
+	// }
 </script>
 
 <!-- {#if user.loggedIn}
@@ -27,9 +27,9 @@
 {/if} -->
 
 <div class="navbar">
-	{#if showModal}
+	<!-- {#if showModal}
 		<DropdownModal bind:showModal />
-	{/if}
+	{/if} -->
 	<a href="#home">Home</a>
 	<a href="#news">News</a>
 	<div class="dropdown">
@@ -83,7 +83,6 @@
 <div class="overlay hidden" />
 
 <div class="navbar">
-
 	<DropdownModal />
 	<a href="#home">Home</a>
 	<a href="#news">News</a>
@@ -100,7 +99,8 @@
 			>
 		</div>
 	</div>
-</div> 
+</div>
+
 <style lang="less">
 	@import 'public\less\variables.less';
 	@import 'public\less\global.less';

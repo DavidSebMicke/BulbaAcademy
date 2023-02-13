@@ -8,13 +8,17 @@ namespace BulbasaurAPI.DTOs.Chat
         [Required(ErrorMessage = "ChattId saknas.")]
         public int ChatId { get; set; }
 
-        public ChatUserDTO Sender { get; set; }
+        public ChatUserDTO? Sender { get; set; }
 
         [MaxLength(10000, ErrorMessage = "Chattmeddelandet är för långt.")]
         [Required(ErrorMessage = "Chattmeddelanden kan inte vara tomma.")]
         public string Message { get; set; }
 
-        public DateTime Timestamp { get; set; }
+        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+
+        public ChatMessageDTO()
+        {
+        }
 
         public ChatMessageDTO(ChatItem chatItem)
         {

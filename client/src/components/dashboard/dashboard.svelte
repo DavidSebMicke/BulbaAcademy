@@ -1,5 +1,6 @@
 <script>
 	import { fade } from 'svelte/transition';
+	import { logOut } from '../../app';
 	import NoticeBoard from '../noticeBoard/noticeBoard.svelte';
 	import { user } from '../../stores/userStores';
 	const fadeIn = {
@@ -42,9 +43,7 @@
 					<a href="/profile">
 						<iconify-icon icon="healthicons:ui-user-profile" />
 					</a>
-					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile"
-						>Profil
-					</a>
+					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile">Profil </a>
 				</li>
 
 				<li>
@@ -65,8 +64,9 @@
 						class="text"
 						in:fade={fadeIn}
 						out:fade={fadeOut}
-						href="/departments">Avdelningar</a
-					>
+						href="/departments"
+						>Avdelningar
+					</a>
 				</li>
 				<li>
 					<a href="/"><iconify-icon icon="mdi:file-document" /></a><a
@@ -78,6 +78,16 @@
 					</a>
 				</li>
 				<li>
+					<a><iconify-icon icon="bx:log-out" /></a><a
+						class="text"
+						in:fade={fadeIn}
+						out:fade={fadeOut}
+						on:click={logOut}
+						>Logga ut
+					</a>
+				</li>
+
+				<li>
 					<NoticeBoard />
 				</li>
 			</ul>
@@ -88,7 +98,9 @@
 					<a href="/"><iconify-icon icon="mdi:home" width="40" /></a>
 				</li>
 				<li>
-					<a href="/profile"><iconify-icon icon="healthicons:ui-user-profile" width="40" /></a>
+					<a href="/profile"
+						><iconify-icon icon="healthicons:ui-user-profile" width="40" /></a
+					>
 				</li>
 				<li>
 					<a href="/staff"><iconify-icon icon="ic:baseline-work" width="40" /></a>
@@ -106,6 +118,7 @@
 				<li>
 					<a href="/staff"><iconify-icon icon="mdi:file-document" width="40" /></a>
 				</li>
+				<li><a on:click={logOut}><iconify-icon icon="bx:log-out" width="40" /></a></li>
 			</ul>
 		{/if}
 	</nav>
