@@ -4,11 +4,4 @@
 </script>
 
 <Header title="Registration" />
-<body>
-	<div class="regForm">
-		<RegForm />
-	</div>
-</body>
-
-<style>
-</style>
+<RegForm />

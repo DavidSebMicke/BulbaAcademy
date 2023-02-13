@@ -30,19 +30,19 @@
 				},
 				phoneNumber: '',
 				emailAddress: ''
+			},
+			{
+				sSN: '',
+				firstName: '',
+				lastName: '',
+				homeAddress: {
+					streetAddress: '',
+					city: '',
+					postalCode: null
+				},
+				phoneNumber: '',
+				emailAddress: ''
 			}
-			// {
-			// 	sSN: '',
-			// 	firstName: '',
-			// 	lastName: '',
-			// 	homeAddress: {
-			// 		streetAddress: '',
-			// 		city: '',
-			// 		postalCode: null
-			// 	},
-			// 	phoneNumber: '',
-			// 	email: ''
-			// }
 		]
 	};
 
@@ -107,6 +107,16 @@
 				<Hint on="required">{RequiredMsg('Personnummer')}</Hint>
 				<Hint on="invalidSSN" hideWhenRequired>{$form.sSNChild.errors.invalidSSN}</Hint>
 			</HintGroup><br />
+		</div>
+		<div class="form">
+			<label for="group">Avdelning</label>
+			<select class="drops" bind:value={formValues.child.group}>
+				{#each groups as group}
+					<option class="optDrop" value={group}>
+						{group.name}
+					</option>
+				{/each}
+			</select>
 		</div>
 
 		<div class="CareGiver1">
@@ -215,7 +225,7 @@
 			</HintGroup>
 		</div>
 
-		<!-- <div class="CareGiver2">
+		<div class="CareGiver2">
 			<h3>Vårdnadshavare 2</h3>
 
 			<label for="phonenumber">Telefonnummer</label>
@@ -319,29 +329,18 @@
 					{$form.stad.errors.invalidPostCode}
 				</Hint>
 			</HintGroup>
-		</div> -->
-
-		<!-- <div class="form">
-			<label for="group">Avdelning</label>
-			<select class="drops" bind:value={formValues.children.group}>
-				{#each groups as group}
-					<option class="optDrop" value={group}>
-						{group.name}
-					</option>
-				{/each}
-			</select>
-		</div> -->
+		</div>
 
 		<button class="subButton" type="submit" disabled={!$form.valid}> Registrera </button>
 	</form>
 </main>
 
 <style lang="less">
-	// .drops {
-	// 	width: 100%;
-	// 	margin-bottom: 3%;
-	// 	cursor: pointer;
-	// }
+	.drops {
+		width: 95%;
+		margin-bottom: 3%;
+		cursor: pointer;
+	}
 
 	:global(.touched:invalid) {
 		border-color: red;
@@ -349,11 +348,10 @@
 	}
 
 	main {
-		flex: content;
 		justify-content: center;
-		height: 30em;
+		height: 100em;
 		width: 30em;
-		position: relative;
+		position: absolute;
 		flex-wrap: nowrap;
 		margin-bottom: 40%;
 		left: 40%;
@@ -363,11 +361,10 @@
 	.CareGiver2,
 	.Child {
 		height: 100%;
-		flex-wrap: nowrap;
-		position: relative;
+
 		left: 20;
 		width: 95%;
-		top: 0;
+		top: 10;
 		display: flex;
 		align-items: left;
 		justify-content: left;
