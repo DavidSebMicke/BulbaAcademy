@@ -1,20 +1,32 @@
 import axios from 'axios';
+import { GetFromLocal } from '../Utils/LocalStore';
 
 // Base for api calls. Import this and call .get, .post, etc.
 export const api = axios.create({
-		baseURL: 'http://localhost:8000/api/',
-		headers: {
-			'Content-type': 'application/json',
-			'Accept': 'application/json',
-		},
-		validateStatus: () => true
-	});
+	baseURL: 'http://localhost:8000/api/',
+	validateStatus: () => true
+});
 
-
+api.interceptors.request.use(
+	function (config) {
+		const token = GetFromLocal('AccessToken');
+		if (token) {
+			config.headers['Authorization'] = 'Bearer ' + token;
+		}
+		return config;
+	},
+	function (error) {
+		return Promise.reject(error);
+	}
+);
 
 // Used for setting the Authorization header for all calls
 export const setAccessToken = (token) => {
-	axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+	api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+	api.defaults.headers.common['Content-Type'] = 'application/json';
+	api.defaults.headers.common['X-Content-Type-Options'] = 'nosniff';
+	api.defaults.headers.common['Content-Security-Policy'] =
+		'default-src "self" localhost:8000/api/*;';
 };
 
 const configureDefaultRequestHeaders = () => {

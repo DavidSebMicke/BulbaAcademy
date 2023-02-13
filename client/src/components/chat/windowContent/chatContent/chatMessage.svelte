@@ -3,6 +3,8 @@
 	export let senders;
 
 	$: sender = senders.find((sender) => sender.id === message.sender);
+
+	console.log(senders);
 </script>
 
 <div class="container" class:userMessage={!sender}>
@@ -11,7 +13,7 @@
 	{/if}
 
 	<div class="message" class:userColor={!sender}>
-		{message.content}
+		{message.message}
 	</div>
 </div>
 

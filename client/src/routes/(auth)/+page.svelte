@@ -12,10 +12,8 @@
 	@import 'public/less/global.less';
 
 	.StartCalendar {
-		width: 80%;
-		height: 70%;
-		position: absolute;
-		left: 10%;
-		bottom: 3%;
+		height: 90dvh;
+		padding-top: 2rem;
+		padding-left: 12rem;
 	}
 </style>

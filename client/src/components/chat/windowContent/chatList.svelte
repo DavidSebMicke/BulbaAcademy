@@ -1,18 +1,26 @@
 <script>
 	import dayjs from 'dayjs';
-	import { getAllChats } from '../../../api/chat';
+	import { onMount } from 'svelte';
+	import { getAllChats, getChat } from '../../../api/chat';
 
 	// Move this to onMount when backend is implemented
-	let chatList = getAllChats();
+	let chatList = [];
 
 	export let openNewChat;
 	export let activeChat = chatList[0];
 
-	const handleChatClick = (e, chat) => {
+	const handleChatClick = async (e, chat) => {
 		if (e.key && e.key !== 'Enter') return;
 
-		activeChat = chat;
+		const fetchedChat = await getChat(chat.chatId);
+		if (fetchedChat != null) {
+			activeChat = fetchedChat;
+		}
 	};
+
+	onMount(async () => {
+		chatList = await getAllChats();
+	});
 </script>
 
 <div class="container">
@@ -28,11 +36,11 @@
 					{chat.users[0].firstName}
 					{chat.users[0].lastName}
 				</div>
-				<div class="chatTimestamp">
+				<!-- <div class="chatTimestamp">
 					{dayjs(chat.lastMessage.timestamp).format('DD/MM/YYYY HH:mm')}
-				</div>
+				</div> -->
 				<div class="chatContent">
-					{chat.lastMessage.content}
+					{chat.lastMessage.message}
 				</div>
 			</div>
 		{/each}
@@ -125,8 +133,8 @@
 		width: 10rem;
 		align-self: center;
 		margin: 0.8rem 0.8rem 0.4rem 0.4rem;
-		background-color: rgb(179, 219, 255);
-		border: 0;
+		background-color: var(--flavour-color-4);
+		border: 1;
 		border-radius: 1rem;
 
 		padding-left: 0;

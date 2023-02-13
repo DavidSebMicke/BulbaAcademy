@@ -1,56 +1,49 @@
 <script>
-	import { PasswordLogIn } from '../../../api/user';
+	import { PasswordLogIn } from '../../../api/login';
 	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
-	import { emailCheck } from '../../../Utils/Validation'
-	import { onMount } from 'svelte';
+	import { emailCheck, RequiredMsg } from '../../../Utils/Validation';
 	import TotpModal from '../../../components/common/totpModal.svelte';
-	import {StoreInSession} from '../../../Utils/SessionStore'
-
+	import { StoreInLocal } from '../../../Utils/LocalStore';
 
 	const form = useForm();
+
 	let logInForm = {
-		email : "",
-		password : ""
+		email: '',
+		password: ''
 	};
-	let qrCode = "";
+	let qrCode = '';
 	let pwLoginInvalidResponse = false;
 
 	let showTOTPmodal = false;
+	let sendingLogin = false;
+	let loggingIn = false;
 
 	function openModal() {
 		showTOTPmodal = true;
 	}
 
-
-	
 	function closeModal(event) {
-		
-		if(event.detail.closeModal){
+		if (event.detail.closeModal) {
 			showTOTPmodal = false;
+			// loggingIn = true;
 		}
-
-		
 	}
-
-
 
 	function handleLoginClick() {
 		pwLoginInvalidResponse = false;
-
+		sendingLogin = true;
 		PasswordLogIn(logInForm).then((loginResp) => {
-			
 			pwLoginInvalidResponse = !loginResp;
-			
-			if(loginResp){
-				
-				StoreInSession("TwoFToken", loginResp.token);
+
+			if (loginResp) {
+				StoreInLocal('TwoFToken', loginResp.token);
+
 				qrCode = loginResp.qrCode;
 				openModal();
 			}
-			
+			sendingLogin = false;
 		});
 	}
-
 </script>
 
 <img class="logga" src="public\img\logo3.png" alt="gfdk" />
@@ -65,12 +58,14 @@
 				<input
 					type="email"
 					name="email"
+					disabled={sendingLogin || showTOTPmodal}
 					use:validators={[required, emailCheck]}
 					bind:value={logInForm.email}
 				/>
 				<HintGroup for="email">
-					<Hint on="required">* You need to enter your email</Hint>
-					<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint>
+					<Hint on="required">{RequiredMsg('Epost')}</Hint>
+					<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint
+					>
 				</HintGroup>
 			</div>
 
@@ -79,35 +74,42 @@
 				<input
 					type="password"
 					name="password"
+					disabled={sendingLogin || showTOTPmodal}
 					use:validators={[required]}
 					bind:value={logInForm.password}
 				/>
 				<HintGroup for="password">
-					<Hint on="required">* You need to enter your password</Hint>
+					<Hint on="required">{RequiredMsg('Lösenord')}</Hint>
 				</HintGroup>
 				<br /><br />
 			</div>
 			<div>
-				<button id="step3" disabled={!$form.valid} type="submit">
-					<h1>Logga in</h1>
-				</button>
+				{#if sendingLogin}
+					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80" />
+				{:else if loggingIn}
+					<h1>Loggar in</h1>
+					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80" />
+				{:else}
+					<button
+						id="step3"
+						disabled={!$form.valid || sendingLogin || showTOTPmodal}
+						type="submit"
+					>
+						<h1>Logga in</h1>
+					</button>
+				{/if}
 				{#if pwLoginInvalidResponse}
-					<p>Incorrect email or password</p>
+					<p>Inkorrekt epost eller lösenord</p>
 				{/if}
 			</div>
 		</form>
 	</div>
 
 	<img class="bulben" src="public\img\bulbi.png" alt="gfdkl" />
-
 </body>
 
-
 {#if showTOTPmodal}
-	
-	<TotpModal title={"Engångskod"} {qrCode} noCloseButton={true}  on:message={closeModal} /> 
-
-
+	<TotpModal title={'Engångskod'} {qrCode} bind:loggingIn on:message={closeModal} />
 {/if}
 
 <style lang="less">
@@ -130,14 +132,12 @@
 		height: 88px;
 		left: 128px;
 		top: 90px;
-
 		font-family: 'Poiret One';
 		font-style: normal;
 		font-weight: 600;
 		font-size: 40px;
 		line-height: 75px;
 		display: grid;
-
 		align-items: center;
 		letter-spacing: 0.04em;
 	}
@@ -148,7 +148,6 @@
 		height: 39px;
 		left: 128px;
 		top: 200px;
-
 		font-family: 'Plus Jakarta Sans';
 		font-style: normal;
 		font-weight: 500;
@@ -157,9 +156,8 @@
 		display: grid;
 		align-items: center;
 		letter-spacing: 0.04em;
-
-		color: #000000;
-		background-color: white;
+		color: var(--color);
+		background-color: var(--bg-color);
 	}
 	.loginp {
 		background-color: white;
@@ -170,7 +168,7 @@
 		width: 333px;
 		height: 50px;
 		position: absolute;
-		background-color: blue;
+		background-color: var(--bg-color);
 		display: grid;
 		top: 200px;
 
@@ -183,6 +181,12 @@
 		align-items: center;
 		text-align: center;
 		color: #ffffff;
+		cursor: pointer;
+	}
+
+	#step3:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
 	}
 
 	.bulben {
