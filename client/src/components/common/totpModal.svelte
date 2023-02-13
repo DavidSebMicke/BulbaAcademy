@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import ClickOutside from '../../Utils/ClickOutside';
 	import { useForm, HintGroup, validators, Hint, required } from 'svelte-use-form';
-
+	import { onlyNumbersCheck } from '../../Utils/Validation';
 	import { GetFromLocal, RemoveFromLocal } from '../../Utils/LocalStore';
 	import { TOTPLogIn } from '../../api/login';
 
@@ -13,15 +13,22 @@
 
 	export let title = 'No title';
 	export let noCloseButton = false;
+	let sendingCode = false;
+	let incorrectCode = false;
 
 	function CloseModal() {
 		dispatch('message', {
 			closeModal: true
 		});
 	}
+	
 
 	function convertQrToImage(qr) {
 		return `data:image/png;base64,${qr}`;
+	}
+
+	function onCodeInput(){
+		fieldValue = fieldValue.replace(" ", "");
 	}
 
 	export let fieldParams = {
@@ -33,61 +40,99 @@
 	export let qrCode = '';
 
 	function onSendClick() {
+		sendingCode = true;
+		incorrectCode = false;
 		var twoFToken = GetFromLocal('TwoFToken');
-		RemoveFromLocal('TwoFToken');
+
 
 		if (twoFToken) {
 			console.log('Sending');
 
 			TOTPLogIn(twoFToken, fieldValue).then((idToken) => {
 				if (idToken) {
+					
+					RemoveFromLocal('TwoFToken');
+					CloseModal();
 					document.location.href = '/';
 				} else {
 					console.log('wrong code');
+					fieldValue = "";
+					incorrectCode = true;
 				}
+				sendingCode = false;
 			});
 		} else {
 			console.log('no token');
+			sendingCode = false;
 		}
-		CloseModal();
+	
+	
 	}
 </script>
 
-<div class="modal" use:ClickOutside on:click_outside={CloseModal}>
+<div class="modal">
 	<div class="modal-container">
-		<form name="sendCodeForm" use:form on:submit|preventDefault={onSendClick}>
 			<div class="modal-header">
 				<h2 class="modal-title">
 					{title}
 				</h2>
 			</div>
+		<form name="sendCodeForm" use:form on:submit|preventDefault={onSendClick}>
+
 			<div class="modal-content">
-				<div class="inputfield-container">
-					{#if qrCode != ''}
-						<div class="qr-image-container">
-							<img src={convertQrToImage(qrCode)} alt="" class="qr-image" />
+
+					
+						<div class="inputfield-container">
+							{#if !sendingCode}
+								{#if qrCode != ''}
+									<div class="qr-image-container">
+										<img src={convertQrToImage(qrCode)} alt="" class="qr-image" />
+									</div>
+								{/if}
+
+								{#if fieldParams.label}
+									<label for="codeInput">{fieldParams.label}</label>
+								{/if}
+
+								<input
+									minlength="6"
+									maxlength="6"
+									name="codeInput"
+									on:input={onCodeInput}
+									use:validators={[required, onlyNumbersCheck]}
+									bind:value={fieldValue}
+								/>
+								<HintGroup for="codeInput">
+									<Hint on="invalidInput" hideWhenRequired>
+										{$form.codeInput.errors.invalidInput}
+									</Hint>
+
+								</HintGroup>
+								{#if incorrectCode}
+									<p>
+										Fel kod
+									</p>
+								{/if}
+							{:else}
+								<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80"></iconify-icon>
+							{/if}
 						</div>
-					{/if}
 
-					{#if fieldParams.label}
-						<label for="inputField">{fieldParams.label}</label>
-					{/if}
 
-					<input
-						maxlength="6"
-						name="inputField"
-						use:validators={[required]}
-						bind:value={fieldValue}
-					/>
-				</div>
+
+				
 			</div>
 
 			<dev class="modal-footer">
-				<button class="buttondispatch" visibility: hidden={!$form.valid} type="submit"
-					>Send Code</button
-				>
+
 				{#if !noCloseButton}
 					<button class="buttondispatch" on:click={CloseModal}>Avbryt</button>
+				{/if}
+
+				{#if $form.valid && !sendingCode}
+					<button class="buttondispatch" type="submit">
+						Skicka
+					</button>
 				{/if}
 			</dev>
 		</form>
@@ -113,6 +158,7 @@
 		width: fit-content;
 		margin-left: 10px;
 		margin-right: 10px;
+		cursor: pointer;
 	}
 
 	.qr-image-container {
@@ -141,6 +187,7 @@
 		border-radius: 10px;
 		box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.39);
 		z-index: 11;
+		
 	}
 
 	.modal-title {
@@ -182,8 +229,11 @@
 	}
 
 	.inputfield-container {
-		width: 50%;
-		align-self: center;
+		width: 100%;
+		justify-self: center;
+	
+
+
 	}
 
 	input {
@@ -191,4 +241,6 @@
 		font-size: 60px;
 		text-align: center;
 	}
+
+
 </style>

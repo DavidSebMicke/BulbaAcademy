@@ -1,12 +1,12 @@
 <script>
 	import { PasswordLogIn } from '../../../api/login';
 	import { useForm, HintGroup, validators, Hint, email, required } from 'svelte-use-form';
-	import { emailCheck } from '../../../Utils/Validation';
-	import { onMount } from 'svelte';
+	import { emailCheck, RequiredMsg } from '../../../Utils/Validation';
 	import TotpModal from '../../../components/common/totpModal.svelte';
 	import { StoreInLocal } from '../../../Utils/LocalStore';
 
 	const form = useForm();
+
 	let logInForm = {
 		email: '',
 		password: ''
@@ -15,29 +15,34 @@
 	let pwLoginInvalidResponse = false;
 
 	let showTOTPmodal = false;
+	let sendingLogin = false;
+
 
 	function openModal() {
 		showTOTPmodal = true;
 	}
 
-	function closeModal(event) {
-		if (event.detail.closeModal) {
+	function closeModal(event){
+		if (event.detail.closeModal){
 			showTOTPmodal = false;
 		}
 	}
 
 	function handleLoginClick() {
 		pwLoginInvalidResponse = false;
-
+		sendingLogin = true;
 		PasswordLogIn(logInForm).then((loginResp) => {
 			pwLoginInvalidResponse = !loginResp;
 
 			if (loginResp) {
+
 				StoreInLocal('TwoFToken', loginResp.token);
 
 				qrCode = loginResp.qrCode;
 				openModal();
+				
 			}
+			sendingLogin = false;
 		});
 	}
 </script>
@@ -54,11 +59,12 @@
 				<input
 					type="email"
 					name="email"
+					disabled={sendingLogin || showTOTPmodal}
 					use:validators={[required, emailCheck]}
 					bind:value={logInForm.email}
 				/>
 				<HintGroup for="email">
-					<Hint on="required">* You need to enter your email</Hint>
+					<Hint on="required">{RequiredMsg("Epost")}</Hint>
 					<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint
 					>
 				</HintGroup>
@@ -69,20 +75,25 @@
 				<input
 					type="password"
 					name="password"
+					disabled={sendingLogin || showTOTPmodal}
 					use:validators={[required]}
 					bind:value={logInForm.password}
 				/>
 				<HintGroup for="password">
-					<Hint on="required">* You need to enter your password</Hint>
+					<Hint on="required">{RequiredMsg("Lösenord")}</Hint>
 				</HintGroup>
 				<br /><br />
 			</div>
 			<div>
-				<button id="step3" disabled={!$form.valid} type="submit">
-					<h1>Logga in</h1>
-				</button>
+				{#if !sendingLogin}
+					<button id="step3" disabled={!$form.valid || sendingLogin || showTOTPmodal} type="submit">
+						<h1>Logga in</h1>
+					</button>
+				{:else}
+					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80"></iconify-icon>
+				{/if}
 				{#if pwLoginInvalidResponse}
-					<p>Incorrect email or password</p>
+					<p>Inkorrekt epost eller lösenord</p>
 				{/if}
 			</div>
 		</form>
@@ -164,10 +175,12 @@
 		align-items: center;
 		text-align: center;
 		color: #ffffff;
+		cursor: pointer;
 	}
 
 	#step3:disabled {
-		display: none;
+		opacity: 0.3;
+		cursor: not-allowed;
 	}
 
 	.bulben {

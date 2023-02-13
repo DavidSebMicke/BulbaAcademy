@@ -59,6 +59,12 @@ export function lengthAtLeast(str, min) {
 	return isValid ? null : { inputTooShort: `Behöver vara minst ${min} långt.` };
 }
 
+// Checks if string has exact length. 
+export function exactLength(str, desiredLength) {
+	var isValid = str.length == desiredLength;
+	return isValid ? null : { inputNotExactLength: `Behöver vara exakt ${desiredLength} långt.` };
+}
+
 // Checks if the input is a valid email
 export function emailCheck(str) {
 	var isValid = /[a-zåäöA-ZÅÄÖ0-9]+@[a-zåäöA-ZÅÄÖ0-9]+\.[a-zåäöA-ZÅÄÖ0-9]+/.test(str);
@@ -102,7 +108,7 @@ export function onlyLettersCheck(str) {
 
 // Checks if the input contains only numbers
 export function onlyNumbersCheck(str) {
-	var isValid = /[0-9]+/.test(str);
+	var isValid = /^[0-9]*$/.test(str);
 	return isValid ? null : { invalidInput: 'Endast siffror tillåtna.' };
 }
 
