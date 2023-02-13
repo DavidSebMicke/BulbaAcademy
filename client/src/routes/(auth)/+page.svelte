@@ -1,8 +1,9 @@
 <script>
 	import Calendar from '$components/calendar/calendar.svelte';
 	import 'iconify-icon';
+	import Header from '$components/header/header.svelte'
 </script>
-
+<Header title="Start" />
 <div class="StartCalendar">
 	<Calendar />
 </div>

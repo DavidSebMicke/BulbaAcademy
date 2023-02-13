@@ -39,10 +39,10 @@
 				</li>
 
 				<li>
-					<a href="/registerUserForm">
+					<a href="/profile">
 						<iconify-icon icon="healthicons:ui-user-profile" />
 					</a>
-					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/registerUserForm"
+					<a class="text" in:fade={fadeIn} out:fade={fadeOut} href="/profile"
 						>Profil
 					</a>
 				</li>
@@ -88,7 +88,7 @@
 					<a href="/"><iconify-icon icon="mdi:home" width="40" /></a>
 				</li>
 				<li>
-					<a href="/"><iconify-icon icon="healthicons:ui-user-profile" width="40" /></a>
+					<a href="/profile"><iconify-icon icon="healthicons:ui-user-profile" width="40" /></a>
 				</li>
 				<li>
 					<a href="/staff"><iconify-icon icon="ic:baseline-work" width="40" /></a>
