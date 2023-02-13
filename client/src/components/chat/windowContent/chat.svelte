@@ -83,7 +83,7 @@
 	<div class="chatContainer">
 		{#if activeChat.messages}
 			{#each activeChat.messages as message}
-				<ChatMessage {message} senders={activeChat.users} />
+				<ChatMessage {message} senders={activeChat.users} {user} />
 			{/each}
 		{/if}
 	</div>

@@ -29,6 +29,11 @@ namespace BulbasaurAPI.Repository
             .FirstAsync(c => c.Id == chatId);
         }
 
+        public async Task<Chat?> Get(int chatId, User user)
+        {
+            return await _context.Chats.Include(c => c.ChatItemList).FirstAsync(c => c.Id == chatId && c.InvolvedUsersList.Any(u => u.Id == user.Id));
+        }
+
         public async Task<ICollection<Chat>?> GetChats(User user)
         {
             return await _context.Chats
