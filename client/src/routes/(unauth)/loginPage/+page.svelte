@@ -16,7 +16,7 @@
 
 	let showTOTPmodal = false;
 	let sendingLogin = false;
-
+	let loggingIn = false;
 
 	function openModal() {
 		showTOTPmodal = true;
@@ -25,6 +25,7 @@
 	function closeModal(event){
 		if (event.detail.closeModal){
 			showTOTPmodal = false;
+			loggingIn = true;
 		}
 	}
 
@@ -85,12 +86,17 @@
 				<br /><br />
 			</div>
 			<div>
-				{#if !sendingLogin}
-					<button id="step3" disabled={!$form.valid || sendingLogin || showTOTPmodal} type="submit">
+				{#if sendingLogin}
+
+					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80"></iconify-icon>
+
+				{:else if loggingIn}
+					<h1>Loggar in</h1>
+					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80"></iconify-icon>
+				{:else}
+					<button id="step3" disabled={!$form.valid || sendingLogin || showTOTPmodal } type="submit">
 						<h1>Logga in</h1>
 					</button>
-				{:else}
-					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80"></iconify-icon>
 				{/if}
 				{#if pwLoginInvalidResponse}
 					<p>Inkorrekt epost eller lösenord</p>
