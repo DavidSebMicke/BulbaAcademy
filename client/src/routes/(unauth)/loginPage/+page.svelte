@@ -22,10 +22,10 @@
 		showTOTPmodal = true;
 	}
 
-	function closeModal(event){
-		if (event.detail.closeModal){
+	function closeModal(event) {
+		if (event.detail.closeModal) {
 			showTOTPmodal = false;
-			loggingIn = true;
+			// loggingIn = true;
 		}
 	}
 
@@ -36,12 +36,10 @@
 			pwLoginInvalidResponse = !loginResp;
 
 			if (loginResp) {
-
 				StoreInLocal('TwoFToken', loginResp.token);
 
 				qrCode = loginResp.qrCode;
 				openModal();
-				
 			}
 			sendingLogin = false;
 		});
@@ -65,7 +63,7 @@
 					bind:value={logInForm.email}
 				/>
 				<HintGroup for="email">
-					<Hint on="required">{RequiredMsg("Epost")}</Hint>
+					<Hint on="required">{RequiredMsg('Epost')}</Hint>
 					<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint
 					>
 				</HintGroup>
@@ -81,20 +79,22 @@
 					bind:value={logInForm.password}
 				/>
 				<HintGroup for="password">
-					<Hint on="required">{RequiredMsg("Lösenord")}</Hint>
+					<Hint on="required">{RequiredMsg('Lösenord')}</Hint>
 				</HintGroup>
 				<br /><br />
 			</div>
 			<div>
 				{#if sendingLogin}
-
-					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80"></iconify-icon>
-
+					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80" />
 				{:else if loggingIn}
 					<h1>Loggar in</h1>
-					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80"></iconify-icon>
+					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80" />
 				{:else}
-					<button id="step3" disabled={!$form.valid || sendingLogin || showTOTPmodal } type="submit">
+					<button
+						id="step3"
+						disabled={!$form.valid || sendingLogin || showTOTPmodal}
+						type="submit"
+					>
 						<h1>Logga in</h1>
 					</button>
 				{/if}
@@ -109,7 +109,7 @@
 </body>
 
 {#if showTOTPmodal}
-	<TotpModal title={'Engångskod'} {qrCode} noCloseButton={true} on:message={closeModal} />
+	<TotpModal title={'Engångskod'} {qrCode} bind:loggingIn on:message={closeModal} />
 {/if}
 
 <style lang="less">
