@@ -58,25 +58,25 @@
 							>Formulär</a
 						>
 					</li>
+					<li>
+						<a href="/departments"><iconify-icon icon="ic:sharp-grid-on" /></a><a
+							class="text"
+							in:fade={fadeIn}
+							out:fade={fadeOut}
+							href="/departments"
+							>Avdelningar
+						</a>
+					</li>
+					<li>
+						<a href="/"><iconify-icon icon="mdi:file-document" /></a><a
+							class="text"
+							in:fade={fadeIn}
+							out:fade={fadeOut}
+							href="/"
+							>Dokument
+						</a>
+					</li>
 				{/if}
-				<li>
-					<a href="/departments"><iconify-icon icon="ic:sharp-grid-on" /></a><a
-						class="text"
-						in:fade={fadeIn}
-						out:fade={fadeOut}
-						href="/departments"
-						>Avdelningar
-					</a>
-				</li>
-				<li>
-					<a href="/"><iconify-icon icon="mdi:file-document" /></a><a
-						class="text"
-						in:fade={fadeIn}
-						out:fade={fadeOut}
-						href="/"
-						>Dokument
-					</a>
-				</li>
 				<li>
 					<a><iconify-icon icon="bx:log-out" /></a><a
 						class="text"
@@ -111,13 +111,15 @@
 							<iconify-icon icon="material-symbols:forms-add-on" width="40" />
 						</a>
 					</li>
+					<li>
+						<a href="/departments"
+							><iconify-icon icon="ic:sharp-grid-on" width="40" /></a
+						>
+					</li>
+					<li>
+						<a href="/"><iconify-icon icon="mdi:file-document" width="40" /></a>
+					</li>
 				{/if}
-				<li>
-					<a href="/departments"><iconify-icon icon="ic:sharp-grid-on" width="40" /></a>
-				</li>
-				<li>
-					<a href="/staff"><iconify-icon icon="mdi:file-document" width="40" /></a>
-				</li>
 				<li><a on:click={logOut}><iconify-icon icon="bx:log-out" width="40" /></a></li>
 			</ul>
 		{/if}
