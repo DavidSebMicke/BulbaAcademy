@@ -19,7 +19,7 @@
 </script>
 
 {#if hideFooter}
-	<div class="footer" transition:fly={{ y: 200, duration: 2000 }}>
+	<div class="footer" transition:fly={{ y: 200, duration: 2300 }}>
 		<p>Copyright Bulbasaur Academy - Pro group of developers</p>
 		<a href="https://letmegooglethat.com/?q=Pro+developers" target="_blank" rel="noreferrer">
 			Find us here!</a
@@ -39,7 +39,6 @@
 		background-size: cover;
 		padding: 5px;
 		text-align: center;
-		opacity: 0.8;
 		a {
 			text-decoration: none;
 			color: var(--color);

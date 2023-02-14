@@ -9,7 +9,7 @@
 </script>
 
 {#if !showContactsList}
-	<button class="contactUs" on:click={showContacts}>Contact us!</button>
+	<button class="contactUs" on:click={showContacts}>Kontakta oss!</button>
 {:else}
 	<div class="contactCard" use:ClickOutside on:click_outside={showContacts}>
 		<div class="contact-card-info">
@@ -19,6 +19,9 @@
 					<h3>
 						{teacher.name}
 					</h3>
+				<h4>
+					{teacher.profession}
+				</h4>
 					<h4>
 					Telefon: {teacher.phoneNumber}
 					</h4>

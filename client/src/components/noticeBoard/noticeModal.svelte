@@ -28,6 +28,7 @@
 	@import 'public/less/global.less';
 	.modal {
 		position: fixed;
+		cursor: default;
 		top: 0;
 		left: 0;
 		width: 100%;
@@ -41,6 +42,7 @@
 		top: 10px;
 		right: 10px;
 		font-weight: bold;
+		background-color: @crisis-message-background;
 	}
 
 	.modal-content {
@@ -48,7 +50,7 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: #fff;
+		background-color: @crisis-message-background;		
 		width: 80%;
 		max-width: 600px;
 		padding: 20px;
