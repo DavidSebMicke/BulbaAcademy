@@ -4,65 +4,59 @@
     export let group;
     let members = [
 		{
-			id: 'public/img/Hasse.jfif',
-			name: 'Hasse',
-			profession: 'Teacher',
+			name: 'Ingrid',
+			role: 'Lärare',
 			phoneNumber: '070-313 33 33',
 			email: 'hasse@bulbaacademy.awesome',
 		},
 		{
-			id: 'public/img/Karen.jfif',
-			name: 'Karen',
-			profession: 'Headmaster',
+			name: 'Kerstin',
+			role: 'Lärare',
 			phoneNumber: '070-313 33 33',
 			email: 'karen@bulbaacademy.awesome',
 		},
 		{
-			id: 'public/img/Brollan.jfif',
-			name: 'Brollan',
-			profession: 'Janitor',
+			name: 'Sten-Åke',
+			role: 'Förälder',
 			phoneNumber: '070-313 33 33',
 			email: 'brollan@bulbaacademy.awesome',
 		},
 		{
-			id: 'public/img/Birgit.jfif',
-			name: 'Birgit',
-			profession: 'Teacher',
+			name: 'Håkan',
+			role: 'Förälder',
 			email: 'birgit@bulbaacademy.awesome',
 			phoneNumber: '070-313 33 33',
 		},
 		{
-			id: 'public/img/Maja.jfif',
-			name: 'Maja',
-			profession: 'Teacher',
+			name: 'Gudrun',
+			role: 'Flat Earther',
 			phoneNumber: '070-313 33 33',
 			email: 'maja@bulbaacademy.awesome',
 		},
 		{
-			id: 'public/img/Lasse.jfif',
-			name: 'Lasse',
-			profession: 'Arts & Craft',
+			name: 'Samuel',
+			role: 'Förälder',
 			email: 'lasse@bulbaacademy.awesome',
 			phoneNumber: '070-313 33 33',
 		},
 		{
-			id: 'public/img/Magda.jfif',
-			name: 'Magda',
-			profession: 'Woodcraft',
+			name: 'Lillemor',
+			role: 'Förälder',
 			email: 'magda@bulbaacademy.awesome',
 			phoneNumber: '070-313 33 33',
 		},
 		{
-			id: 'public/img/Bertil.jfif',
-			name: 'Bertil',
+			name: 'Glenn',
+			role: 'Vaktmästare',
 			phoneNumber: '070-313 33 33',
 			email: 'bertil@bulbaacademy.awesome',
-			profession: 'Coffe-drinker',
 		}
 	];
 
     let showMembersList = false;
-
+function closeList(event) {
+showMembersList = event.detail.Boolean;
+}
     function showMembers() {
 		showMembersList = !showMembersList;
 	}
@@ -70,9 +64,9 @@
 <div class="group">
     <h2>{group.name}</h2>
     {#if !showMembersList}
-        <button class="member-list">Medlemmar</button>
+        <button class="member-list" on:click={showMembers}>Medlemmar</button>
         {:else}
-        <Members {members} />
+        <Members {members} on:boolToggle={closeList} />
     {/if}
     <button class="member-list">Boka Aktivitet</button>
 

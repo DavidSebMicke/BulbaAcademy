@@ -93,7 +93,7 @@
 
 	.background-images {
 		display: flex;
-		background-image: url('public/img/backgroundSupplies.avif');
+		background-image: url('public/img/manyBooks.avif');
 		position: relative;
 		align-self: normal;
 		flex: auto;
@@ -156,7 +156,7 @@
 			padding: 10px 20px;
 			font-size: 10px;
 			border-radius: 5px;
-			transition: all 0.2s ease-in-out;
+			transition: all 0.5s ease-in-out;
 			color: var(--color);
 			width: 25%;
 			top: 45%;
@@ -167,12 +167,18 @@
 			border: 1px solid var(--color);
 
 			&:hover {
-				background-color: transparent;
-				color: black;
+				background-color: transparent !important;
+				color: white !important;
 				transform: translateX(2em);
-				border: none;
+				border: none !important;
 				font-weight: 800;
-				font-size: 20px;
+				text-decoration: underline 2px solid;
+				font-size: 40px;
+				text-shadow: 2px 2px black;
+
+			}
+			&:hover .arrow2 span {
+				display: none;
 			}
 		}
 
@@ -184,12 +190,17 @@
 		}
 		.prevButton:hover {
 			font-weight: 800;
-			font-size: 20px;
+			font-size: 40px;
+			border: none !important;
+			text-shadow: 2px 2px solid white;
 			transform: translateX(-2em);
-			background-color: transparent;
-			color: black;
 			border: none;
+
 		}
+		.prevButton:hover .arrow span {
+		display: none;
+
+	}
 	}
 
 	.profileCard > li {
