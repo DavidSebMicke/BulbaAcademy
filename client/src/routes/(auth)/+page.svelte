@@ -3,7 +3,7 @@
 	import 'iconify-icon';
 	import Header from '$components/header/header.svelte'
 </script>
-<Header title="Start" />
+<Header title="Bulba Academy" />
 <div class="StartCalendar">
 	<Calendar />
 </div>

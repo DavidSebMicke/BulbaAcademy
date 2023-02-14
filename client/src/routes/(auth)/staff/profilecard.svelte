@@ -1,8 +1,6 @@
 <script>
 	import ContactCard from './contactCard.svelte';
 	import TeacherGallery from './teacherGallery.svelte';
-	let backgroundImage =
-		'public/img/back-school-background-with-school-supplies-copy-space_23-2148958973.avif';
 
 	export let teachers;
 	let showSpecificTeacher = false;
@@ -40,7 +38,7 @@
 <div class="profileCardContainer">
 	<div class="background-images">
 		<button class="prevButton" on:click={prevSlide}
-			>Previous
+			>Föregående
 			<div class="arrow">
 				<span />
 			</div>
@@ -77,7 +75,7 @@
 			{/if}
 		</div>
 		<button on:click={nextSlide}>
-			Next
+			Nästa
 			<div class="arrow2">
 				<span />
 			</div>
@@ -161,6 +159,8 @@
 			width: 25%;
 			top: 45%;
 			position: relative;
+			border-left: none !important;
+			border-right: none !important;
 			font-weight: 800;
 			height: 10%;
 			font-size: 20px;
@@ -169,12 +169,14 @@
 			&:hover {
 				background-color: transparent !important;
 				color: white !important;
-				transform: translateX(2em);
-				border: none !important;
+				transform: translateX(1.5em);
 				font-weight: 800;
-				text-decoration: underline 2px solid;
 				font-size: 40px;
 				text-shadow: 2px 2px black;
+				border-right: none !important ;
+			border-left: none !important;
+			border-top: none !important;
+			border-bottom: 10px solid !important;
 
 			}
 			&:hover .arrow2 span {
@@ -191,17 +193,17 @@
 		.prevButton:hover {
 			font-weight: 800;
 			font-size: 40px;
-			border: none !important;
 			text-shadow: 2px 2px solid white;
-			transform: translateX(-2em);
-			border: none;
-
+			transform: translateX(-1.5em);
+			
+			
 		}
 		.prevButton:hover .arrow span {
 		display: none;
 
 	}
 	}
+	
 
 	.profileCard > li {
 		padding: 0.2em;
@@ -209,6 +211,9 @@
 		list-style: none;
 		position: relative;
 		width: fit-content;
+		outline: 1em solid;
+        outline-color: var(--bg-color);
+        outline-offset: -4px;
 		cursor: pointer;
 	}
 	.profileCard > li img {
@@ -230,7 +235,7 @@
 		transform: scale(0);
 		transition: all 0.8s 0.2s ease-in-out;
 		display: flex;
-		align-items: center;
+		align-items: flex-end;
 		justify-content: center;
 
 		h1 {
@@ -245,6 +250,8 @@
 			font-weight: 400;
 			top: 3rem;
 		}
+		
+		
 	}
 
 	.profileCard li:hover .overlay {
@@ -259,14 +266,13 @@
 		text-transform: uppercase;
 	}
 	.teacherInfo {
-		display: -webkit-box;
-		-webkit-line-clamp: 1;
 		display: flex;
-		overflow: hidden;
 		color: white;
-		overflow-wrap: break-all;
-		width: fit-content;
-		height: fit-content;
+		font-size: 1.25em;
+		word-break: break-word;
+    font-family: 'Inter';
+    font-size: x-large;
+
 	}
 	.contactCardElement {
 		display: grid;

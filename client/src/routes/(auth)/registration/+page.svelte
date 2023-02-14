@@ -11,5 +11,5 @@
 	});
 </script>
 
-<Header title="Registration" />
+<Header title="Registrering" />
 <RegForm />

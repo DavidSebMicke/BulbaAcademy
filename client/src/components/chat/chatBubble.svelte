@@ -36,7 +36,7 @@
 
 	.chatBubble {
 		position: relative;
-		background-color: var(--primary-color);
+		background-color: var(--color);
 		opacity: 1;
 		width: 4rem;
 		height: 4rem;
@@ -45,6 +45,9 @@
 		cursor: pointer;
 		transition: all 0.3s ease-out;
 
+iconify-icon {
+	color:white;
+}
 		&:hover {
 			opacity: 1;
 		}

@@ -1,5 +1,5 @@
 <script>
-	export let title = 'Default Title';
+	export let title = 'default title';
 </script>
 
 <header>
