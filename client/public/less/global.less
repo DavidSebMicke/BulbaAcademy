@@ -6,15 +6,13 @@
 	--bg-color: @light-mode-background;
 	--color: @light-mode-text;
 	--image-grayscale: @image-grayscale-min;
-  	--flavour-color-4: @light-mode-flavour4;
-
+	--flavour-color-4: @light-mode-flavour4;
 }
 [data-theme='dark'] {
 	--primary-color: @dark-mode-flavour1;
 	--secondary-color: @dark-mode-flavour2;
 	--flavour-color-3: @dark-mode-flavour3;
-  	--flavour-color-4: @dark-mode-flavour4;
-
+	--flavour-color-4: @dark-mode-flavour4;
 	--bg-color: @dark-mode-background;
 	--color: @dark-mode-text;
 	--image-grayscale: @image-grayscale-max;
@@ -49,7 +47,7 @@ textarea,
 		font-family: 'droid-serif', serif;
 		font-weight: 700;
 		font-style: normal;
-		text-shadow: 1px 1px var(--primary-color);
+		text-shadow: 2px 2px black;
 		backdrop-filter: var(--image-grayscale);
 	}
 }
@@ -94,19 +92,22 @@ header div {
 .ec-dayGridMonth,
 .subButton {
 	padding: 10px 20px !important;
-	background-color: var(--bg-color);
-	color: var(--color);
+	background-color: var(--bg-color) !important;
+	color: var(--color) !important;
 	font-size: 1.1em;
 	font-weight: 800;
 	border-radius: 5px;
-	border: 3px solid var(--color);
-
+	border: 3px solid var(--color) !important;
 	transition: all 0.2s ease-in-out;
 	cursor: pointer;
+	.ec-icon,
+	.ec-prev {
+		color: var(--color) !important;
+	}
 
 	&:hover {
-		color: var(--primary-color);
-		background-color: var(--bg-color);
+		color: var(--primary-color) !important;
+		background-color: var(--bg-color) !important;
 	}
 }
 .loader {

@@ -93,11 +93,12 @@
 
 	.background-images {
 		display: flex;
-		background-image: url('public/img/school.avif');
+		background-image: url('public/img/backgroundSupplies.avif');
 		position: relative;
 		align-self: normal;
 		flex: auto;
 		margin-right: 0;
+		scale: 0.8;
 		background-size: cover;
 	}
 	.arrow {
@@ -153,7 +154,6 @@
 		.prevButton {
 			.classic-button;
 			padding: 10px 20px;
-			background-color: #2d545e;
 			font-size: 10px;
 			border-radius: 5px;
 			transition: all 0.2s ease-in-out;
@@ -164,7 +164,6 @@
 			font-weight: 800;
 			height: 10%;
 			font-size: 20px;
-			transition: all 1s;
 			border: 1px solid var(--color);
 
 			&:hover {
@@ -259,6 +258,11 @@
 		height: fit-content;
 	}
 	.contactCardElement {
-		text-align: center;
+		display: grid;
+  justify-items: center; 
+  align-items: center; 
+  text-align: center;
+  margin-bottom: 5em;
+  padding: 1em;
 	}
 </style>

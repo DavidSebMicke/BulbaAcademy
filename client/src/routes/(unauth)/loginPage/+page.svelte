@@ -87,7 +87,7 @@
 				{#if sendingLogin}
 					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80" />
 				{:else if loggingIn}
-					<h1>Loggar in</h1>
+					<h2 class="logIn-text">Loggar in</h2>
 					<iconify-icon icon="svg-spinners:3-dots-bounce" width="80" height="80" />
 				{:else}
 					<button
@@ -95,7 +95,7 @@
 						disabled={!$form.valid || sendingLogin || showTOTPmodal}
 						type="submit"
 					>
-						<h1>Logga in</h1>
+						<h2 class="logIn-text">Logga in</h2>
 					</button>
 				{/if}
 				{#if pwLoginInvalidResponse}
@@ -119,6 +119,9 @@
 	@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
 	@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
+	.logIn-text {
+		font-size: 1.8em;
+	}
 	.login {
 		font-family: 'Poiret One', cursive;
 		font-family: 'Plus Jakarta Sans', sans-serif;
@@ -171,7 +174,7 @@
 		background-color: var(--bg-color);
 		display: grid;
 		top: 200px;
-
+border-color: var(--color);
 		font-family: 'Inter';
 		font-style: normal;
 		font-weight: 500;
@@ -180,7 +183,7 @@
 		display: grid;
 		align-items: center;
 		text-align: center;
-		color: #ffffff;
+		color: var(--color);
 		cursor: pointer;
 	}
 

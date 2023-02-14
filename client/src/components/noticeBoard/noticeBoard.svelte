@@ -7,29 +7,29 @@
 	let messages = [
 		{
 			date: new Date('2023-01-04'),
-			title: 'First',
-			text: 'Dependent certainty off discovery him his tolerably offending. Do greatest at in learning steepest. Breakfast extremity suffering one who all otherwise suspected. He at no nothing forbade up moments. Wholly uneasy at missed be of pretty whence. John way sir high than law who week. Surrounded prosperous introduced it if is up dispatched.'
-		},
-		{
-			date: new Date('2023-01-14'),
-			title: 'Second',
-			text: 'Improved so strictly produced answered elegance is.Give lady of they such they sure it. Me contained explained my education. Vulgar as hearts by garret. Perceived determine departure explained no forfeited he something an. Contrasted dissimilar get joy you instrument out reasonably.'
-		},
-		{
-			date: new Date('2023-01-16'),
-			title: 'Third',
-			text: 'Again keeps at no meant stuff. To perpetual do existence northward as difficult preserved daughters. Continued at up to zealously necessary breakfast. Surrounded sir motionless she end literature.'
-		},
-		{
-			date: new Date('2023-01-20'),
-			title: 'Fourth',
-			text: 'Gay direction neglected but supported yet her.Kept in sent gave feel will oh it we. Has pleasure procured men laughing shutters nay. Old insipidity motionless continuing law shy partiality.'
-		},
-		{
-			date: new Date('2023-01-24'),
-			title: 'Fifth',
-			text: 'Depending acuteness dependent eat use dejection. Unpleasing astonished discovered not nor shy. Morning hearted now met yet beloved evening. Has and upon his last here must.'
+			title: 'Varning för löss!!!',
+			text: '1. Finkamma barnen med en luskam och behandla de som har levande löss innan skolan börjar efter ett längre lov. Det är det bästa sättet att förhindra lusepidemier.\n \n 2. Stryk av kammen på ett vitt papper efter varje kamtag. Om det finns löss i håret fastnar de i kammen eller hamnar på underlaget.\n \n 3. Leta efter lusägg på hårstrået nära hårbotten. De kan vara lättare att upptäcka än själva lössen. De ägg som innehåller den blivande lusen är mörka. De tomma äggen är ljusa, ofta gulvita, ovala, ungefär en millimeter långa och följer med hårstråets utväxt.'
 		}
+		// {
+		// 	date: new Date('2023-01-14'),
+		// 	title: 'Second',
+		// 	text: 'Improved so strictly produced answered elegance is.Give lady of they such they sure it. Me contained explained my education. Vulgar as hearts by garret. Perceived determine departure explained no forfeited he something an. Contrasted dissimilar get joy you instrument out reasonably.'
+		// },
+		// {
+		// 	date: new Date('2023-01-16'),
+		// 	title: 'Third',
+		// 	text: 'Again keeps at no meant stuff. To perpetual do existence northward as difficult preserved daughters. Continued at up to zealously necessary breakfast. Surrounded sir motionless she end literature.'
+		// },
+		// {
+		// 	date: new Date('2023-01-20'),
+		// 	title: 'Fourth',
+		// 	text: 'Gay direction neglected but supported yet her.Kept in sent gave feel will oh it we. Has pleasure procured men laughing shutters nay. Old insipidity motionless continuing law shy partiality.'
+		// },
+		// {
+		// 	date: new Date('2023-01-24'),
+		// 	title: 'Fifth',
+		// 	text: 'Depending acuteness dependent eat use dejection. Unpleasing astonished discovered not nor shy. Morning hearted now met yet beloved evening. Has and upon his last here must.'
+		// }
 	];
 	let currentItem = null;
 	let showModal = false;
@@ -100,6 +100,8 @@
 		z-index: 99;
 		background-color: @crisis-message-background;
 		color: black;
+		text-align: center;
+		width:100%;
 		list-style: none;
 		display: flex;
 		border: 2px solid black;
@@ -107,6 +109,7 @@
 	}
 	.grid-items {
 		border-right: 2px solid black;
+		width: 100%;
 	}
 
 	.noticeTitle {
@@ -129,10 +132,10 @@
 		text-align: center;
 	}
 	.closeCross {
-		border: none;
-		display: inline-flex;
-		float: right;
-
+		bottom: 0;
+    position: absolute;
+    border: none;
+    right: 0;
 		&:hover {
 			cursor: pointer;
 		}

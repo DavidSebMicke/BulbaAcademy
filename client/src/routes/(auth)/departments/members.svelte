@@ -1,36 +1,32 @@
 <script>
 	import ClickOutside from '../../../Utils/ClickOutside';
 
-	export let teachers;
-	let showContactsList = false;
-	function showContacts() {
-		showContactsList = !showContactsList;
+	export let members;
+    export let showMembersList;
+	function showMembers() {
+		showMembersList = !showMembersList;
 	}
 </script>
 
-{#if !showContactsList}
-	<button class="contactUs" on:click={showContacts}>Contact us!</button>
-{:else}
-	<div class="contactCard" use:ClickOutside on:click_outside={showContacts}>
+	<div class="contactCard" use:ClickOutside on:click_outside={showMembers}>
 		<div class="contact-card-info">
 			<h1>Contact List</h1>
-			{#each teachers as teacher, i}
+			{#each members as member, i}
 				<div class="teacher" style="grid-template-row='1' grid-column: {i}">
 					<h3>
-						{teacher.name}
+						{member.name}
 					</h3>
-					Phone: {teacher.phoneNumber} / Email: {teacher.email}
+					Phone: {member.phoneNumber} / Email: {member.email}
 				</div>
 			{/each}
-			<button class="closeCross" on:click={showContacts}
+			<button class="closeCross" on:click={showMembers}
 				><iconify-icon icon="material-symbols:close" width="40" /></button
 			>
 		</div>
 	</div>
-{/if}
 
 <style lang="less">
-	@import 'public\less\global.less';
+	@import 'public/less/global.less';
 
 	.contactUs {
 		.classic-button;

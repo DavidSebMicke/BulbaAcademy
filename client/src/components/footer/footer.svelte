@@ -39,6 +39,7 @@
 		background-size: cover;
 		padding: 5px;
 		text-align: center;
+		opacity: 0.8;
 		a {
 			text-decoration: none;
 			color: var(--color);

@@ -52,6 +52,7 @@
 		width: 80%;
 		max-width: 600px;
 		padding: 20px;
+		white-space: pre-line;
 		z-index: 11;
 	}
 </style>
