@@ -105,9 +105,13 @@ header div {
 		color: var(--color) !important;
 	}
 
-	&:hover {
+	&:hover :disabled:not{
 		color: var(--primary-color) !important;
 		background-color: var(--bg-color) !important;
+	}
+	&:disabled{
+		opacity: 0.3;
+		cursor: not-allowed;
 	}
 }
 .loader {
