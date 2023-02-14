@@ -12,6 +12,9 @@
 	import { RegisterChildWithCaregivers } from '../../api/forms';
 	import { onMount } from 'svelte';
 	import { GetAllGroups } from '../../api/groups';
+	import RegSent from '../regSentModal/regSent.svelte';
+	let showModal = false;
+	let message = '';
 
 	const form = useForm();
 
@@ -53,6 +56,14 @@
 	function submitForm() {
 		RegisterChildWithCaregivers(formValues).then((formResponse) => {
 			console.log(formResponse);
+			if (formResponse.caregivers && formResponse.child) {
+				message = 'Information nu registrerat';
+				showModal = true;
+				resetFormFunction();
+			} else {
+				message = 'Något gick fel';
+				showModal = true;
+			}
 		});
 	}
 
@@ -66,10 +77,14 @@
 			}
 		});
 	});
+
+	function resetFormFunction() {
+		document.getElementById('formy').reset();
+	}
 </script>
 
 <main>
-	<form use:form on:submit|preventDefault={submitForm}>
+	<form id="formy" class="CCForm" use:form on:submit|preventDefault={submitForm}>
 		<div class="Child">
 			<h3>Barn</h3>
 			<label for="ChildFirstname">Förnamn</label>
@@ -223,114 +238,20 @@
 			</HintGroup>
 		</div>
 
-		<!-- <div class="CareGiver2">
-			<h3>Vårdnadshavare 2</h3>
-
-			<label for="phonenumber">Telefonnummer</label>
-			<input
-				type="phonenumber"
-				name="phonenumber"
-				use:validators={[required, phoneNumberCheck]}
-				bind:value={formValues.caregivers[1].phoneNumber}
-			/>
-			<HintGroup for="phonenumber">
-				<Hint on="required">{RequiredMsg('Telefonnummer')}</Hint>
-				<Hint on="invalidPhoneNumber" hideWhenRequired>
-					{$form.phonenumber.errors.invalidPhoneNumber}
-				</Hint>
-			</HintGroup>
-
-			<label for="email">Epost</label>
-			<input
-				type="email"
-				name="email"
-				use:validators={[required, emailCheck]}
-				bind:value={formValues.caregivers[1].email}
-			/>
-			<HintGroup for="email">
-				<Hint on="required">{RequiredMsg('Epost')}</Hint>
-				<Hint on="invalidEmail" hideWhenRequired>{$form.email.errors.invalidEmail}</Hint>
-			</HintGroup>
-
-			<label for="Firstname">Förnamn </label>
-			<input
-				type="text"
-				name="Firstname"
-				use:validators={[required]}
-				bind:value={formValues.caregivers[1].firstName}
-			/>
-			<HintGroup for="Firstname">
-				<Hint on="required">{RequiredMsg('Förnamn')}</Hint>
-			</HintGroup>
-
-			<label for="Lastname">Efternamn </label>
-			<input
-				type="text"
-				name="Lastname"
-				use:validators={[required]}
-				bind:value={formValues.caregivers[1].lastName}
-			/>
-
-			<HintGroup for="Lastname">
-				<Hint on="required">{RequiredMsg('Efternamn')}</Hint>
-			</HintGroup>
-
-			<label for="sSNnumber">Personnummer</label>
-			<input
-				name="sSNnumber"
-				use:validators={[required, SSNCheck]}
-				bind:value={formValues.caregivers[1].sSN}
-			/>
-			<HintGroup for="sSNnumber">
-				<Hint on="required">{RequiredMsg('Personnummer')}</Hint>
-				<Hint on="invalidSSN" hideWhenRequired>{$form.sSNnumber.errors.invalidSSN}</Hint>
-			</HintGroup><br />
-
-			<label for="address">Gatuaddress</label>
-			<input
-				type="text"
-				name="address"
-				use:validators={[required, streetAddressCheck]}
-				bind:value={formValues.caregivers[1].homeAddress.streetAddress}
-			/>
-			<HintGroup for="address">
-				<Hint on="required">{RequiredMsg('Gatuaddress')}</Hint>
-				<Hint on="invalidStreetAddress" hideWhenRequired>
-					{$form.address.errors.invalidStreetAddress}
-				</Hint>
-			</HintGroup>
-
-			<label for="stad">Stad</label>
-			<input
-				type="text"
-				name="stad"
-				use:validators={[required, cityCheck]}
-				bind:value={formValues.caregivers[1].homeAddress.city}
-			/>
-			<HintGroup for="stad">
-				<Hint on="required">{RequiredMsg('Stad')}</Hint>
-				<Hint on="invalidCity" hideWhenRequired>
-					{$form.stad.errors.invalidCity}
-				</Hint>
-			</HintGroup>
-
-			<label for="postalCode">Postkod</label>
-			<input
-				type="text"
-				name="postalCode"
-				use:validators={[required, postCodeCheck]}
-				bind:value={formValues.caregivers[1].homeAddress.postalCode}
-			/>
-			<HintGroup for="postalCode">
-				<Hint on="required">{RequiredMsg('Postkod')}</Hint>
-				<Hint on="invalidCity" hideWhenRequired>
-					{$form.stad.errors.invalidPostCode}
-				</Hint>
-			</HintGroup>
-		</div> -->
-
-		<button class="subButton" type="submit" disabled={!$form.valid}> Registrera </button>
+		<button
+			class="subButton"
+			type="submit"
+			disabled={!$form.valid || showModal}
+			on:click={() => {
+				showModal = true;
+			}}
+		>
+			Registrera
+		</button>
 	</form>
+	{#if showModal}
+		<RegSent bind:showModal bind:message />
+	{/if}
 </main>
 
 <style lang="less">
@@ -373,5 +294,8 @@
 	.subButton {
 		font-size: 20px !important;
 		margin-bottom: 20%;
+		margin: auto;
+		position: absolute;
+		left: 33%;
 	}
 </style>
