@@ -13,13 +13,18 @@
 {:else}
 	<div class="contactCard" use:ClickOutside on:click_outside={showContacts}>
 		<div class="contact-card-info">
-			<h1>Contact List</h1>
+			<h2>Kontaktlista</h2>
 			{#each teachers as teacher, i}
 				<div class="teacher" style="grid-template-row='1' grid-column: {i}">
 					<h3>
 						{teacher.name}
 					</h3>
-					Phone: {teacher.phoneNumber} / Email: {teacher.email}
+					<h4>
+					Telefon: {teacher.phoneNumber}
+					</h4>
+					<h4>
+					Epost: {teacher.email}
+					</h4>
 				</div>
 			{/each}
 			<button class="closeCross" on:click={showContacts}
@@ -69,16 +74,23 @@
 		height: 80%;
 		max-width: 600px;
 		padding: 20px;
-		border: 3px dashed black;
+		border: 3px solid;
 		z-index: 11;
+		h2 {
+			text-decoration: underline 8px solid;
+		}
 	}
 	.teacher {
 		border-bottom: 1px solid @light-mode-flavour1;
 	}
 	.closeCross {
 		border: none;
-		display: inline-flex;
-		float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
 
 		&:hover {
 			cursor: pointer;
