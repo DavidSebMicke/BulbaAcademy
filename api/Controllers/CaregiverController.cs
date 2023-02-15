@@ -175,7 +175,7 @@ namespace BulbasaurAPI.Controllers
                 await _caregiver.ConnectCaregiverAndChild(newCg, newChild);
 
                 var password = RandomPassword.GenerateRandomPassword();
-                var newUser = await _user.RegisterUserWithPerson(c, password, false);
+                var newUser = await _user.RegisterUserWithPerson(c, password, true);
 
                 if (newUser == null) return BadRequest("User can't be registered");
 
@@ -184,9 +184,7 @@ namespace BulbasaurAPI.Controllers
             await _caregiver.SaveChangesAsync();
             var outDTO = new CaregiverChildOutDTO(caregiversOut, child);
 
-            // Send emails with passwords
-            for (int i = 0; i < caregiversOut.Count; i++)
-                await EmailAPI.SendPasswordToUserEmail(caregiversOut[i].EmailAddress, passwords[i]);
+
 
             return Ok(outDTO);
         }

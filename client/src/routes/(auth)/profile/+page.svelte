@@ -18,12 +18,13 @@
 	<DropdownModal bind:showModal />
 {/if}
 
-
 <div class="profile">
 	<div class="profile-header">
 	  <img src={profileImage} alt="Profilbild">
-	  <h2>{#if $user?.name}{$user?.name}{:else}Ej Registrerad{/if}</h2>
-	  <p>{#if $user?.role}({$user?.role}){/if}</p>
+	  <h2 id="username-thing">{#if $user?.name}{$user?.name}{:else}Ej Registrerad{/if}</h2>
+	  {#if $user?.role}
+	  	<p style="padding-left:10px;">{" (" + $user?.role + ")"}</p>
+	  {/if}
 	</div>
 	<div class="profile-body">
 	  <h2>Epost</h2>
@@ -104,6 +105,11 @@
 
   .profile-header p {
     font-size: 1em;
+  }
+
+  #username-thing{
+	
+
   }
 }
 
