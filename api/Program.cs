@@ -14,8 +14,10 @@ using System.Text.Json.Serialization;
 
 namespace BulbasaurAPI
 {
-    public class Program
+    public class Program : IDisposable
     {
+        private static SqlConnection Connection { get; set; }
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +43,7 @@ namespace BulbasaurAPI
             var connString = builder.Configuration.GetConnectionString("_connString");
             builder.Services.AddDbContext<DbServerContext>(options => options.UseSqlServer(connString));
 
-            SqlConnection conn = new SqlConnection(connString);
+            Connection = new SqlConnection(connString);
 
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
@@ -64,22 +66,8 @@ namespace BulbasaurAPI
                 app.UseSwaggerUI();
             }
 
-            if (args.Length == 1 && args[0].ToLower() == "seedadmin")
+            if (args.Length == 1 && args[0].ToLower() == "seed")
                 SeedAdmin(app);
-
-            if (args.Length == 1 && args[0].ToLower() == "seeddata")
-                SeedData(app);
-
-            void SeedData(IHost app)
-            {
-                var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
-
-                using (var scope = scopedFactory.CreateScope())
-                {
-                    var service = scope.ServiceProvider.GetService<Seed>();
-                    service.SeedDataContext();
-                }
-            }
 
             void SeedAdmin(IHost app)
             {
@@ -89,10 +77,11 @@ namespace BulbasaurAPI
                 {
                     var service = scope.ServiceProvider.GetService<Seed>();
                     service.SeedAdmin();
+                    service.SeedDataContext();
                 }
             }
 
-            conn.Open();
+            Connection.Open();
 
             app.UseCors("policyCors");
             app.UseHttpsRedirection();
@@ -111,5 +100,7 @@ namespace BulbasaurAPI
 
             app.Run();
         }
+
+        public void Dispose() => Connection.Close();
     }
 }

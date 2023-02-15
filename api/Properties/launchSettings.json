@@ -2,7 +2,7 @@
   "profiles": {
     "BulbasaurAPI": {
       "commandName": "Project",
-      "commandLineArgs": "seedadmin",
+      "commandLineArgs": "seed",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {

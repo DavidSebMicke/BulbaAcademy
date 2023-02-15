@@ -14,7 +14,7 @@ Ensure you have .net 6 installed.
 
 Open up the project in Visual Studio 2022.
 
-Open menu `debug -> BulbasaurAPI Debug Properties` and enter `seedadmin` on the first line of command line arguments.
+Open menu `debug -> BulbasaurAPI Debug Properties` and enter `seed` on the first line of command line arguments.
 
 #### SQL Server
 
