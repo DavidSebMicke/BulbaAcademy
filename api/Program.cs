@@ -6,6 +6,7 @@ using BulbasaurAPI.Repository;
 using BulbasaurAPI.Repository.Interface;
 using BulbasaurAPI.Utils;
 using dotenv.net;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +41,8 @@ namespace BulbasaurAPI
             var connString = builder.Configuration.GetConnectionString("_connString");
             builder.Services.AddDbContext<DbServerContext>(options => options.UseSqlServer(connString));
 
+            SqlConnection conn = new SqlConnection(connString);
+
             builder.Services.AddScoped<ICaregiverRepository, CaregiverRepository>();
             builder.Services.AddScoped<IPersonRepository, PersonRepository>();
             builder.Services.AddScoped<IGroupRepository, GroupRepository>();
@@ -61,6 +64,9 @@ namespace BulbasaurAPI
                 app.UseSwaggerUI();
             }
 
+            if (args.Length == 1 && args[0].ToLower() == "seedadmin")
+                SeedAdmin(app);
+
             if (args.Length == 1 && args[0].ToLower() == "seeddata")
                 SeedData(app);
 
@@ -74,6 +80,20 @@ namespace BulbasaurAPI
                     service.SeedDataContext();
                 }
             }
+
+            void SeedAdmin(IHost app)
+            {
+                var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+                using (var scope = scopedFactory.CreateScope())
+                {
+                    var service = scope.ServiceProvider.GetService<Seed>();
+                    service.SeedAdmin();
+                }
+            }
+
+            conn.Open();
+
             app.UseCors("policyCors");
             app.UseHttpsRedirection();
 

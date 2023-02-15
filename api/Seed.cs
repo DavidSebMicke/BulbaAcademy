@@ -1,5 +1,6 @@
 ﻿using BulbasaurAPI.Database;
 using BulbasaurAPI.Models;
+using BulbasaurAPI.Utils;
 using System.Diagnostics.Metrics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks.Dataflow;
@@ -15,6 +16,23 @@ namespace BulbasaurAPI
         public Seed(DbServerContext context)
         {
             this._context = context;
+        }
+
+        public void SeedAdmin()
+        {
+            _context.Database.EnsureCreated();
+            if (!_context.Users.Any(u => u.Username == "admin@admin.com"))
+            {
+                _context.Users.Add(new User
+                {
+                    Username = "admin@admin.com",
+                    Password = Hasher.HashWithSalt("PASSword.123", out string salt),
+                    Salt = salt,
+                    AccessLevel = Authorization.UserAccessLevel.ADMIN,
+                    GUID = Guid.NewGuid(),
+                });
+                _context.SaveChanges();
+            }
         }
 
         public void SeedDataContext()

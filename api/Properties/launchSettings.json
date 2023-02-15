@@ -1,24 +1,15 @@
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:47367",
-      "sslPort": 8000
-    }
-  },
+{
   "profiles": {
     "BulbasaurAPI": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
+      "commandLineArgs": "seedadmin",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7215;http://localhost:8000",
-
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7215;http://localhost:8000"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -27,6 +18,15 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:47367",
+      "sslPort": 8000
     }
   }
 }
