@@ -19,7 +19,11 @@
 	};
 
 	onMount(async () => {
-		chatList = await getAllChats();
+		var fetchedChatList = await getAllChats();
+		if (fetchedChatList.length > 0) {
+			chatList = fetchedChatList;
+			activeChat = chatList[0];
+		}
 	});
 </script>
 
@@ -33,8 +37,8 @@
 				on:keydown={(e) => handleChatClick(e, chat)}
 			>
 				<div class="chatName">
-					{chat.users[0].firstName}
-					{chat.users[0].lastName}
+					{chat.users[0] ? chat.users[0].firstName : ''}
+					{chat.users[0] ? chat.users[0].lastName : ''}
 				</div>
 				<!-- <div class="chatTimestamp">
 					{dayjs(chat.lastMessage.timestamp).format('DD/MM/YYYY HH:mm')}

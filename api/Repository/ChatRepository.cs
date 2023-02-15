@@ -41,7 +41,8 @@ namespace BulbasaurAPI.Repository
                         .ThenInclude(u => u.Person)
                         .ThenInclude(p => p.Role)
                         .Include(c => c.ChatItemList)
-                        .Where(c => c.InvolvedUsersList.Contains(user))
+                        .ThenInclude(ci => ci.Author)
+                        .Where(c => c.InvolvedUsersList.Any(u => u.Id == user.Id))
                         .ToListAsync();
         }
 
